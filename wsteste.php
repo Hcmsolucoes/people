@@ -24,5 +24,6 @@ $options = array('location' => 'http://201.94.148.59:8080/g5-senior-services/rub
 $result = $client->__soapCall($function, $arguments, $options);
  
 echo 'Response: ';
+
 print_r($result);
 ?>
