@@ -1136,18 +1136,14 @@ public function calendarGestor(){
 }
 
 public function analise(){
-    $this->Log->talogado(); 
-    $dados = array( 'menupriativo' => '');
+
     $iduser = $this->session->userdata('id_funcionario');
+    /*$this->Log->talogado(); 
+    $dados = array( 'menupriativo' => '');
     $idempresa = $this->session->userdata('idempresa');
 
     $this->db->where('fun_idfuncionario',$iduser);
     $dados['funcionario'] = $this->db->get('funcionario')->result();
-
-
-    $this->db->where('fk_funcionario_analise', $iduser);
-    $dados['analises'] = $this->db->get("analisedashboard")->result();   
-
 
     $this->db->select('tema_cor, tema_fundo');
     $this->db->where('fun_idfuncionario',$iduser);
@@ -1156,13 +1152,18 @@ public function analise(){
 
     $this->db->where('feed_idfuncionario_recebe',$iduser);
     $feeds = $this->db->get('feedbacks')->num_rows();
-    $dados['quantgeral'] = $feeds;            
+    $dados['quantgeral'] = $feeds;         
 
     $this->session->set_userdata('perfil_atual', '2');
     $dados['breadcrumb'] = array('Gestor'=>base_url('gestor'), "Minhas Análises"=>"#" );
-    $this->load->view('/geral/html_header',$dados);
+    $this->load->view('/geral/html_header',$dados);*/
+    $this->db->where('fk_funcionario_analise', $iduser);
+    $this->db->order_by("id_analise", "desc");
+    $dados['analises'] = $this->db->get("analisedashboard")->result();
+
+    header ('Content-type: text/html; charset=ISO-8859-1');
     $this->load->view('/geral/corpo_analise',$dados);          
-    $this->load->view('/geral/footer'); 
+    //$this->load->view('/geral/footer'); 
 }
 
 

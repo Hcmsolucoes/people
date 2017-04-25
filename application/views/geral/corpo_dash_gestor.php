@@ -294,7 +294,7 @@ $arr_salariosexo .= "['".$value->fun_nome."','".$value->sexo."',".$value->idadef
 
 <span  class="btn btn-info fleft fleftmobile" style="padding: 4px 10px;margin: 0px 0px 0px 5px;" data-toggle="modal" data-target="#analisemodal"><i class="glyphicon glyphicon-home"></i> Minha Análise</span>
 
-<a href="<?php echo base_url("gestor/analise"); ?>" class="btn btn-info fleft fleftmobile" style="padding: 4px 10px;margin: 0px 0px 0px 5px;"><i class="fa fa-bar-chart-o"></i> Ver Análise</a>
+<a id="veranalise" href="#<?php //echo base_url("gestor/analise"); ?>" class="btn btn-info fleft fleftmobile" style="padding: 4px 10px;margin: 0px 0px 0px 5px;" ><i class="fa fa-bar-chart-o"></i> Ver Análise</a>
 </ul><!-- fim da barra-->
 
  <!-- START WIDGETS -->
@@ -791,6 +791,31 @@ $(".sit").click(function(){
         data:{
           opcao: opcao,
           dash: "gestor"
+        },              
+        success: function(msg) 
+        {
+          //console.log(msg);
+          $( "#dadosedit" ).html(msg);
+        } 
+    });
+
+   });
+
+  $("#veranalise").click(function(){
+    
+    var titulo = "Minhas Análises";
+    $( "#dadosedit" ).html("<img id='load' src='<?php echo base_url('img/loaders/default.gif') ?>' alt='Loading...' >");
+    $("#titulomodal").text(titulo);
+    $('#myModal').modal('show');
+
+    $.ajax({             
+        type: "POST",
+        url: '<?php echo base_url('gestor/analise') ?>',
+        dataType : 'html',
+        secureuri:false,
+        cache: false,
+        data:{
+          
         },              
         success: function(msg) 
         {
