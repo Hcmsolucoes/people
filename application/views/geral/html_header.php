@@ -100,6 +100,7 @@
 		foreach ($noti as $key => $value) {
 			switch ($value->ic_tipo_notificacao) {
 				case '1': $iconenoti='fa-calendar-o'; break;
+				case '2': $iconenoti='fa-comments-o'; break;
 				case '3': $iconenoti='fa-thumbs-o-up'; break;
 				case '4': $iconenoti='fa-comments-o'; break;				
 				default:break;

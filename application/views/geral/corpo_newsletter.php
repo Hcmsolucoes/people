@@ -109,7 +109,7 @@ $iduser = $this->session->userdata('id_funcionario');
                 
               </div>
               <div id="news<?php echo $value->id_newsletter; ?>" class="panel-collapse collapse" role="tabpanel" >
-                <div class="panel-body lg-img"><?php echo $value->descricao_newsletter; ?></div>
+                <div class="col-md-12 lg-img"><?php echo $value->descricao_newsletter; ?></div>
                 <div class="font-sub"><?php echo $value->fonte_newsletter; ?> </div>
               </div>
             </div>

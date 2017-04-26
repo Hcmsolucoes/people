@@ -1166,6 +1166,74 @@ public function analise(){
     //$this->load->view('/geral/footer'); 
 }
 
+public function cargos(){
+    $this->Log->talogado(); 
+    $iduser = $this->session->userdata('id_funcionario');
+    $idempresa = $this->session->userdata('idempresa');
+    $idcli = $this->session->userdata('idcliente');
+
+    $this->session->set_userdata('perfil_atual', '2');
+    $dados = array('menupriativo' => 'cargos');
+    $feeds = $this->db->get('feedbacks')->num_rows();
+    $dados['quantgeral'] = $feeds;
+
+    $this->db->where('fun_idfuncionario',$iduser);
+    $dados['funcionario'] = $this->db->get('funcionario')->result();
+
+    $this->db->where('idempresa', $idempresa);
+    $dados['cargos'] = $this->db->get('tabelacargos')->result();
+
+    $dados['cursos'] = $this->db->get('cursos')->result();
+    
+    $this->db->select('tema_cor, tema_fundo');
+    $this->db->where('fun_idfuncionario',$iduser);
+    $dados['tema'] = $this->db->get('funcionario')->result();
+    $dados['perfil'] = $this->session->userdata('perfil');
+
+
+    $dados['breadcrumb'] = array('gestor'=>base_url('gestor'), "Treinamentos"=>"#", "Requisitos de Cargos"=>"#" );
+    $this->load->view('/geral/html_header',$dados);  
+    $this->load->view('/geral/corpo_reqcargo',$dados);
+    $this->load->view('/geral/footer');
+}
+
+public function cargocurso(){
+
+    $iduser = $this->session->userdata('id_funcionario');
+    $idempresa = $this->session->userdata('idempresa');
+    $idcargo = $this->input->post("idcargo");
+
+    $this->db->join("cursos", "fk_idcurso = idcurso");
+    $this->db->where('fk_idempresa',$idempresa);
+    $this->db->where('fk_idcargo',$idcargo);
+    $dados['cargocurso'] = $this->db->get('cargocurso')->result();
+    $this->load->view('/geral/box/cargocurso',$dados);
+}
+
+public function salvarCursos(){
+    $cursos = $this->input->post("cursos");
+    $idcargo = $this->input->post("idcargo");
+    $idempresa = $this->session->userdata('idempresa');
+
+    $dados['fk_idcargo'] = $idcargo;
+
+    foreach ($cursos as $key => $value) {
+       $dados['fk_idcurso'] = $value['fk_idcurso'];
+       $dados['ic_tipo'] = $value['ic_tipo'];
+       $dados['fk_idempresa'] = $idempresa;
+       $this->db->insert("cargocurso", $dados);
+    }    
+
+    return;
+}
+
+public function excluircargocurso(){
+
+    $id = $this->input->post("id");
+    $this->db->where('id_cargocurso',$id);
+    $this->db->delete('cargocurso');
+}
+
 
 
 }

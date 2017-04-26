@@ -56,6 +56,10 @@ $modulos = explode(",", $this->session->userdata('modulos'));
             <span class="fa fa-calendar"></span>
             <span class="xn-text">Calendário</span></a>
         </li>
+        <li><a href="<?php echo base_url('gestor/cargos') ?>">
+            <span class="fa fa-calendar"></span>
+            <span class="xn-text">Requisitos de Cargos</span></a>
+        </li>
     </ul>
 </li>
 
