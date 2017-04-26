@@ -1,62 +1,4 @@
-<style>
-
-.panel-actions {
-  margin-top: -20px;
-  margin-bottom: 0;
-  text-align: right;
-}
-.panel-actions a {
-  color:#333;
-}
-.panel-fullscreen2 {
-    display: block;
-    z-index: 9999;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    overflow: auto;
-}
-  .sliderClass .google-visualization-controls-slider-horizontal {
-  width:'100%';
-   }
-
- .cssHeaderRow {
-      background-color: #2A94D6;
-  }
-  .cssTableRow {
-      background-color: #F0F1F2;
-  }
-  .cssOddTableRow {
-      background-color: #F0F1F2;
-  }
-  .cssSelectedTableRow {
-      font-size: 10px;
-      font-weight:bold;
-  }
-  .cssHoverTableRow {
-      background: #ccc;
-  }
-  .cssHeaderCell {
-      color: #FFFFFF;
-      font-size: 12px;
-      padding: 10px !important;
-      border: solid 1px #FFFFFF;
-  }
-  .cssTableCell {
-      font-size: 11px;
-      padding: 8px !important;
-      border: solid 1px #FFFFFF;
-  }
-  .cssRowNumberCell {
-      text-align: center;
-  }   
-</style>
-
- <?php
+<?php
 
 foreach ($escolaridade as $key => $value) {  
 
@@ -292,9 +234,9 @@ $arr_salariosexo .= "['".$value->fun_nome."','".$value->sexo."',".$value->idadef
 </div>
 
 
-<span  class="btn btn-info fleft fleftmobile" style="padding: 4px 10px;margin: 0px 0px 0px 5px;" data-toggle="modal" data-target="#analisemodal"><i class="glyphicon glyphicon-home"></i> Minha Análise</span>
+<span  class="btn btn-info fleft fleftmobile botoesanalise" style="padding: 4px 10px;" data-toggle="modal" data-target="#analisemodal"><i class="glyphicon glyphicon-home"></i> Minha Análise</span>
 
-<a id="veranalise" href="#<?php //echo base_url("gestor/analise"); ?>" class="btn btn-info fleft fleftmobile" style="padding: 4px 10px;margin: 0px 0px 0px 5px;" ><i class="fa fa-bar-chart-o"></i> Ver Análise</a>
+<a id="veranalise" href="#<?php //echo base_url("gestor/analise"); ?>" class="btn btn-info fleft fleftmobile botoesanalise" style="padding: 4px 10px;" ><i class="fa fa-bar-chart-o"></i> Ver Análise</a>
 </ul><!-- fim da barra-->
 
  <!-- START WIDGETS -->
@@ -305,7 +247,7 @@ $arr_salariosexo .= "['".$value->fun_nome."','".$value->sexo."',".$value->idadef
       <div class="col-md-3">
       <div class="widget widget-default widget-carousel">
         <div class="owl" id="owl-example">
-        <img id='loadturn' src='<?php echo base_url('img/loaders/default.gif') ?>' alt='Loading...' style="left: 40%;position: relative;">
+        <img id='loadturn' src='<?php echo base_url('img/loaders/default.gif') ?>' style="left: 40%;position: relative;">
         </div>                            
         <div class="widget-controls">                                
           <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remover este Quadro"><span class="fa fa-times"></span></a>

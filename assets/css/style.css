@@ -190,7 +190,9 @@ color: #555;
     border: 1px solid #ddd;
 }
 
-
+.lg-img img{
+    max-width: 100%;
+  }
 
 .progress-bar-success {
     background-color: #5cb85c !important;
@@ -268,7 +270,12 @@ color: #555;
 #menudashboard{
     /*margin-right: 65px;*/
   }
-  
+
+.botoesanalise{
+  margin: 0px 0px 0px 5px;
+}
+
+
 @media (max-width: 500px) {
 #menudashboard{
     margin-right: 0px;
@@ -316,4 +323,65 @@ color: #555;
   max-width: 100%;
 }
 
+.botoesanalise{
+  margin: 5px 0px;
 }
+
+}
+
+.panel-actions {
+  margin-top: -20px;
+  margin-bottom: 0;
+  text-align: right;
+}
+.panel-actions a {
+  color:#333;
+}
+.panel-fullscreen2 {
+    display: block;
+    z-index: 9999;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    overflow: auto;
+}
+  .sliderClass .google-visualization-controls-slider-horizontal {
+  width:'100%';
+   }
+
+ .cssHeaderRow {
+      background-color: #2A94D6;
+  }
+  .cssTableRow {
+      background-color: #F0F1F2;
+  }
+  .cssOddTableRow {
+      background-color: #F0F1F2;
+  }
+  .cssSelectedTableRow {
+      font-size: 10px;
+      font-weight:bold;
+  }
+  .cssHoverTableRow {
+      background: #ccc;
+  }
+  .cssHeaderCell {
+      color: #FFFFFF;
+      font-size: 12px;
+      padding: 10px !important;
+      border: solid 1px #FFFFFF;
+  }
+  .cssTableCell {
+      font-size: 11px;
+      padding: 8px !important;
+      border: solid 1px #FFFFFF;
+  }
+  .cssRowNumberCell {
+      text-align: center;
+  }
+
+  

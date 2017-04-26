@@ -66,7 +66,7 @@ $modulos = explode(",", $this->session->userdata('modulos'));
     <ul>
       <li><a href="<?php echo base_url('gestor/conferias') ?>">
         <span class="fa fa-plane"></span>
-        <span class="xn-text">Férias</span></a>
+        <span class="xn-text">Confirmação de Férias</span></a>
       </li>
       <!--<li><a href="<?php echo base_url('gestor/ferias') ?>">
         <span class="fa fa-plane"></span>
@@ -83,4 +83,11 @@ $modulos = explode(",", $this->session->userdata('modulos'));
             <span class="xn-text">Solicitações</span></a>
           </li>
         </ul>
-      </li>
+</li>
+
+<li class="<?php echo ($menupriativo=="newsletter")? "active":"" ?>">
+  <a href="<?php echo base_url('home/newsletter') ?>">
+    <span class="fa fa-rss"></span> <span class="xn-text">Newsletter</span>
+  </a>
+</li>
+

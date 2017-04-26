@@ -45,34 +45,33 @@
     </ul>
   </li>
 
-  <!--<li class="<?php echo ($menupriativo=="solicitacoes")? "active":"" ?>">
-    <a href="<?php echo base_url('rh/'); ?>">
-      <span class="fa fa-retweet"></span>
-      <span class="xn-text">Solicitações</span></a>
-    </li>-->
-
-
-    <li class="xn-openable <?php echo ($menupriativo=="")? "active":"" ?>">
-      <a href="#">
-        <span class="fa fa-briefcase"></span>
-        <span class="xn-text">Gestão do dia a dia</span></a>
-        <ul>
-          <li class="<?php echo ($menupriativo=="aprovacoes")? "active":"" ?>">
-            <a href="<?php echo base_url('rh/aprovacoes'); ?>">
-              <span class="fa fa-thumbs-o-up"></span>
-              <span class="xn-text">Efetivação de Solicitação</span></a>
-            </li>
-            <li class="<?php echo ($menupriativo=="integracoes")? "active":"" ?>">
+<li class="xn-openable <?php echo ($menupriativo=="")? "active":"" ?>">
+    <a href="#">
+      <span class="fa fa-briefcase"></span>
+      <span class="xn-text">Gestão do dia a dia</span></a>
+  <ul>
+        <li class="<?php echo ($menupriativo=="aprovacoes")? "active":"" ?>">
+          <a href="<?php echo base_url('rh/aprovacoes'); ?>">
+            <span class="fa fa-thumbs-o-up"></span>
+            <span class="xn-text">Efetivação de Solicitação</span></a>
+          </li>
+          <li class="<?php echo ($menupriativo=="integracoes")? "active":"" ?>">
             <a href="<?php echo base_url('rh/integracoes'); ?>">
               <span class="fa fa-cubes"></span>
               <span class="xn-text">Consulta Integrações</span></a>
             </li>
 
-          </ul>
-        </li>
+  </ul>
+</li>
 
-        <li class="<?php echo ($menupriativo=="mensagem")? "active":"" ?>">
-          <a href="<?php echo base_url('rh/mensagem') ?>">
-            <span class="fa fa-comments-o"></span> <span class="xn-text">Mensagens</span>
-          </a>                  
-        </li>
+<li class="<?php echo ($menupriativo=="mensagem")? "active":"" ?>">
+  <a href="<?php echo base_url('rh/mensagem') ?>">
+    <span class="fa fa-comments-o"></span> <span class="xn-text">Mensagens</span>
+  </a>                  
+</li>
+
+<li class="<?php echo ($menupriativo=="newsletter")? "active":"" ?>">
+  <a href="<?php echo base_url('home/newsletter') ?>">
+    <span class="fa fa-rss"></span> <span class="xn-text">Newsletter</span>
+  </a>
+</li>

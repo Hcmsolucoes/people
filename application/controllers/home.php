@@ -6,7 +6,8 @@ class Home extends CI_Controller {
 		$this->load->helper('url');
 		$this->load->helper('html');
 		$this->load->library('session');
-		$this->load->model('Log'); 
+		$this->load->model('Log');
+		$this->load->library('util');
 	}
 	
 	public function sendmail()
@@ -359,6 +360,105 @@ class Home extends CI_Controller {
 		}
 		echo json_encode($json);
 	}
+
+	public function newsletter(){
+    	$this->Log->talogado(); 
+        $iduser = $this->session->userdata('id_funcionario');
+        $idempresa = $this->session->userdata('idempresa');
+        $idcli = $this->session->userdata('idcliente');
+        //$this->session->set_userdata('perfil_atual', '1');
+        $dados = array('menupriativo' => 'newsletter' );
+
+        $this->db->where('fun_idfuncionario',$iduser);
+        $dados['funcionario'] = $this->db->get('funcionario')->result();
+
+        $feeds = $this->db->get('feedbacks')->num_rows();
+        $dados['quantgeral'] = $feeds;
+        
+        $this->db->select('tema_cor, tema_fundo');
+        $this->db->where('fun_idfuncionario',$iduser);
+        $dados['tema'] = $this->db->get('funcionario')->result();
+        $dados['perfil'] = $this->session->userdata('perfil');
+
+        /*
+        $this->db->where("idempresa", $idempresa);
+        $dados['parametros'] = $this->db->get("parametros")->row();
+        */
+
+        $dados['categorias'] = $this->db->get('newsletter_categoria')->result();
+
+        $this->db->select('newsletter.*, fun_foto, fun_nome, fun_sexo, descricao_categoria_newsletter');
+        $this->db->join("funcionario", "fun_idfuncionario = fk_idfuncionario_newsletter");
+        $this->db->join("newsletter_categoria", "id_categoria_newsletter = fk_categoria_newsletter");
+        $this->db->where('fk_idempresa_newsletter',$idempresa);
+        $this->db->order_by("id_newsletter", "desc");
+        $dados['newsletter'] = $this->db->get("newsletter")->result();
+
+
+        $this->session->unset_userdata('primsg');
+        $dados['breadcrumb'] = array('Home'=>base_url('home'), "newsletter"=>"#" );
+
+        $this->load->view('/geral/html_header',$dados);  
+        $this->load->view('/geral/corpo_newsletter',$dados);
+        $this->load->view('/geral/footer');
+	}
+
+	public function salvarNewsletter(){
+        
+        if (!empty($_FILES['file'])) {
+         try {
+
+            $instancia =$this->session->userdata('instancia');                
+            $pasta = FCPATH.'/img/'. $instancia;
+
+            if (!file_exists($pasta)) {
+                if( ! mkdir($pasta, 0777, true) ){
+                    throw new Exception("Nao foi possivel criar a pasta");
+                }
+            }
+
+            if (!$_FILES['file']['error']) {
+                $name = $this->util->geraString(7);;
+                $ext = explode('.', $_FILES['file']['name']);
+                $filename = $name . '.' . $ext[1];
+                    $destination = $pasta."/".$filename;
+                    $location = $_FILES["file"]["tmp_name"];
+                    move_uploaded_file($location, $destination);
+                    echo base_url("img/".$instancia."/".$filename);
+                }else{
+                    echo  $_FILES['file']['error'];
+                }     
+
+            } catch (Exception $e) {
+                echo $e->getMessage();
+                return;
+            }
+
+            return;
+        }
+
+        $idempresa = $this->session->userdata('idempresa');
+        $iduser = $this->session->userdata('id_funcionario'); 
+
+        $dados["titulo_newsletter"] = utf8_decode($this->input->post("titulo") ); 
+        $dados["fonte_newsletter"] = utf8_decode($this->input->post("fonte") );
+        $dados["descricao_newsletter"] = utf8_decode($this->input->post("mensagem") ); 
+        $dados["url_imagem_newsletter"] = $this->input->post("url");
+        $dados["fk_categoria_newsletter"] = $this->input->post("categoria");
+        $dados["fk_idfuncionario_newsletter"] = $iduser;
+        $dados["fk_idempresa_newsletter"] = $idempresa;
+        $this->db->insert("newsletter", $dados); 
+    }
+
+    public function excluirNewsletter(){
+
+        $id = $this->input->post("id");
+        $this->db->where("id_newsletter", $id);
+        $this->db->delete("newsletter");
+        $res['msg']=1;
+        echo json_encode($res);
+
+    }
 
 
 
