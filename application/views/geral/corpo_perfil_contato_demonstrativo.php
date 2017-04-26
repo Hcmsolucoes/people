@@ -1,5 +1,5 @@
 <div class="page-title">                    
-    <h2><span class="fa fa-money"></span> Demonstrativos de Pagamento</h2>
+    <h3><span class="fa fa-money"></span> Demonstrativos de Pagamento</h3>
     <img id="load" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Pesquisando...">
 </div> 
 

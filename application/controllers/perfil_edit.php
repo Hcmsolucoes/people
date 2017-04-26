@@ -215,6 +215,11 @@ class Perfil_edit extends CI_Controller {
                 $this->db->from('contato');
                 $this->db->where('con_idcontato',$id);
                 $dados['contato'] = $this->db->get()->result();
+
+                $idcli = $this->session->userdata('idcliente');
+            $this->db->where('idcliente', $idcli);
+            $dados['parentesco'] = $this->db->get("tipodependente")->result();
+            
             header ('Content-type: text/html; charset=ISO-8859-1');
             $this->load->view('/geral/edit/perfil_contatoemeredit',$dados);   
             }    
@@ -257,9 +262,12 @@ class Perfil_edit extends CI_Controller {
             }
        }
         public function pessoal_contatoemer()
-        {             
+        {   
+            $idcli = $this->session->userdata('idcliente');
+            $this->db->where('idcliente', $idcli);
+            $dados['parentesco'] = $this->db->get("tipodependente")->result();
             header ('Content-type: text/html; charset=ISO-8859-1');
-            $this->load->view('/geral/edit/perfil_contatoemer');        
+            $this->load->view('/geral/edit/perfil_contatoemer', $dados);        
 	       }
         
         public function pessoal_addemail()

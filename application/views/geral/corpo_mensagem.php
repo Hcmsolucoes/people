@@ -51,12 +51,11 @@ $iduser = $this->session->userdata('id_funcionario');
 
           
           <div class="list-group border-bottom">
-            
-            <a href="#enviadas" aria-controls="minhasmensagens" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-share"></span> <span class="desc">Mensagens Enviadas</span><span class="badge badge-warning"><?php echo count($msg_enviadas) ; ?></span></a>
-
             <a href="#minhasmensagens" aria-controls="minhasmensagens" role="tab" data-toggle="tab" class="list-group-item aba">
               <span class="fa fa-star"></span> <span class="desc">Mensagens Recebidas</span><span class="badge badge-warning"><?php echo count($msg_recebidas); ?></span>
             </a>
+
+            <a href="#enviadas" aria-controls="minhasmensagens" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-share"></span> <span class="desc">Mensagens Enviadas</span><span class="badge badge-warning"><?php echo count($msg_enviadas) ; ?></span></a>
             
             <a href="#excluidas" aria-controls="excluidas" role="tab" data-toggle="tab"  class="list-group-item aba"><span class="fa fa-trash-o"></span> <span class="desc">Mensagens Excluídas</span> <span class="badge badge-default"><?php echo count($msg_excluidas); ?></span>
             </a>
@@ -74,20 +73,20 @@ $iduser = $this->session->userdata('id_funcionario');
 
           <div class="widget widget-default">
             <div class="col-md-12">
-
+            <h3><span class="fa fa-edit"></span> Nova Mensagem</h3>
               <!--<span class="btn btn-default" id="selpessoas">Selecionar pessoas</span>-->
-              <div class="autocomplete fleft-9 fleftmobile" >
-            <input type="text" id="busca_colab" data-campo="colab" data-classe="itemcolab" data-div="div_colab" class="autocompletarpessoa form-control" placeholder="" style="width: 60px;border: none;"/>
+              <div class="autocomplete fleft-10 fleftmobile" >
+            <input type="text" id="busca_colab" data-campo="colab" data-classe="itemcolab" data-div="div_colab" class="autocompletarpessoa form-control" placeholder="Buscar Colaborador" style="background-color: background-color: transparent; border: none;"/>
             <div id="div_colab"></div>
           </div>
 
               <div id="div_colab"></div>
               <div class="clearfix"></div>
 
-              <div class="fleft-9 fleftmobile" style="margin: 10px 0px 0px 0px;">
-                <textarea class="hcmeditor" name="mensagem" id="mensagem" style="width: 100%;"></textarea>
+              <div class="fleft-10 fleftmobile" style="margin: 10px 0px 0px 0px;">
+                <textarea class="hcmeditor" name="mensagem" id="mensagem" style="width: 100%;">Digite a Mensagem...</textarea>
                 <img id="loadmsg" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" class="fleft">
-                <span class="btn btn-info fright" id="enviar" >Enviar</span>
+                <span class="btn btn-info fright" id="enviar" style="margin: 15px 0px 0px 0px;" >Enviar</span>
               </div>
             </div>
           </div>
@@ -99,7 +98,7 @@ $iduser = $this->session->userdata('id_funcionario');
 
           <div class="widget widget-default">
 
-            <h2>Mensagens enviadas</h2>
+            <h3><span class="fa fa-share"></span> Mensagens enviadas</h3>
             <div class="col-md-12">
               <div class="messages messages-img">
                 <?php 
@@ -149,7 +148,7 @@ $iduser = $this->session->userdata('id_funcionario');
           <div role="tabpanel" class="tab-pane" id="minhasmensagens">
 
             <div class="widget widget-default">
-              <h2>Mensagens recebidas</h2>
+              <h3><span class="fa fa-star"></span> Mensagens recebidas</h3>
               <div class="col-md-12">
                 <div class="messages messages-img">
                   <?php 
@@ -200,7 +199,7 @@ $iduser = $this->session->userdata('id_funcionario');
             <div role="tabpanel" class="tab-pane" id="excluidas">
 
               <div class="widget widget-default">
-                <h2>Mensagens excluidas</h2>
+                <h3><span class="fa fa-trash-o"></span> Mensagens excluidas</h3>
                 <div class="col-md-12">
                   <div class="messages messages-img">
                     <?php 
