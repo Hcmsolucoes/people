@@ -193,63 +193,6 @@ $mes_ano = $mes." de ".date("Y");
   <div class="row">
     <div class="col-md-4">
 
-      <!-- START USERS ACTIVITY BLOCK -->
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div class="panel-title-box">
-            <h3>Absenteísmo</h3>
-            <span>4 últimos meses</span>
-          </div>                                    
-          <ul class="panel-controls" style="margin-top: 2px;">
-            <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
-            <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
-              <ul class="dropdown-menu">
-                <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
-                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
-              </ul>                                        
-            </li>                                        
-          </ul>                                    
-        </div>                                
-        <div class="panel-body padding-0">
-          <div class="chart-holder" id="dashboard-bar-1" style="height: 200px;"></div>
-        </div>                                    
-      </div>
-      <!-- END USERS ACTIVITY BLOCK -->
-
-    </div>
-    <div class="col-md-4">
-
-      <!-- START VISITORS BLOCK -->
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div class="panel-title-box">
-            <h3>Pendências</h3>
-            <span>Total de Pendências</span>
-          </div>
-          <ul class="panel-controls" style="margin-top: 2px;">
-            <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
-            <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
-              <ul class="dropdown-menu">
-                <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
-                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
-              </ul>                                        
-            </li>                                        
-          </ul>
-        </div>
-        <div class="panel-body padding-0">
-          <div class="chart-holder" id="dashboard-donut-1" style="height: 200px;"></div>
-        </div>
-      </div>
-      <!-- END VISITORS BLOCK -->
-
-    </div>
-
-    <div class="col-md-4">
-
       <!-- START SALES & EVENTS BLOCK -->
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -275,6 +218,61 @@ $mes_ano = $mes." de ".date("Y");
       </div>
       <!-- END SALES & EVENTS BLOCK -->
     </div>
+    <div class="col-md-4">
+      <!-- START VISITORS BLOCK -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title-box">
+            <h3>Boletim Informativo</h3>
+           
+          </div>
+          <ul class="panel-controls" style="margin-top: 2px;">
+            <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+            <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
+              <ul class="dropdown-menu">
+                <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+              </ul>                                        
+            </li>                                        
+          </ul>
+        </div>
+        <div class="panel-body padding-0">
+          <div class="chart-holder" id="widgetboletim" style="height: 200px;"></div>
+        </div>
+      </div>
+      <!-- END VISITORS BLOCK -->
+    </div>
+
+    <div class="col-md-4">
+      <!-- START VISITORS BLOCK -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title-box">
+            <h3>Pendências</h3>
+            <span>Total de Pendências</span>
+          </div>
+          <ul class="panel-controls" style="margin-top: 2px;">
+            <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
+            <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
+              <ul class="dropdown-menu">
+                <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+              </ul>                                        
+            </li>                                        
+          </ul>
+        </div>
+        <div class="panel-body padding-0">
+          <div class="chart-holder" id="dashboard-donut-1" style="height: 200px;"></div>
+        </div>
+      </div>
+      <!-- END VISITORS BLOCK -->
+    </div>
+
+    
     </div>
 
     <!-- START WIDGETS -->                    
@@ -627,46 +625,7 @@ $(document).ready(function(){
         resize: true
     });
 
-    Morris.Bar({
-        element: 'dashboard-bar-1',
-        data: [
-            { y: 'Out', a: 10, b: 13, c: 8 },
-            { y: 'Set', a: 7,  b: 09, c: 5 },
-            { y: 'Ago', a: 15, b: 20, c: 3 },
-            { y: 'Jul', a: 05, b: 12, c: 1 }
-        ],
-        xkey: 'y',
-        ykeys: ['a','b','c'],
-        labels: ['Faltas', 'Atrasos','Atestados'],
-        barColors: ['#33414E', '#1caf9a','#FF8C00'],
-        gridTextSize: '10px',
-        hideHover: true,
-        resize: true,
-        gridLineColor: '#E5E5E5'
-    });
- /*   
-    Morris.Area({
-      element: 'dashboard-area-1',
-      data: [
-        { y: '2014-10-10', a: 17,b: 19},
-        { y: '2014-10-11', a: 19,b: 21},
-        { y: '2014-10-12', a: 22,b: 25},
-        { y: '2014-10-13', a: 20,b: 22},
-        { y: '2014-10-14', a: 21,b: 24},
-        { y: '2014-10-15', a: 34,b: 37},
-        { y: '2014-10-16', a: 43,b: 45}
-      ],
-      xkey: 'y',
-      ykeys: ['a','b'],
-      labels: ['Sales','Event'],
-      resize: true,
-      hideHover: true,
-      xLabels: 'day',
-      gridTextSize: '10px',
-      lineColors: ['#1caf9a','#33414E'],
-      gridLineColor: '#E5E5E5'
-    });
-*/
+   
     var jvm_wm = new jvm.WorldMap({container: $('#dashboard-map-seles'),
       map: 'world_mill_en', 
       backgroundColor: '#FFFFFF',                                      

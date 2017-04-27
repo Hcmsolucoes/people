@@ -405,6 +405,7 @@ class Home extends CI_Controller {
 
 	public function salvarNewsletter(){
         
+
         if (!empty($_FILES['file'])) {
          try {
 
@@ -420,7 +421,7 @@ class Home extends CI_Controller {
             if (!$_FILES['file']['error']) {
                 $name = $this->util->geraString(7);;
                 $ext = explode('.', $_FILES['file']['name']);
-                $filename = $name . '.' . $ext[1];
+                $filename = $name . '.' . end($ext);
                     $destination = $pasta."/".$filename;
                     $location = $_FILES["file"]["tmp_name"];
                     move_uploaded_file($location, $destination);
@@ -437,17 +438,53 @@ class Home extends CI_Controller {
             return;
         }
 
+
+        $caminho_img = "";
+        if (!empty($_FILES['imagem'])) {
+
+         try {
+
+            $instancia =$this->session->userdata('instancia');                
+            $pasta = FCPATH.'/img/'. $instancia;
+
+            if (!file_exists($pasta)) {
+                if( ! mkdir($pasta, 0777, true) ){
+                    throw new Exception("Nao foi possivel criar a pasta");
+                }
+            }
+
+            if (!$_FILES['imagem']['error']) {
+            	$name = $this->util->geraString(7);;
+            	$ext = explode('.', $_FILES['imagem']['name']);
+            	$filename = $name . '.' . end($ext);
+            	$destination = $pasta."/".$filename;
+            	$location = $_FILES["imagem"]["tmp_name"];
+            	move_uploaded_file($location, $destination);
+            	$caminho_img = base_url("img/".$instancia."/".$filename);
+            	echo base_url("img/".$instancia."/".$filename);
+            }else{
+                echo  $_FILES['imagem']['error'];
+            }
+
+            } catch (Exception $e) {
+                echo $e->getMessage();
+                return;
+            }
+            
+        }
+
         $idempresa = $this->session->userdata('idempresa');
         $iduser = $this->session->userdata('id_funcionario'); 
 
-        $dados["titulo_newsletter"] = utf8_decode($this->input->post("titulo") ); 
+        $dados["titulo_newsletter"] = utf8_decode($this->input->post("newstitulo") ); 
         $dados["fonte_newsletter"] = utf8_decode($this->input->post("fonte") );
         $dados["descricao_newsletter"] = utf8_decode($this->input->post("mensagem") ); 
-        $dados["url_imagem_newsletter"] = $this->input->post("url");
+        $dados["url_imagem_newsletter"] = $caminho_img;
         $dados["fk_categoria_newsletter"] = $this->input->post("categoria");
         $dados["fk_idfuncionario_newsletter"] = $iduser;
         $dados["fk_idempresa_newsletter"] = $idempresa;
-        $this->db->insert("newsletter", $dados); 
+        $this->db->insert("newsletter", $dados);
+        //header("Location: " . base_url("home/newsletter") );
     }
 
     public function excluirNewsletter(){

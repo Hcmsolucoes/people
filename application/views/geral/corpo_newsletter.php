@@ -61,28 +61,35 @@ $iduser = $this->session->userdata('id_funcionario');
               <h3>Nova Newsletter</h3>
 
               <div class=" fleft-9 fleftmobile" >
+              <form id="formnews" enctype="multipart/form-data" method="post" >
                 <select name="categoria" id="categoria" class="" style="margin: 7px 0px">
                   <option value="">Categoria</option>
                   <?php foreach ($categorias as $key => $value) { ?>
                     <option value="<?php echo $value->id_categoria_newsletter; ?>"><?php echo $value->descricao_categoria_newsletter; ?></option>
                   <?php } ?>
                 </select>
-                <input type="text" id="newstitulo" class="form-control" placeholder="Titulo da notícia" />
+                <input type="text" id="newstitulo" name="newstitulo" class="form-control" placeholder="Titulo da notícia" />
+
+                <label style="margin: 15px 0px 0px 0px;">Selecione a imagem</label>
+                <input type="file" name="imagem" id="imagem" value="Imagem do boletim" accept=".jpg, .jpeg, .png" />
               </div>
 
               <div id="div_colab"></div>
               <div class="clearfix"></div>
 
               <div class="fleft-9 fleftmobile" style="margin: 10px 0px 0px 0px;">
-                <textarea class="hcmeditor" name="mensagem" id="mensagem" style="width: 100%;"></textarea>
+
+                <textarea class="hcmeditor" name="noticia_descricao" id="noticia_descricao" style="width: 100%;">Digite o texto...</textarea>
                 <img id="loadmsg" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" class="fleft">
                 
-                <input type="text" id="fonte" class="form-control" placeholder="Fonte da notícia" style="margin: 7px 0px" />
+                <input type="text" id="fonte" name="fonte" class="form-control" placeholder="Fonte da notícia" style="margin: 7px 0px" />
 
-                <span class="btn btn-info fright" id="enviar" >Enviar</span>
+                <input type="submit" class="btn btn-info fright" id="enviar" value="Enviar" />
               </div>
           </div>
           <div id="selecionados"></div>
+          <!--<input type="hidden" id="mensagem" name="mensagem" >-->
+          </form>
         </div>
 
 
@@ -109,6 +116,9 @@ $iduser = $this->session->userdata('id_funcionario');
                 
               </div>
               <div id="news<?php echo $value->id_newsletter; ?>" class="panel-collapse collapse" role="tabpanel" >
+                <?php if (!empty($value->url_imagem_newsletter)){ ?>
+                  <img src="<?php echo $value->url_imagem_newsletter; ?>" style="max-width: 100%;" >
+                <?php } ?>
                 <div class="col-md-12 lg-img"><?php echo $value->descricao_newsletter; ?></div>
                 <div class="font-sub"><?php echo $value->fonte_newsletter; ?> </div>
               </div>
@@ -124,11 +134,18 @@ $iduser = $this->session->userdata('id_funcionario');
 
       </div><!-- col-md-9 -->
     </div><!--fleft-10-->
-    <input type="hidden" id="url" name="url" >
-  </div>
-
-  <script type="text/javascript">
     
+  </div>
+<script type="text/javascript" src="<?php echo base_url('js/plugins/fileinput/fileinput.min.js') ?>"></script>
+  <script type="text/javascript">
+
+
+    $("#imagem").fileinput({
+      showUpload: false,
+      allowedFileExtensions: ['jpg', 'gif', 'png'],
+    });
+     
+
     $("a").click(function(){
         
       $(".aba").removeClass("active");
@@ -140,29 +157,27 @@ $iduser = $this->session->userdata('id_funcionario');
         }
     });
 
-    $("#enviar").click(function(){
+    function limparCampos(){
+      $("#mensagem").code("");
+      $("#newstitulo").val("");
+      $("#categoria").val("").change();
+      $("#fonte").val("");
+    }
 
+    $("#formnews").submit(function(e){
+      e.preventDefault();
       $("#loadmsg").show();
-      var mensagem = $("#mensagem");
-      var titulo = $("#newstitulo").val();
-      var categoria = $("#categoria").val();
-      var urlimg = $("#url").val();
-      var fonte = $("#fonte").val();
-      
+      var data = new FormData($("#formnews")[0] );
+      data.append("imagem", $("#imagem") );
+      data.append("mensagem", $("#noticia_descricao").code() );
       $.ajax({
+        data: data,
         type: "POST",
         url: '<?php echo base_url("home/salvarNewsletter");?>',
-        dataType : 'html',
-        secureuri:false,
         cache: false,
-        data:{
-          mensagem: mensagem.code(),
-          titulo: titulo, 
-          categoria: categoria,
-          urlimg: urlimg,
-          fonte: fonte
-        },                  
-        success: function(msg){
+        contentType: false,
+        processData: false,
+        success: function(msg) {
 
           if(msg === 'erro'){
             $(".alert").addClass("alert-danger")
@@ -173,13 +188,12 @@ $iduser = $this->session->userdata('id_funcionario');
           }else{
 
             $(".alert").addClass("alert-success")
-            .html("Newsletter enviada com sucesso")
+            .html("Notíca enviada com sucesso")
             .slideDown("slow");
-            $(".alert").delay( 3500 ).fadeOut(500);
+            $(".alert").delay( 2500 ).fadeOut(500);
             $("#loadmsg").hide();
           }
-
-        } 
+        }
       });
     });
 
@@ -216,20 +230,17 @@ $iduser = $this->session->userdata('id_funcionario');
 
       var id = $(this).data("id");
       $("#exclembrete").data("id", id);
-
     });
 
     $("#nao").click(function(){
 
-      $("#exclembrete").data("id", "");
-      
+      $("#exclembrete").data("id", ""); 
     });
-
    
     $(".hcmeditor").summernote({height: 200,
       toolbar: [
       ["style", ["bold", "italic", "underline", "clear"]],
-      ["insert",["link","picture","video"]]                                                          
+      ["insert",["link","picture"]]                                                          
       ],
       onImageUpload: function(files, editor, welEditable) {
                 sendFile(files[0], editor, welEditable);
@@ -249,10 +260,10 @@ $iduser = $this->session->userdata('id_funcionario');
                 success: function(url) {
        
                     editor.insertImage(welEditable, url);
-                    $("#url").val(url);
+                    //$("#url").val(url);
                 }
             });
-        }
+    }
 
 
   </script>
