@@ -58,9 +58,10 @@ public function index(){
     $dados['vencimentos'] = $this->db->get('funcionario')->result();
 
     //Referente ao grafico charts - salario por sexo e idade
-    $this->db->select('fun_cargo, fun_idfuncionario, fun_foto, tipodesexo.descricao as sexo, fun_nome, contr_centrocusto,contr_departamento,contr_data_admissao,FLOOR(DATEDIFF(DAY, fun_datanascimento, getdate()) / 365.25) AS idadefun,sal_valor');
+    $this->db->select('fun_cargo, fun_idfuncionario, fun_foto, tipodesexo.descricao as sexo, fun_nome, empresa.em_nome,contr_centrocusto,contr_departamento,contr_data_admissao,FLOOR(DATEDIFF(DAY, fun_datanascimento, getdate()) / 365.25) AS idadefun,sal_valor');
     $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
     $this->db->join("tipodesexo", "tipSex = fun_sexo");
+    $this->db->join("empresa", "fun_idempresa = em_idempresa");
     $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
     $this->db->join("salarios", "sal_idfuncionario = fun_idfuncionario",'left');
     $this->db->where("chefiasubordinados.chefe_id", $iduser);

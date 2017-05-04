@@ -6,7 +6,7 @@
 <!-- menu dashboard -->
 <li class="<?php echo ($menupriativo=="painel")? "active":"" ?>" >
   <a href="<?php echo base_url('rh') ?>">
-    <span class="fa fa-desktop"></span><span class="xn-text">Dashboard</span>
+    <span class="fa fa-home"></span><span class="xn-text">Início</span>
   </a>               
 </li>
 

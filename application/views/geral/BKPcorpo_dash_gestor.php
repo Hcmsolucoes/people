@@ -1,8 +1,5 @@
 <?php
 
-$arr = array();
-$esc = "";
-
 foreach ($escolaridade as $key => $value) {  
 
   if (!isset($arr[$value->escolaridade_descricao])) {
@@ -17,7 +14,7 @@ foreach ($escolaridade as $key => $value) {
   $arr[$value->escolaridade_descricao]["ids"][]=$value->fun_idfuncionario;
 
 }
-
+$esc = "";
 foreach ($arr as $key => $value) {
 
   $ids="";
@@ -48,10 +45,10 @@ foreach ($situacao as $key => $value) {
 
 //Monta array salario por sexo
 $arr_salariosexo = array();
-$arr_salariosexo = "['Nome', 'Sexo', 'Idade', 'Salario','Cargo','Centro de Custo','Departamento','Admissão','Empresa'],";
+$arr_salariosexo = "['Nome', 'Sexo', 'Idade', 'Salario','Cargo','Centro de Custo','Departamento','Data Admissão'],";
 foreach ($salariosexo as $key => $value) {  
 
-$arr_salariosexo .= "['".$value->fun_nome."','".$value->sexo."',".$value->idadefun.",".$value->sal_valor.",'".$value->fun_cargo."','".$value->contr_centrocusto."','".$value->contr_departamento."','".date("d/m/Y",strtotime(str_replace('-','/', $value->contr_data_admissao)))."','".$value->em_nome."'],";
+$arr_salariosexo .= "['".$value->fun_nome."','".$value->sexo."',".$value->idadefun.",".$value->sal_valor.",'".$value->fun_cargo."','".$value->contr_centrocusto."','".$value->contr_departamento."','".date("d/m/Y",strtotime(str_replace('-','/', $value->contr_data_admissao)))."'],";
 
 //  if (!isset($arr[$value->escolaridade_descricao])) {
 
@@ -246,67 +243,7 @@ $arr_salariosexo .= "['".$value->fun_nome."','".$value->sexo."',".$value->idadef
   <div class="tab-content">
 
         <div role="tabpanel" class="tab-pane active" id="botao3">
-  
-<!-- Turn Over Admissões e Demisssão-->
-
-     <div class="col-md-12">
-            <div class="panel panel-default" style="float: left;">
-                <div class="panel-heading">
-
-                    <div class="panel-title-box">
-                    <h3 style="text-align:center;">Turnover - Minha Equipe
-                      </h3>
-                     </div>                                   
-                   <ul class="panel-controls" style="margin-top: 2px;">
-                     <!--<li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>-->
-                     <li><a href="#" class="panel-fullscreen3" role="button" title=""><i class="glyphicon glyphicon-resize-full"></i></a></li>
-                     <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
-                      <ul class="dropdown-menu">
-                        <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
-                        <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
-                      </ul>                                        
-                    </li>                                        
-                  </ul>     
-                </div>
-
-                <div class="panel-body">
-
-                 <!-- CORPO DO DASHBOARD -->                          
-                 <div id="dashboard_turnover" >
-                  <!-- <div>
-                      <h5>5-digit values, step 1000</h5>
-                      <input class="knob" data-width="150" data-min="0" data-displayPrevious=true data-max="400" data-step="45" value="45" data-fgColor="#81C500"/>                                         
-                   </div> -->
-                 <div class="table-responsive"  width="100%">
-                    <table class="table table-bordered table-striped table-actions">
-                          <tr>                         
-                          <th width="20%"><div id="turnover_emp" ></div></th>
-                          <th width="30%"><div id="turnover_ccu" ></div></th>
-                          <th width="20%"><div id="turnover_ano"> </div></th>
-                          <th width="50%"><div id="turnover_mes"> </div></th>
-                         <!-- <th width="10%"><div>  <label>Mostrar Tabela</label>
-                                                 <label class="switch"><input type="checkbox" class="check" /><span></span></label> </div></th> -->
-                          </tr>                                             
-                    
-                       <tr>
-                        <td width="60%" colspan="2"><div id="chart_turnover" style="padding-top: 15px"></div></td>
-                        <td width="40%" colspan="2">
-                       <div id="table_turnover" style="padding-top: 20px"></div></td>
-                        </tr>
-                      <tr>
-
-                      </tr>   
-                    </table>   
-                  </div>
-                 </div>
-                </div>
-            
-            </div>
-        </div>
-
-  <!-- Turn Over -->
+                  <!-- Turn Over -->
       <div class="col-md-3">
       <div class="widget widget-default widget-carousel">
         <div class="owl" id="owl-example">
@@ -377,65 +314,6 @@ $mes_ano = $mes."/".date("Y");
         </div><!--tab botao3-->
 
         <div role="tabpanel" class="tab-pane active" id="botao2">
-
-        <div class="col-md-12">
-            <div class="panel panel-default" style="float: left;">
-                <div class="panel-heading">
-
-                    <div class="panel-title-box">
-                    <h3 style="text-align:center;">Headcount - Perfil Salarial
-                      </h3>
-                     </div>                                   
-                   <ul class="panel-controls" style="margin-top: 2px;">
-                     <!--<li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>-->
-                     <li><a href="#" class="panel-fullscreen3" role="button" title=""><i class="glyphicon glyphicon-resize-full"></i></a></li>
-                     <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
-                    <li class="dropdown">
-                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
-                      <ul class="dropdown-menu">
-                        <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
-                        <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
-                      </ul>                                        
-                    </li>                                        
-                  </ul>     
-                </div>
-
-                <div class="panel-body">
-
-                 <!-- CORPO DO DASHBOARD -->                          
-                 <div id="dashboard_div" >
-                  <!-- <div>
-                      <h5>5-digit values, step 1000</h5>
-                      <input class="knob" data-width="150" data-min="0" data-displayPrevious=true data-max="400" data-step="45" value="45" data-fgColor="#81C500"/>                                         
-                   </div> -->
-                 <div class="table-responsive"  width="100%">
-                    <table class="table table-bordered table-striped table-actions">
-                          <tr>                         
-                          <th width="20%"><div id="categoryPicker_emp" ></div></th>
-                          <th width="30%"><div id="categoryPicker_ccu" ></div></th>
-                          <th width="20%"><div id="categoryPicker_div"> </div></th>
-                          <th width="40%"><div id="slider_div">         </div></th>
-                         <!-- <th width="10%"><div>  <label>Mostrar Tabela</label>
-                                                 <label class="switch"><input type="checkbox" class="check" /><span></span></label> </div></th> -->
-                          </tr>                                             
-                    
-                       <tr>
-                        <td width="60%" colspan="2"><div id="chart_div" style="padding-top: 15px"></div></td>
-                        <td width="40%" colspan="2">
-                       <div class="ttrshow" id="table_div" style="padding-top: 20px"></div></td>
-                        </tr>
-                      <tr>
-
-                      </tr>   
-                    </table>   
-                  </div>
-                 </div>
-                </div>
-            
-            </div>
-        </div>
-
-
       <div class="col-md-4">
       <!-- START USERS ACTIVITY BLOCK -->
       <div class="panel panel-default">
@@ -500,7 +378,7 @@ $mes_ano = $mes."/".date("Y");
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <div class="panel-title-box">
-                        <h3>Horas Trabalhadas x HExtras</h3>
+                        <h3>Horas Trabalhadas x Horas Extras</h3>
                         <span>Comparativo de Minha Equipe</span>
                     </div>
                     <ul class="panel-controls" style="margin-top: 2px;">
@@ -523,7 +401,45 @@ $mes_ano = $mes."/".date("Y");
 
         </div>      
 
-
+     
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title-box" style="text-align:center;" ">
+                      <h3>Sálario por Sexo e Idade</h3>
+                     </div>                                    
+                   <ul class="panel-controls" style="margin-top: 2px;">
+                     <!--<li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>-->
+                     <li><a href="#" id="panel-fullscreen2" role="button" title=""><i class="glyphicon glyphicon-resize-full"></i></a></li>
+                     <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
+                      <ul class="dropdown-menu">
+                        <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                        <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                      </ul>                                        
+                    </li>                                        
+                  </ul>     
+                </div>
+                <div class="panel-body">
+                 <!-- CORPO DO DASHBOARD -->                          
+                 <div id="dashboard_div" >
+                 
+                       <div id="slider_div" style="padding-left: 15px;"> </div>
+                       <div id="categoryPicker_div" style="padding-left: 15px;"></div><br>
+                       <div id="categoryPicker_ccu" style="padding-left: 15px;"></div>
+                       <label class="col-md-2 control-label">Mostrar Tabela</label>
+                       <label class="switch">
+                          <input type="checkbox" class="check" />
+                            <span></span>
+                        </label>
+                       <div id="chart_div" style="padding-top: 15px"></div>
+                      <div class="trshow" id="table_div" style="padding-top: 20px"></div>
+         
+                </div>
+                </div>
+            </div>
+        </div>
 
      <!-- END USERS ACTIVITY BLOCK -->      
 
@@ -1005,8 +921,7 @@ $("#btnanalise").click(function(e){
     
   //GOOGLE CHARTS SEXO E IDADE
    google.charts.load('current', {'packages':['corechart', 'table', 'gauge', 'controls']});
-   google.charts.setOnLoadCallback(drawMainDashboard);
-   google.charts.setOnLoadCallback(drawMainTurnover);
+  google.charts.setOnLoadCallback(drawMainDashboard);
  
 //bind a resizing function to the window
 $(window).resize(function() {
@@ -1019,28 +934,22 @@ $(window).resize(function() {
 
 $(window).bind('resizeEnd', function() {
     drawMainDashboard();
-    drawMainTurnover();
 });
 
   function drawMainDashboard(operacao) {
-
-
     var dashboard = new google.visualization.Dashboard(
         document.getElementById('dashboard_div'));
     var slider = new google.visualization.ControlWrapper({
       'controlType': 'NumberRangeFilter',
       'containerId': 'slider_div',
-      'state': {'lowValue': 1, 'highValue': 80},
+      'state': {'lowValue': 1, 'highValue': 56},
       'options': {
         'filterColumnIndex': 2,
         'ui': {
-          'labelStacking': 'horizontal',
+          'labelStacking': 'vertical',
           'cssClass': 'sliderClass',
-          'label': 'Idade:',
-           'format': { 'fractionDigits':'0',
-                            'groupingSymbol':'' }
-        },
-        'state': {'lowValue': 1, 'highValue': 80} 
+          'label': 'Filtro Idade:'
+        }
       }
 
     });
@@ -1050,29 +959,12 @@ $(window).bind('resizeEnd', function() {
       'options': {
         'filterColumnIndex': 1,
         'ui': {
-          'labelStacking': 'horizontal',
+          'labelStacking': 'vertical',
           'label': 'Sexo:',
           'allowTyping': false,
           'allowMultiple': false,
          // 'selectedValuesLayout': 'belowStacked'
-          'caption' : 'Selecione'
-        }
-      }
-    });
-
-     var categoryPickeremp = new google.visualization.ControlWrapper({
-      'controlType': 'CategoryFilter',
-      'containerId': 'categoryPicker_emp',
-      'options': {
-        //'filterColumnIndex': 8,
-        'filterColumnLabel': 'Empresa',
-        'ui': {
-          'labelStacking': 'horizontal',
-          'label': 'Empresa:',
-          'allowTyping': false,
-          'allowMultiple': true,
-          'selectedValuesLayout': 'belowWrapping',
-          'caption' : 'Selecione'
+          'caption' : 'Escolha um sexo'
         }
       }
     });
@@ -1081,15 +973,14 @@ $(window).bind('resizeEnd', function() {
       'controlType': 'CategoryFilter',
       'containerId': 'categoryPicker_ccu',
       'options': {
-       // 'filterColumnIndex': 5,
-       'filterColumnLabel': 'Centro de Custo',
+        'filterColumnIndex': 5,
         'ui': {
-          'labelStacking': 'horizontal',
+          'labelStacking': 'vertical',
           'label': 'Centro de Custo:',
           'allowTyping': false,
           'allowMultiple': true,
-          'selectedValuesLayout': 'aside',
-          'caption' : 'Selecione'
+          'selectedValuesLayout': 'belowStacked',
+          'caption' : 'Escolha Centro de custos'
         }
       }
     });
@@ -1099,10 +990,9 @@ $(window).bind('resizeEnd', function() {
       'options': {
         'width': '100%',
         'height': 250,
-        //'legend': 'none',
-         'is3D': true,
-        'chartArea': {'left': 20, 'top': 30, 'right': 0, 'bottom': 0,width:'100%'},
-        'pieSliceText': 'percentage'
+        'legend': 'none',
+        'chartArea': {'left': 10, 'top': 10, 'right': 0, 'bottom': 0},
+        'pieSliceText': 'label'
       },
       'view': {'columns': [0, 3]}
     });
@@ -1123,13 +1013,13 @@ $(window).bind('resizeEnd', function() {
       containerId: 'table_div',
       options: {allowHtml: true,
         width: '100%',
-        height: '50%',
+        height: '650',
         page: 'enable',
         cssClassNames: cssClassNames,
-        pageSize: 5
+        pageSize: 20
       },
       view: {
-        columns: [ 0,4,5,7,2,3]
+        columns: [ 0,4,5,6,7,2,3]
       }
 
     });
@@ -1144,17 +1034,11 @@ $(window).bind('resizeEnd', function() {
 
    // dashboard.bind([slider, categoryPicker], [pie, table]);
 
-    dashboard.bind(categoryPickeremp,categoryPickerccu);
-    dashboard.bind(categoryPickerccu,categoryPicker);
-    dashboard.bind(categoryPicker,slider);
-    dashboard.bind(slider, [pie, table]);
-   // dashboard.bind(categoryPickeremp, pie);
+    dashboard.bind([slider, categoryPicker,categoryPickerccu], [pie, table]);
  
   if(operacao==2){
     //$(".trshow").show();
-    // pie.setOptions({'width': '100%', 'height':'100%', 'is3D': true,
-     //   'chartArea': {'left': 20, 'top': 30, 'right': 0, 'bottom': 0,width:'100%'},
-      //  'pieSliceText': 'percentage'});
+     pie.setOptions({'width': '100%', 'height':'100%'});
     // table.setOptions({'width': 300, 'height':200});
 
      }
@@ -1167,7 +1051,7 @@ $(window).bind('resizeEnd', function() {
 
 $(document).ready(function () {
     //Toggle fullscreen
-    $(".panel-fullscreen3").click(function (e) {
+    $("#panel-fullscreen2").click(function (e) {
         e.preventDefault();
         
         var $this = $(this);
@@ -1175,13 +1059,13 @@ $(document).ready(function () {
         if ($this.children('i').hasClass('glyphicon-resize-full'))
         {
             // $("#trshow").show();
-          //  drawMainDashboard(2);
+            drawMainDashboard(2);
             $this.children('i').removeClass('glyphicon-resize-full');
             $this.children('i').addClass('glyphicon-resize-small');
         }
         else if ($this.children('i').hasClass('glyphicon-resize-small'))
         {
-           // drawMainDashboard();
+            drawMainDashboard();
             $this.children('i').removeClass('glyphicon-resize-small');
             $this.children('i').addClass('glyphicon-resize-full');
           //  $("#trshow").hide();
@@ -1236,208 +1120,5 @@ function sendFile(file, editor, welEditable) {
               });
 }
 
-function drawMainTurnover() {
-    var dashboard2 = new google.visualization.Dashboard(
-        document.getElementById('dashboard_turnover'));
-
- 
-    var data = new google.visualization.DataTable();
-    data.addColumn('string', 'Ano');
-    data.addColumn('date', 'Mes');  
-    data.addColumn('number', 'Admissões');
-    data.addColumn('number', 'Demissões');
-    data.addColumn('string', 'Movimentação');
-    data.addColumn('string', 'Colaborador');
-    data.addColumn('string', 'Cargo');
-    data.addColumn('string', 'Admissão');
-    data.addColumn('string', 'Demissão');
-    data.addColumn('string', 'Empresa');
-    data.addColumn('string', 'Centro de Custo');
-    data.addRows([
-['2016',new Date('2016-09'),1,      0,'Admissao', 'Gilberto Alves','Assistente administrativo','01/10/2016','','HCM Consultoria','administrativo'],
-['2016',new Date('2016-10'),5,      1,'Admissao', 'Ronaldo Alves','Assistente administrativo','01/10/2016','','HCM Consultoria','administrativo'],
-['2016',new Date('2016-10'),5,      1,'Admissao', 'Ronaldo lima ','Assistente administrativo','01/10/2016','','HCM Consultoria','Producao'],
-['2016',new Date('2016-10'),5,      1,'Admissao', 'Alberto Rogerio ','Assistente Producao','01/10/2016','','HCM Consultoria','administrativo'],
-['2016',new Date('2016-10'),5,      1,'Admissao', 'Carlos Peixoto ','Gerente','01/10/2016','','HCM Consultoria','operacao'],
-['2016',new Date('2016-10'),5,      1,'Admissao', 'Roberta Alves','Gerente RH','01/10/2016','','HCM Consultoria','administrativo'],
-['2016',new Date('2016-10'),5,      1,'Admissao', 'Lucio Abraão','Gerente Adm','01/10/2014','20/10/2016','HCM Consultoria','administrativo'],
-['2016',new Date('2016-11'),2,      1,'Admissao', 'Carlos Alves','Assistente administrativo','01/11/2016','','HCM Consultoria','operacao'],
-['2016',new Date('2016/11/01'),2,      1,'Admissao', 'Roberto lima ','Assistente administrativo','01/11/2016','','HCM Consultoria','administrativo'],
-['2016',new Date('2016/11/01'),2,      1,'Demissão', 'Alberto Rogerio ','Assistente Producao','01/10/2014','10/11/2016','HCM Consultoria','operacao'],
-['2016',new Date('2016/12/01'),0,      1,'Demissão', 'Helenice Zani','Gerente','01/10/2012','21/12/2012','HCM Processamento Folha','administrativo'],
-['2017',new Date('2017/01/01'),2,      4,'Admissao', 'Roberta fatima','Auxiliar de Prod','05/01/2017','','HCM Processamento Folha','administrativo'],
-['2017',new Date('2017/01/01'),2,      4,'Admissao', 'Roberto alelo','Auxiliar de Prod','05/01/2017','','HCM Processamento Folha','administrativo'],
-['2017',new Date('2017/01/01'),2,      4,'Demissão', 'Marcelo peixoto ','Gerente Regional','01/10/2016','10/01/2017','HCM Consultoria','administrativo'],
-['2017',new Date('2017/01/01'),2,      4,'Demissão', 'Marcela Alves','Gerente RH','01/09/2016','10/01/2017','HCM Processamento Folha','operacao'],
-['2017',new Date('2017/01/01'),2,      4,'Demissão', 'Roberta lucia','Gerente','01/10/2016','10/01/2017','HCM Processamento Folha','operacao'],
-['2017',new Date('2017/01/01'),2,      4,'Demissão', 'Yuri Alves','Auxiliar administrativo','01/10/2013','10/01/2017','HCM Consultoria','administrativo'],
-['2017',new Date('2017/02/01'),1,      1,'Admissao', 'Roberta Zani','Gerente RH','01/02/2017','','HCM Consultoria','administrativo'],
-['2017',new Date('2017/02/01'),1,      1,'Demissão', 'Adalberto Alves','Auxiliar administrativo','01/10/2013','10/02/2017','HCM Consultoria','administrativo'],
-['2017',new Date('2017/03/01'),0,      1,'Demissão', 'Carlinho Alves','Auxiliar administrativo','01/10/2013','10/02/2017','HCM Consultoria','administrativo'],
-
-    ]);
-
-  var categoryPicker2 = new google.visualization.ControlWrapper({
-        controlType: 'DateRangeFilter',
-        containerId: 'turnover_mes',
-        options: {
-            filterColumnLabel: 'Mes',
-            ui: {
-                labelStacking: 'horizontal',
-                 'format': { 'pattern': 'MM/yyyy' },
-                allowTyping: false,
-                allowMultiple: false,
-                height: 100
-            }
-        },
-        //state: {
-          //  selectedValues: ['01/2017']
-        //}
-    });
-
-    var categoryPickeremp1 = new google.visualization.ControlWrapper({
-      'controlType': 'CategoryFilter',
-      'containerId': 'turnover_emp',
-      'options': {
-        //'filterColumnIndex': 8,
-        'filterColumnLabel': 'Empresa',
-        'ui': {
-          'labelStacking': 'horizontal',
-          'label': 'Empresa:',
-          'allowTyping': false,
-          'allowMultiple': true,
-          'selectedValuesLayout': 'belowWrapping',
-          'caption' : 'Selecione'
-        }
-      }
-    });
-
-     var categoryPickerccu1 = new google.visualization.ControlWrapper({
-      'controlType': 'CategoryFilter',
-      'containerId': 'turnover_ccu',
-      'options': {
-       // 'filterColumnIndex': 5,
-       'filterColumnLabel': 'Centro de Custo',
-        'ui': {
-          'labelStacking': 'horizontal',
-          'label': 'Centro de Custo:',
-          'allowTyping': false,
-          'allowMultiple': true,
-          'selectedValuesLayout': 'aside',
-          'caption' : 'Selecione'
-        }
-      }
-    }); 
-
-  var categoryPickerano1 = new google.visualization.ControlWrapper({
-      'controlType': 'CategoryFilter',
-      'containerId': 'turnover_ano',
-      'options': {
-       // 'filterColumnIndex': 5,
-       'filterColumnLabel': 'Ano',
-        'ui': {
-          'labelStacking': 'horizontal',
-          'label': 'Ano:',
-          'allowTyping': false,
-          'allowMultiple': false,
-        //  'selectedValuesLayout': 'aside',
-          'caption' : 'Selecione'
-        }
-      }
-    });      
-
-    var dateTicks = [];
-    for (var m = 1; m <= 12; m++)
-        dateTicks.push(new Date('2016-' + m));
-
-    var ticks = [];
-
-    for (var i = 0; i < data.getNumberOfRows(); i++) {
-
-      ticks.push(data.getValue(i, 1));
-
-    }
-
-    // Define a Bar chart
-    var chart1 = new google.visualization.ChartWrapper({
-        chartType: 'AreaChart',
-        containerId: 'chart_turnover',
-        options: {
-            focusTarget: 'category',
-            width: '100%',
-           height: 400,
-            vAxis: {
-                textStyle: {
-                    fontSize: 12,
-                    fontName: 'Arial'
-                },
-                viewWindow: {
-                    max: 30
-                }
-               // viewWindowMode: 'maximized'
-
-            },
-            hAxis: {
-
-               format: 'MM/yyyy',
-               // ticks: ticks
-                ticks: [new Date(2016,09,01),new Date(2016,10,01), new Date(2016,11,01),new Date(2016,12,01), new Date(2017,01,01),new Date(2017,02,01),new Date(2017,03,01)] 
-              
-            },
-
-            animation: {
-                duration: 1000,
-                easing: 'out'
-            },
-           // legend: 'none',
-            title: 'Turnover (Admissões, Demissões)'
-        },
-        // Instruct the barchart to use columns 2, 3, 4 and 5
-        // from the 'data' DataTable.
-        view: {
-            columns: [1, 2,3]
-        }
-    });
-
-  var cssClassNames = {
-              'headerRow': 'cssHeaderRow',
-              'tableRow': 'cssTableRow',
-              'oddTableRow': 'cssOddTableRow',
-              'selectedTableRow': 'cssSelectedTableRow',
-              'hoverTableRow': 'cssHoverTableRow',
-              'headerCell': 'cssHeaderCell',
-              'tableCell': 'cssTableCell',
-              'rowNumberCell': 'cssRowNumberCell'
-          };
-
-    var table1 = new google.visualization.ChartWrapper({
-      chartType: 'Table',
-      containerId: 'table_turnover',
-      options: {allowHtml: true,
-        width: '100%',
-        height: '50%',
-        page: 'enable',
-        cssClassNames: cssClassNames,
-        pageSize: 5
-      },
-      view: {
-        columns: [10,4,5,6,7,8]
-      }
-
-    });
-
-       var formatter1 = new google.visualization.DateFormat({pattern: 'MM/yyyy'});
-       formatter1.format(data,1);
-
-    dashboard2.bind(categoryPickeremp1,categoryPickerccu1);
-    dashboard2.bind(categoryPickerccu1,categoryPickerano1);
-    dashboard2.bind(categoryPickerano1,categoryPicker2);
-    dashboard2.bind(categoryPicker2, [chart1, table1]);
-    dashboard2.draw(data); 
-
-
-}    
 
 </script>
-<script type="text/javascript" src="js/plugins/rangeslider/jQAllRangeSliders-min.js"></script>       
-<script type="text/javascript" src="js/plugins/knob/jquery.knob.min.js"></script>

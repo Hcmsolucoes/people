@@ -649,9 +649,9 @@ $(document).ready(function(){
     Morris.Donut({
         element: 'dashboard-donut-1',
         data: [
-            {label: "Documentos", value: 03},
-            {label: "Dados Perfil", value: 15},
-            {label: "Aprovações", value: 08}
+            {label: "Documentos", value: 07},
+            {label: "Dados Perfil", value: 09},
+            {label: "Cursos", value: 02}
         ],
         colors: ['#33414E', '#1caf9a', '#FEA223'],
         resize: true

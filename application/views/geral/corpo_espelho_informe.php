@@ -5,17 +5,16 @@
     list($ano, $mes, $dia ) = $data;  
     $opts .= "<option value='".$value->inf_idinforme."'>".$ano."</option>";
     }
-
-
  ?>
 
 <div class="content-frame-top">                        
 <div class="page-title">                    
-    <h2><span class="fa fa-tachometer"></span> Informe de Rendimentos</h2>
+    <h3><span class="fa fa-tachometer"></span> Informe de Rendimentos</h3>
     <img id="loadinforme" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Pesquisando...">
-</div>                                      
+</div>  
+
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-body">
                 <p>Use a pesquisa para localizar seu informe de rendimento</p>
@@ -27,7 +26,7 @@
                                     <span class="fa fa-search" id="lupa"></span>
                                 </div>
                                     <select id="informeespelho" name="informeespelho" class="form-control cinza">
-                                      <option>Selecione o ano</option>
+                                      <option>Selecione o ano do informe rendimento</option>
                                           <?php echo $opts; ?>
                                     </select>
                                 <div class="input-group-btn">

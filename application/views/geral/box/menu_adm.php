@@ -1,6 +1,6 @@
 <li><a href="<?php echo base_url('admin') ?>">
-  <span class="fa fa-desktop"></span>
-  <span class="xn-text">Dashboard</span></a>
+  <span class="fa fa-home"></span>
+  <span class="xn-text">Início</span></a>
 </li>
 
 <li><a href="<?php echo base_url('admin/chefia') ?>">

@@ -1,5 +1,5 @@
 <div class="page-title">                    
-    <h3><span class="fa fa-money"></span> Demonstrativos de Pagamento</h3>
+    <h3><span class="fa fa-money"></span> Demonstrativo de Pagamento</h3>
     <img id="load" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Pesquisando...">
 </div> 
 
@@ -69,7 +69,7 @@
     <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <p>Use a pesquisa para localizar seus demonstrativos de pagamentos</p>
+                <p>Use a pesquisa para localizar seu demonstrativo de pagamento</p>
                 <form class="form-horizontal">
                     <div class="form-group">
                         <div class="col-md-12">

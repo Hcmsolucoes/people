@@ -5,20 +5,19 @@
     list($ano, $mes, $dia ) = $data;  
     $opts .= "<option value='".$value->rec_idferias."'>".$mes.'/'.$ano."</option>";
     }
-
-
  ?>
 
 <div class="content-frame-top">                        
 <div class="page-title">                    
-    <h2><span class="fa fa-plane"></span> Recibo de férias</h2>
+    <h3><span class="fa fa-paper-plane"></span> Recibo de Férias</h3>
     <img id="loadrecibo" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Pesquisando...">
-</div>                                      
+</div>   
+
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-body">
-                <p>Use a pesquisa para localizar seu Recibo de férias</p>
+                <p>Use a pesquisa para localizar seu recibo de férias</p>
                 <form id="formrecibo" class="form-horizontal" method="post" action="<?php echo base_url('perfil/soapferias') ?>">
                     <div class="form-group">
                         <div class="col-md-12">
@@ -27,7 +26,7 @@
                                     <span class="fa fa-search" id="lupa"></span>
                                 </div>
                                     <select id="reciboespelho" name="reciboespelho" class="form-control cinza">
-                                      <option>Selecione a competência</option>
+                                      <option>Selecione a competência do recibo</option>
                                           <?php echo $opts; ?>
                                     </select>
                                 <div class="input-group-btn">

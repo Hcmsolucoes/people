@@ -12,11 +12,12 @@
 
 <div class="content-frame-top">                        
 <div class="page-title">                    
-    <h2><span class="fa fa-bar-chart-o"></span> Espelho do Ponto</h2>
+    <h3><span class="fa fa-clock-o"></span> Espelho do Ponto</h3>
     <img id="loadespelho" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Pesquisando...">
-</div>                                      
+</div>  
+
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="panel panel-default">
             <div class="panel-body">
                 <p>Use a pesquisa para localizar seu espelho do ponto</p>
@@ -28,7 +29,7 @@
                                     <span class="fa fa-search" id="lupa"></span>
                                 </div>
                                     <select id="calcespelho" name="calcespelho" class="form-control cinza">
-                                      <option>Selecione a competência</option>
+                                      <option>Selecione a competência do ponto</option>
                                           <?php echo $opts; ?>
                                     </select>
                                 <div class="input-group-btn">

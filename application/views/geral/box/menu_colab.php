@@ -12,7 +12,7 @@ $iduser = $this->session->userdata('id_funcionario');
  <!-- menu dashboard -->
 <li class="<?php echo ($menupriativo=="painel")? "active":"" ?>" >
 	<a href="<?php echo base_url('home') ?>">
-        <span class="fa fa-desktop"></span><span class="xn-text">Dashboard</span>
+        <span class="fa fa-home"></span><span class="xn-text">Início</span>
     </a>               
 </li>    
 
@@ -60,11 +60,15 @@ $iduser = $this->session->userdata('id_funcionario');
             <span class="xn-text">Programação de Férias</span></a>
         </li>
 		<?php } } ?>
+		
+		<!--
 		<li><a href="#">
             <span class="fa fa-retweet"></span>
             <span class="xn-text">Tarefas</span></a>
         </li>
-    </ul>
+        -->
+		
+	</ul>
 </li> 
 
 <!-- menu feedback -->
