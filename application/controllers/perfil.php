@@ -89,8 +89,9 @@ class Perfil extends CI_Controller {
         $dados['histescalas'] = $this->db->get('tabelaescala')->result();
 
 
-        $this->db->select('historicotreinamento.*, nomecurso ');
+        $this->db->select('historicotreinamento.*, nomecurso, descricao_status_treinamento ');
         $this->db->join('cursos', 'hist_idcurso = idcurso');
+        $this->db->join('treinamento_status', 'hist_situacao = id_status_treinamento');
         $this->db->where('hist_idfuncionario',$iduser);      
         $this->db->order_by("hist_inicio", "desc");
         $dados['histrein'] = $this->db->get('historicotreinamento')->result();
@@ -206,16 +207,7 @@ class Perfil extends CI_Controller {
 
             $this->db->where('ema_idfuncionario',$iduser);
             $dados['emails'] = $this->db->get('emails')->result();
-                /*
-                $this->db->select('*');
-                $this->db->from('endereco');
-                $this->db->join('funcionario', 'endereco.end_idendereco = funcionario.fun_idendereco'); 
-                $this->db->join('estado', 'endereco.end_idestado = estado.est_idestado');  
-                $this->db->join('cidade', 'endereco.end_idcidade = cidade.cid_idcidade');  
-                $this->db->join('bairro', 'endereco.end_idbairro = bairro.bair_idbairro'); 
-                $this->db->where('fun_idfuncionario',$iduser);
-                $dados['endereco'] = $this->db->get()->result();*/
-
+           
                 $this->db->where("idempresa", $idempresa);
                 $dados['parametros'] = $this->db->get("parametros")->row();
 
@@ -232,6 +224,7 @@ class Perfil extends CI_Controller {
                 $this->db->order_by("feed_idfeedback", "desc");
                 $dados['feedbacks'] = $this->db->get("feedbacks")->result();
                 foreach ($dados['feedbacks'] as $key => $value) {
+                    $this->db->join('feedbacks_pergunta', 'id_pergunta = fk_pergunta_feedback');
                     $this->db->where('fk_feedback', $value->feed_idfeedback);
                     $dados['competencias'][$value->feed_idfeedback] = $this->db->get("feedbacks_competencia")->result();
                 }
@@ -269,19 +262,6 @@ class Perfil extends CI_Controller {
             $dados['tipodecalculo'] = $this->db->get('tipodecalculo')->result();             
             $this->session->set_userdata('perfil_atual', '1');
 
-            /*
-			$feeds = $this->db->get('feedbacks')->num_rows();
-            $dados['quantgeral'] = $feeds;
-
-            $idcli = $this->session->userdata('idcliente');
-            $this->db->select('tema_cor, tema_fundo');
-            $this->db->where('fun_idfuncionario',$iduser);
-            $dados['tema'] = $this->db->get('funcionario')->result();
-            $dados['perfil'] = $this->session->userdata('perfil');
-
-            $dados['breadcrumb'] = array('Colaborador'=>base_url().'home', "Holerith"=>"#" );
-			 */
-            //$this->load->view('/geral/html_header',$dados);
             header ('Content-type: text/html; charset=ISO-8859-1');
             $this->load->view('/geral/corpo_perfil_contato_demonstrativo',$dados);
             //$this->load->view('/geral/footer'); 
@@ -903,6 +883,19 @@ class Perfil extends CI_Controller {
 
       header ('Content-type: text/html; charset=ISO-8859-1');
       $this->load->view('/geral/edit/modal_funcionario',$dados);
+    }
+
+    public function linhahistorico(){
+
+        $iduser = $this->input->post('colab');
+        $idempresa = $this->session->userdata('idempresa');
+
+        $this->db->where('idfuncionario', $iduser);
+        $this->db->order_by("datainicio", "desc");
+        $dados['lista'] = $this->db->get('historicogeral')->result();
+        header ('Content-type: text/html; charset=ISO-8859-1');
+        $this->load->view('/geral/corpo_equipe_linha', $dados);
+
     }
 
 }

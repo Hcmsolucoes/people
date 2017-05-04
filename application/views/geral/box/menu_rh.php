@@ -72,6 +72,6 @@
 
 <li class="<?php echo ($menupriativo=="newsletter")? "active":"" ?>">
   <a href="<?php echo base_url('home/newsletter') ?>">
-    <span class="fa fa-rss"></span> <span class="xn-text">Newsletter</span>
+    <span class="fa fa-rss"></span> <span class="xn-text">Boletim Informativo</span>
   </a>
 </li>

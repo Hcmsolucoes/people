@@ -883,17 +883,6 @@
 								$inicio = $this->Log->alteradata1($value->hist_inicio); 
 								$fim = $this->Log->alteradata1($value->hist_final);
 								$horas = $this->util->minutosToHoras($value->hist_cargahoraria);
-								switch ($value->hist_situacao) {
-									case '1':$sit = "Andamento"; break;
-									case '2':$sit = "Completo"; break;
-									case '4':$sit = "Desistente"; break;
-									case '5':$sit = "Suspenso Temporariamente"; break;
-									case '7':$sit = "Reprovado Média"; break;
-									case '8':$sit = "Reprovado Frequência"; break;
-									case '9':$sit = "Transferido"; break;
-									case '10':$sit = "Interrompido"; break;
-									default: $sit = "Andamento"; break;
-								}
 								
 							?>
 							<tr>
@@ -902,7 +891,7 @@
 								<td><?php echo $fim;  ?></td>
 								<td><?php echo $horas;  ?></td>
 								<td><?php echo $value->hist_frequencia . "%";  ?></td>
-								<td><?php echo $sit;  ?></td>                                    
+								<td><?php echo $value->descricao_status_treinamento;  ?></td>                                    
 							</tr>
 							<?php } ?>
 						</tbody>

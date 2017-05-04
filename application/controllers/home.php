@@ -497,6 +497,31 @@ class Home extends CI_Controller {
 
     }
 
+    public function widgetNoticias(){
+    	$idempresa = $this->session->userdata('idempresa');
+    	$this->db->select('newsletter.*, descricao_categoria_newsletter');
+        $this->db->join("newsletter_categoria", "id_categoria_newsletter = fk_categoria_newsletter");
+        $this->db->where('fk_idempresa_newsletter',$idempresa);
+        $this->db->order_by("id_newsletter", "desc");
+        $this->db->limit(5);
+        $dados['newsletter'] = $this->db->get("newsletter")->result();
+        $dados['modal']=false;
+        header ('Content-type: text/html; charset=ISO-8859-1');
+        $this->load->view('/geral/box/modalnoticias',$dados);
+    }
+
+    public function modalnoticia(){
+    	$id = $this->input->post('id');
+    	$this->db->select('newsletter.*, descricao_categoria_newsletter');
+        $this->db->join("newsletter_categoria", "id_categoria_newsletter = fk_categoria_newsletter");
+        $this->db->where('id_newsletter', $id);
+        $dados['newsletter'] = $this->db->get("newsletter")->row();
+
+        $dados['modal']=true;
+        header ('Content-type: text/html; charset=ISO-8859-1');
+        $this->load->view('/geral/box/modalnoticias', $dados);
+    }
+
 
 
 }

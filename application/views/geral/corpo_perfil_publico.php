@@ -250,7 +250,7 @@ if (is_object($privacidade)) {
                           <?php if (!empty($v->rating_competencia)) { ?>
                           <img src="<?php echo base_url("assets/img")."/".$v->rating_competencia."star.png"; ?>" style="max-width: 60px;" />
                           <?php } ?>
-                          <span><?php echo $v->desc_competencia; ?></span>
+                          <span><?php echo $v->desc_pergunta; ?></span>
                           <div class="clearfix"></div>
                     <?php } ?>
                    </div>                                       

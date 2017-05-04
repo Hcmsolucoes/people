@@ -31,7 +31,7 @@ if(isset($funcionario)){
 <div class="page-content-wrap">
     <div class="row">
         <div class="col-md-12">
-            <div class="panel panel-default">
+            <!--<div class="panel panel-default">
                 <div class="panel-body">
                     <p>Use a pesquisa para localizar colaboradores. Você pode pesquisar por nome, cargo, email etc...</p>
                     <form class="form-horizontal">
@@ -50,7 +50,7 @@ if(isset($funcionario)){
                         </div>
                     </form>                                    
                 </div>
-            </div>
+            </div>-->
 
         </div>
     </div>
@@ -124,10 +124,10 @@ foreach ($equipe as $key => $value) {
 $(".pessoa").click(function(){
   
   var id = $(this).attr("id");
-
+  $(this).append('<img id="load" style="position: absolute;right: 5%;" src="<?php echo base_url('img/loaders/default.gif') ?>" >');
   $.ajax({          
       type: "POST",
-      url: '<?php echo base_url()."ajax/jsonHierarquia";?>',
+      url: '<?php echo base_url("ajax/jsonHierarquia");?>',
       dataType : 'html',
       secureuri:false,
       cache: false,

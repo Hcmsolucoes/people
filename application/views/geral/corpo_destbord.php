@@ -81,7 +81,7 @@ $mes_ano = $mes." de ".date("Y");
    <div class="modal-content" style="max-height:595px; overflow:scroll;">
      <div class="modal-header">
       <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-      <h4 class="modal-titl bold" id="titulomodal">Calendário</h4>
+      <h4 class="modal-titl bold" id="">Calendário</h4>
     </div>
     <div class="modal-body" id="calcorpo">                       
     </div>
@@ -172,14 +172,8 @@ $mes_ano = $mes." de ".date("Y");
         <div class="widget-controls">                                
           <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="left" title="Remover este Quadro"><span class="fa fa-times"></span></a>
         </div>                            
-        <div class="widget-buttons widget-c3">
-          <div class="col">
-            <a href="#"><span class="fa fa-clock-o"></span></a>
-          </div>
-          <div class="col">
-            <a href="#"><span class="fa fa-bell"></span></a>
-          </div>
-          <div class="col">
+        <div class="widget-buttons widget-c3" style="text-align: center;">
+          <div class="">
             <a id="calendario" href="#"><span class="fa fa-calendar"></span></a>
           </div>
         </div>                            
@@ -191,8 +185,24 @@ $mes_ano = $mes." de ".date("Y");
   <!-- END WIDGETS -->                    
 
   <div class="row">
-    <div class="col-md-4">
 
+  <div class="col-md-4">
+      <!-- START VISITORS BLOCK -->
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="panel-title-box">
+            <h3>Boletim Informativo</h3>           
+          </div>          
+        </div>
+        <div class="panel-body padding-0">
+          <div class="" id="widgetboletim" style="height: 257px;" >            
+          </div>
+        </div>
+      </div>
+      <!-- END VISITORS BLOCK -->
+    </div>
+
+    <div class="col-md-4">
       <!-- START SALES & EVENTS BLOCK -->
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -213,39 +223,14 @@ $mes_ano = $mes." de ".date("Y");
           </ul>
         </div>
         <div class="panel-body padding-0">
-          <div class="chart-holder" id="dashboard-line-1" style="height: 200px;"></div>
+          <div class="chart-holder" id="dashboard-line-1" style="height: 256px;"></div>
         </div>
       </div>
       <!-- END SALES & EVENTS BLOCK -->
     </div>
-    <div class="col-md-4">
-      <!-- START VISITORS BLOCK -->
-      <div class="panel panel-default">
-        <div class="panel-heading">
-          <div class="panel-title-box">
-            <h3>Boletim Informativo</h3>
-           
-          </div>
-          <ul class="panel-controls" style="margin-top: 2px;">
-            <li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>
-            <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
-            <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
-              <ul class="dropdown-menu">
-                <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
-                <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
-              </ul>                                        
-            </li>                                        
-          </ul>
-        </div>
-        <div class="panel-body padding-0">
-          <div class="chart-holder" id="widgetboletim" style="height: 200px;"></div>
-        </div>
-      </div>
-      <!-- END VISITORS BLOCK -->
-    </div>
 
-    <div class="col-md-4">
+
+      <div class="col-md-4">
       <!-- START VISITORS BLOCK -->
       <div class="panel panel-default">
         <div class="panel-heading">
@@ -266,14 +251,16 @@ $mes_ano = $mes." de ".date("Y");
           </ul>
         </div>
         <div class="panel-body padding-0">
-          <div class="chart-holder" id="dashboard-donut-1" style="height: 200px;"></div>
+          <div class="chart-holder" id="dashboard-donut-1" style="height: 256px;"></div>
         </div>
       </div>
       <!-- END VISITORS BLOCK -->
     </div>
 
+
+    </div><!--fim da linha-->
     
-    </div>
+
 
     <!-- START WIDGETS -->                    
     <div class="row">
@@ -506,6 +493,51 @@ function drawChart() {
 
 $(document).ready(function(){
 
+  $.ajax({
+        type: "POST",
+        url: '<?php echo base_url("home/widgetNoticias");?>',
+        cache: false,
+        contentType: false,
+        processData: false,
+        success: function(msg) {
+
+          $("#widgetboletim").html(msg).
+          owlCarousel({
+            mouseDrag: false, 
+            touchDrag: true, 
+            slideSpeed: 300, 
+            paginationSpeed: 400, 
+            singleItem: true, 
+            navigation: false, 
+            autoPlay: true
+          });
+
+        }
+      });
+  
+  
+  $(document).on("click", ".boletim", function(){
+    var id = $(this).data("id");
+    $('#titulomodal').html($("#tit"+id).text());
+    $( "#dadosedit" ).html("<img src='<?php echo base_url('img/loaders/default.gif') ?>' >");
+    $('#myModal').modal('show');
+    $.ajax({
+        type: "POST",
+        url: '<?php echo base_url("home/modalnoticia");?>',
+        cache: false,
+        dataType : 'html',
+        secureuri:false,
+        data: {
+          id: id
+        },
+        success: function(msg) {
+          
+          $("#dadosedit").html(msg);
+
+        }
+      });
+   });
+
   $( ".holerite" ).click (function(e) {
              
        $.ajax({            
@@ -674,7 +706,7 @@ $(document).ready(function(){
           }
         });
 
-     $('#modalcaledario').on('shown.bs.modal', function (e) {
+    $('#modalcaledario').on('shown.bs.modal', function (e) {
 
       $('#calcorpo').fullCalendar('render');
 
@@ -684,7 +716,7 @@ $(document).ready(function(){
 
    });
 
-    
+
 
 });
 </script>

@@ -1184,6 +1184,12 @@ public function cargos(){
     $dados['cargos'] = $this->db->get('tabelacargos')->result();
 
     $dados['cursos'] = $this->db->get('cursos')->result();
+
+    $this->db->join("chefiasubordinados", "subor_idfuncionario = fun_idfuncionario");
+    $this->db->where("chefiasubordinados.chefe_id", $iduser);
+    $this->db->where('fun_idempresa',$idempresa);
+    $this->db->where('fun_status',"A");
+    $dados['colaboradores'] = $this->db->get('funcionario')->result();
     
     $this->db->select('tema_cor, tema_fundo');
     $this->db->where('fun_idfuncionario',$iduser);
@@ -1207,6 +1213,8 @@ public function cargocurso(){
     $this->db->where('fk_idempresa',$idempresa);
     $this->db->where('fk_idcargo',$idcargo);
     $dados['cargocurso'] = $this->db->get('cargocurso')->result();
+
+    header ('Content-type: text/html; charset=ISO-8859-1');
     $this->load->view('/geral/box/cargocurso',$dados);
 }
 
@@ -1232,6 +1240,30 @@ public function excluircargocurso(){
     $id = $this->input->post("id");
     $this->db->where('id_cargocurso',$id);
     $this->db->delete('cargocurso');
+}
+
+public function colab_cargo(){
+
+     $idfun = $this->input->post("id");
+    $this->db->select('fun_nome, fun_foto, fun_status, fun_sexo, fun_matricula, contr_cargo, fk_idcargo, contr_data_admissao, contr_departamento, sal_valor');
+
+    $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
+    $this->db->join("salarios", "sal_idfuncionario = fun_idfuncionario");
+    $this->db->where('fun_idfuncionario', $idfun);
+    $dados['colaborador'] = $this->db->get('funcionario')->row();
+
+    if (!is_object($dados['colaborador'])) {
+       return;
+    }
+    $this->db->join("cargocurso", "fk_idcurso = idcurso");
+    $this->db->join('historicotreinamento', 'idcurso = hist_idcurso AND '.$idfun.' = hist_idfuncionario ', "left");
+    $this->db->join('treinamento_status', 'hist_situacao = id_status_treinamento', "left");
+    $this->db->where('fk_idcargo', $dados['colaborador']->fk_idcargo );
+    $dados['cursos'] = $this->db->get('cursos')->result();
+
+    header ('Content-type: text/html; charset=ISO-8859-1');
+    $this->load->view('/geral/box/analisecargo',$dados);
+
 }
 
 

@@ -1,12 +1,41 @@
 <div class="row">
 
-<div class="alert acenter bold" role="alert" style="display: none;font-size: 15px;"></div>
+	<div class="alert acenter bold" role="alert" style="display: none;font-size: 15px;"></div>
 
 	<div class="col-md-12">
-		<h2><i class="glyphicon glyphicon-link"></i> Cargo x Curso</h2>
-		<div class="widget widget-default">
+		<div class="col-md-3" >
+			<div class="page-title">                    
+				<h2><i class="fa fa-trophy"></i> Cargo x Curso</h2>
 
-			<div class="fleft fleftmobile">
+			</div>
+
+			<div class="content-frame-left ">       
+				<div class="fleft-10" style="margin-bottom: 10px;">          
+					<div class="list-group border-bottom">
+						<a href="#add" aria-controls="add" role="tab" data-toggle="tab" class="list-group-item aba">
+							<span class="fa fa-suitcase"></span> <span class="desc">Lista de Cargos</span><span class="badge badge-warning"><?php //echo count($msg_recebidas); ?></span>
+						</a>
+
+						<a href="#consultas" aria-controls="consultas" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-search"></span> <span class="desc">Consultas</span><span class="badge badge-warning"><?php //echo count($msg_enviadas) ; ?></span>
+						</a>
+
+						<a href="#simular" aria-controls="simular" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-random"></span> <span class="desc">Simular Mudança de Cargo</span><span class="badge badge-warning"><?php //echo count($msg_enviadas) ; ?></span>
+						</a>
+
+					</div>                        
+				</div>
+			</div>
+		</div><!--fim do menu-->
+		
+		
+
+<div class="col-md-9">
+
+	<div class="tab-content">
+        <div role="tabpanel" class="tab-pane" id="add">
+		<div class="widget widget-default">
+		<h3><span class="fa fa-suitcase"></span> Lista de Cargos</h3>
+        	<div class="fleft fleftmobile">
 				<label>Escolha o Cargo</label><br>
 				<select name="cargo" id="cargo" class="">
 					<option value="">Cargo</option>
@@ -21,19 +50,20 @@
 			<div id="curcarg" style="display: none;"></div>
 
 			<div class="clearfix" style="margin: 20px 0px;"></div>
-			<form id="">
-				<div class="fleft">
-					<div class="panel panel-default fleft-7 fleftmobile">
-						<div class="panel-heading ui-draggable-handle">
-							<h3 class="">Lista de Cursos</h3>
-						</div>
 
-						<div class="fright" style="margin: 10px;">
+			<div class="fleft">
+					<div class="panel panel-default fleft-10 fleftmobile">					
+						<div class="panel-heading ui-draggable-handle">
+							<span class="bold fleft">Lista de Cursos</span>
+
+							<div class="fright" >
 							<span class="bold red" style="margin: 0px 25px 0px 0px;">Obrigatório</span>
 							<span class="bold green">Desejável</span>
 						</div>
+						</div>
 
-						<div class="panel-body scroll mCustomScrollbar _mCS_4 mCS-autoHide" style="height: 250px;"><div id="mCSB_4" class="mCustomScrollBox mCS-light mCSB_vertical mCSB_inside" tabindex="0">
+						<div class="panel-body scroll mCustomScrollbar _mCS_4 mCS-autoHide" style="height: 250px;">
+						<div id="mCSB_4" class="mCustomScrollBox mCS-light mCSB_vertical mCSB_inside" tabindex="0">
 
 							<ul class="list-group border-bottom">
 								<?php 
@@ -62,9 +92,36 @@
 						</div>                                  
 					</div>
 				</div>
-			</div>
-<span class="btn btn-info" id="cargcursalvar">Salvar</span>
+</div>
+			<span class="btn btn-info" id="cargcursalvar">Salvar</span>
+</div>
+        </div><!--painel add-->
 
+        <div role="tabpanel" class="tab-pane" id="consultas">
+        	<div class="widget widget-default">
+        	<h3><span class="fa fa-search"></span> Consultas</h3>
+        		<div class="fleft fleftmobile">
+        			<label>Escolha o Colaborador</label><br>
+        			<select name="selectcolaborador" required="true" id="selectcolaborador" class="selectpicker combocolab" data-live-search="true" data-div="resultado">
+        				<option value="">Colaborador</option>
+        				<?php foreach ($colaboradores as $key => $value) { ?>
+        				<option value="<?php echo $value->fun_idfuncionario; ?>"><?php echo $value->fun_nome; ?></option>
+        				<?php } ?>
+        			</select>
+        		</div>
+
+        		<div class="separador"></div>
+
+        		<div id="resultado" class="fleft-10 fleftmobile"></div>
+
+
+        	</div>
+        </div><!--tab consultas-->
+			
+			
+			
+			
+       </div><!--tab content-->
 
 
 		</div>
@@ -74,8 +131,8 @@
 <script type="text/javascript">
 
 	$("#cargo").change(function(){
-
-		$("#curcarg").fadeOut().html("");
+		$("#curcarg").html("<img id='load' src='<?php echo base_url('img/loaders/default.gif') ?>' >")
+		.show();
 		var id = $(this).val();
 
 		$.ajax({         
@@ -115,7 +172,7 @@
 				cursos[i] = {
 					ic_tipo: $(this).val(),
 					fk_idcurso: $(this).data("id")
-					};
+				};
 				i++;
 			}
 			
@@ -135,13 +192,34 @@
 				$(".alert").removeClass("alert-danger").
 				addClass("alert-success").
 				html("Os requistos foram salvos. Atualize a página").
-				fadeIn().
-				delay(1200).
-				fadeOut();			
+				fadeIn(function(){
+					location.reload();
+				});			
 
 			} 
 		});
 	});
 
+	$("#selectcolaborador").change(function(){
+		var id = $(this).val();
+     	$("#resultado").html("<img id='load' src='<?php echo base_url('img/loaders/default.gif') ?>' >")
+		.show();
+
+
+      $.ajax({          
+        type: "POST",
+        url: '<?php echo base_url("gestor/colab_cargo"); ?>',
+        dataType : 'html',
+        data: {
+          id: id
+        },
+
+        success: function(msg){
+       
+       		$("#resultado").html(msg).fadeIn();
+      
+     	} 
+     });
+	});
 
 </script>

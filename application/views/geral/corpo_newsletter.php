@@ -5,9 +5,9 @@ $iduser = $this->session->userdata('id_funcionario');
 <div class="message-box animated fadeIn" data-sound="alert" id="mb-exclembrete">
   <div class="mb-container">
     <div class="mb-middle">
-      <div class="mb-title"><span class="fa fa-times"></span> Excluir Notícia ?</div>
+      <div class="mb-title"><span class="fa fa-times"></span> Excluir boletim ?</div>
       <div class="mb-content">
-        <p>Deseja excluir essa notícia?</p>                    
+        <p>Deseja excluir esse boletim?</p>                    
         <p>Clique em Não para continuar trabalhando. Clique em Sim apagá-lo.</p>
       </div>
       <div class="mb-footer">
@@ -26,7 +26,7 @@ $iduser = $this->session->userdata('id_funcionario');
 
     <div class="col-md-3" >
       <div class="page-title">                    
-        <h2><span class="fa fa-file-text"></span> Newsletter</h2><div style="float: left; font-weight: bold; margin: 8px 0px 0px 10px;" id="itematual"></div>
+        <h2><span class="fa fa-file-text"></span> Boletim</h2><div style="float: left; font-weight: bold; margin: 8px 0px 0px 10px;" id="itematual"></div>
         
       </div>
    
@@ -38,11 +38,11 @@ $iduser = $this->session->userdata('id_funcionario');
           <div class="list-group border-bottom">
             
             <a href="#addmsg" id="btnaddmsg" aria-controls="addmsg" role="tab" data-toggle="tab" class="btn btn-info btn-block btn-lg">
-              <span class="fa fa-edit"></span> <span class="desc">Nova Newsletter</span> 
+              <span class="fa fa-edit"></span> <span class="desc">Novo Boletim</span> 
             </a>
 
 
-            <a href="#enviadas" aria-controls="minhasmensagens" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-share"></span> <span class="desc">Newsletters</span><!--<span class="badge badge-warning"><?php echo count($msg_enviadas) ; ?></span>-->
+            <a href="#enviadas" aria-controls="minhasmensagens" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-share"></span> <span class="desc">Meus Boletins</span><!--<span class="badge badge-warning"><?php echo count($msg_enviadas) ; ?></span>-->
             </a>            
 
           </div>                        
@@ -58,17 +58,17 @@ $iduser = $this->session->userdata('id_funcionario');
 
           <div class="widget widget-default">
 
-              <h3>Nova Newsletter</h3>
+              <h3>Novo Boletim</h3>
 
               <div class=" fleft-9 fleftmobile" >
               <form id="formnews" enctype="multipart/form-data" method="post" >
-                <select name="categoria" id="categoria" class="" style="margin: 7px 0px">
+                <select name="categoria" id="categoria" class="" style="margin: 7px 0px" required="true">
                   <option value="">Categoria</option>
                   <?php foreach ($categorias as $key => $value) { ?>
                     <option value="<?php echo $value->id_categoria_newsletter; ?>"><?php echo $value->descricao_categoria_newsletter; ?></option>
                   <?php } ?>
                 </select>
-                <input type="text" id="newstitulo" name="newstitulo" class="form-control" placeholder="Titulo da notícia" />
+                <input type="text" id="newstitulo" name="newstitulo" class="form-control" placeholder="Titulo da notícia" required="true" />
 
                 <label style="margin: 15px 0px 0px 0px;">Selecione a imagem</label>
                 <input type="file" name="imagem" id="imagem" value="Imagem do boletim" accept=".jpg, .jpeg, .png" />
@@ -79,7 +79,7 @@ $iduser = $this->session->userdata('id_funcionario');
 
               <div class="fleft-9 fleftmobile" style="margin: 10px 0px 0px 0px;">
 
-                <textarea class="hcmeditor" name="noticia_descricao" id="noticia_descricao" style="width: 100%;">Digite o texto...</textarea>
+                <textarea class="hcmeditor" name="noticia_descricao" id="noticia_descricao" style="width: 100%;"></textarea>
                 <img id="loadmsg" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" class="fleft">
                 
                 <input type="text" id="fonte" name="fonte" class="form-control" placeholder="Fonte da notícia" style="margin: 7px 0px" />
@@ -97,7 +97,7 @@ $iduser = $this->session->userdata('id_funcionario');
 
           <div class="widget widget-default">
 
-            <h3>Newsletters</h3>
+            <h3>Meus Boletins</h3>
 
             <?php             
             foreach ($newsletter as $key => $value) { ?>
@@ -157,12 +157,6 @@ $iduser = $this->session->userdata('id_funcionario');
         }
     });
 
-    function limparCampos(){
-      $("#mensagem").code("");
-      $("#newstitulo").val("");
-      $("#categoria").val("").change();
-      $("#fonte").val("");
-    }
 
     $("#formnews").submit(function(e){
       e.preventDefault();
@@ -188,10 +182,11 @@ $iduser = $this->session->userdata('id_funcionario');
           }else{
 
             $(".alert").addClass("alert-success")
-            .html("Notíca enviada com sucesso")
+            .html("Notícia enviada com sucesso")
             .slideDown("slow");
             $(".alert").delay( 2500 ).fadeOut(500);
             $("#loadmsg").hide();
+            location.reload();
           }
         }
       });
@@ -240,7 +235,11 @@ $iduser = $this->session->userdata('id_funcionario');
     $(".hcmeditor").summernote({height: 200,
       toolbar: [
       ["style", ["bold", "italic", "underline", "clear"]],
-      ["insert",["link","picture"]]                                                          
+      ['fontsize', ['fontsize']],
+      ['color', ['color']],
+      ["insert",["picture"]],
+      ['para', ['ul', 'ol', 'paragraph']],
+      ["insert",["link"]]                                                          
       ],
       onImageUpload: function(files, editor, welEditable) {
                 sendFile(files[0], editor, welEditable);

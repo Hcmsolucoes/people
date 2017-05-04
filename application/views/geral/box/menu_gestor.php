@@ -57,7 +57,7 @@ $modulos = explode(",", $this->session->userdata('modulos'));
             <span class="xn-text">Calendário</span></a>
         </li>
         <li><a href="<?php echo base_url('gestor/cargos') ?>">
-            <span class="fa fa-calendar"></span>
+            <span class="fa fa-trophy"></span>
             <span class="xn-text">Requisitos de Cargos</span></a>
         </li>
     </ul>
@@ -91,7 +91,7 @@ $modulos = explode(",", $this->session->userdata('modulos'));
 
 <li class="<?php echo ($menupriativo=="newsletter")? "active":"" ?>">
   <a href="<?php echo base_url('home/newsletter') ?>">
-    <span class="fa fa-rss"></span> <span class="xn-text">Newsletter</span>
+    <span class="fa fa-rss"></span> <span class="xn-text">Boletim Informativo</span>
   </a>
 </li>
 
