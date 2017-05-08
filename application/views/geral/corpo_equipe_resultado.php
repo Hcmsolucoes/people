@@ -155,7 +155,7 @@ foreach ($dadoschefe as $key => $value) {
 
                         </div>
                     </div>
-                    <input type="hidden" name="colab" value="<?php echo $id; ?>">
+                    <input type="hidden" name="colab" id="colab" value="<?php echo $id; ?>">
                 </form>                                    
             </div>
      </div>

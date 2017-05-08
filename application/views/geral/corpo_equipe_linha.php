@@ -18,6 +18,34 @@
 </style>
 <div class="fleft-10">
 
+<div class="fleft-2">
+<label class=" control-label font-sub">A partir da data</label>
+        <div class="" style="margin-right: 10px;">
+          <div class='input-group date' >
+            <input type="text" class="data fleft" name="data_inicio" id="data_inicio" placeholder="" style="max-width: 90px;" required=""/>              
+            <span class="input-group-addon fleft">
+              <span class="fa fa-calendar" id=''></span>
+            </span>
+          </div> 
+        </div>
+</div>
+
+<div class="fleft-2">
+    <label class=" control-label font-sub">Até a data</label>
+        <div class="" style="margin-right: 10px;">
+          <div class='input-group date' >
+            <input type="text" class="data fleft" name="data_fim" id="data_fim" placeholder="" style="max-width: 90px;" required=""/>              
+            <span class="input-group-addon fleft">
+              <span class="fa fa-calendar" id=''></span>
+            </span>
+          </div> 
+        </div>
+</div>
+
+<div class="fleft" style="margin-top: 20px;">
+<span class="btn btn-default" id="filtrar">Filtrar</span>
+</div>
+
     <div class="timeline">
 
         <div class="timeline-item timeline-main">
@@ -130,3 +158,32 @@
     <!-- END TIMELINE -->
 
 </div>
+<script type="text/javascript">
+    $('.data').datepicker({
+      
+      format: 'dd/mm/yyyy',
+      
+    });
+
+    $("#filtrar").click(function(){
+      var inicio = $("#data_inicio").val();
+      var fim = $("#data_fim").val();
+      var colab = $("#colab").val();
+      $( "#consulta" ).html('<img id="loadconsulta" src="<?php echo base_url('img/loaders/default.gif') ?>" >');
+      $.ajax({
+          type: "POST",
+          url: '<?php echo base_url("perfil/linhahistorico") ?>',
+          dataType : 'html',
+          secureuri:false,
+          cache: false,
+          data:{
+            colab: colab,
+            inicio: inicio,
+            fim: fim
+        },              
+        success: function(msg){
+            $( "#consulta" ).html(msg);
+        }
+    });
+  });
+</script>

@@ -2,7 +2,7 @@
 
 ?>
 
-<div class="page-title">                    
+<div class="page-title">
   <h2><span class="fa fa-lock"></span> Redefinir Acessos</h2>
 </div>
 
@@ -21,6 +21,7 @@
                <option value="<?php echo $value->fun_idfuncionario; ?>"><?php echo $value->fun_nome; ?></option>
                <?php } ?>
              </select>
+             <img id="coload" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" >
       </div>
 
       <div class="clearfix"></div>
@@ -52,6 +53,33 @@
 
       <div class="clearfix"></div>
 
+        <div class="col-md-3" style="margin-top: 20px">
+         <div class="form-group">
+            <label for="for_natual" class="control-label">Perfil</label>
+            <select name="usu_perfil" id="usu_perfil" class="form-control">
+              <option value="">Nivel de acesso</option>
+              <option value="1">Colaborador</option>
+              <option value="2">Gestor</option>
+              <option value="3">Admin</option>
+              <option value="4">Gestor + Admin</option>
+              <option value="5">RH</option>
+              <option value="6">RH + Gestor</option>
+              <option value="7">RH + Gestor + Admin</option>
+            </select>
+         </div>
+      </div>
+
+      <div class="clearfix"></div>
+
+      <div class="col-md-3" style="margin-top: 20px">
+         <div class="form-group">
+            <label for="usu_email" class="control-label">E-mail</label>
+            <input type="text" class="form-control" id="usu_email" name="usu_email" required >
+         </div>
+      </div>
+      
+      <div class="clearfix"></div>
+
       <div class="col-md-3" style="margin-top: 20px">
          <button type="submit" class="btn btn-primary"><span class="fa fa-check"></span> Salvar</button>
          <span class="btn btn-danger" id="btcancela"><span class="fa fa-times"></span>
@@ -60,16 +88,83 @@
    </form>
 </div>
 </div>
+
 <script type="text/javascript">
-        $(function () {
-            $("#fun_senhav").on('click', function(){
+    $(function () {
+        
+        $( "#btcancela" ).click(function(e) {
+          $('#myModal').modal('hide');
+    		  $( "#dadosedit" ).html("");		 
+        });
+
+        $("#colaborador").change(function(){
+          var idcolab = $(this).val();
+          $("#coload").show();
+
+          $.ajax({
+            type: "POST",
+            url: '<?php echo base_url("admin/acessocampos"); ?>',
+            cache: false,
+            dataType: "json",
+            data: {
+              colab: idcolab
+            },
+            success: function(msg){
+
+              if( msg.usu_email !="" ){
+
+                $("#usu_email").val(msg.usu_email);
+                $("#usu_perfil").val(msg.usu_perfil).change();
+
+              }else{
+
+                
+              }
+              $("#coload").hide();
+            }
+          });
+        });
+
+        $('form').on('submit', function(e){
+          $("#coload").show();
+          e.preventDefault();
+          $.ajax({
+            type: "POST",
+            url: '<?php echo base_url("perfil_edit/alterar_senha_salva"); ?>',
+            cache: false,
+            data: $( this ).serialize(),
+
+            success: function(msg){
+
+              $(".alert").html(msg.msg);
+
+              if( !msg.success ){
+                $(".alert").removeClass("alert-success");
+                $(".alert").addClass("alert-danger")
+                .slideDown("slow");
+                $(".alert").delay( 3500 ).hide(500);
+
+              }else{
+
+                $(".alert").removeClass("alert-danger");
+                $(".alert").addClass("alert-success")
+                .slideDown("slow");
+                $(".alert").delay( 2500 ).hide(500);
+
+              }
+              $("#coload").hide();
+            }
+          });
+        });
+
+        $("#fun_senhav").on('click', function(){
                 $('.segu').removeClass('hidden');
                 $("#progressbar").progressbar({
                   value:  0
                 });
             });
 
-            $('#fun_senhav').on('input', function(){
+        $('#fun_senhav').on('input', function(){
                
                 if(this.value.length >= 1){
                     $(".ui-widget-header").removeClass('progress-bar-success');
@@ -128,47 +223,7 @@
                     });
                 }
             });
-        });
-</script>
-<script type="text/javascript">
-    $(function () {
-        
-        $( "#btcancela" ).click(function(e) {
-        $('#myModal').modal('hide');
-    		$( "#dadosedit" ).html("");		 
-        });
 
-        $('form').on('submit', function(e){
-
-          e.preventDefault();
-          $.ajax({
-            type: "POST",
-            url: '<?php echo base_url("perfil_edit/alterar_senha_salva"); ?>',
-            cache: false,
-            data: $( this ).serialize(),
-
-            success: function(msg){
-
-              $(".alert").html(msg.msg);
-
-              if( !msg.success ){
-                $(".alert").removeClass("alert-success");
-                $(".alert").addClass("alert-danger")
-                .slideDown("slow");
-                $(".alert").delay( 3500 ).hide(500);
-
-              }else{
-
-                $(".alert").removeClass("alert-danger");
-                $(".alert").addClass("alert-success")
-                .slideDown("slow");
-                $(".alert").delay( 2500 ).hide(500);
-
-              }
-            }
-          });
-       
-        });
     });
 </script>
 

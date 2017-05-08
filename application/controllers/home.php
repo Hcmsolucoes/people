@@ -52,6 +52,16 @@ class Home extends CI_Controller {
 		$feeds = $this->db->get('feedbacks')->num_rows();
 		$dados['quantgeral'] = $feeds;
 
+		$this->db->join("Periodos", "fer_idperiodo = Per_idperiodos");
+		$this->db->where("fer_idfuncionario", $iduser);
+		$dados['ferias'] = $this->db->get("programacao_ferias")->result();
+		$this->db->where("NOT EXISTS (SELECT *
+			FROM programacao_ferias 
+			WHERE  Per_idperiodos = fer_idperiodo) ");
+		$this->db->where('Per_idfuncionario',$iduser);
+		$this->db->where('Per_SitPer', 0);
+		$dados['ferias'] = $this->db->get('Periodos')->result();
+
 		$idcli = $this->session->userdata('idcliente');
 		$this->db->select('tema_cor, tema_fundo');
 		$this->db->where('fun_idfuncionario',$iduser);

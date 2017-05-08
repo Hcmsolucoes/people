@@ -889,7 +889,17 @@ class Perfil extends CI_Controller {
 
         $iduser = $this->input->post('colab');
         $idempresa = $this->session->userdata('idempresa');
+        $inicio = $this->input->post('inicio');
+        $fim = $this->input->post('fim');
 
+        if (!empty($inicio)) {
+            $dtinicio = $this->Log->alteradata2($inicio);
+            $this->db->where("datainicio > ", $dtinicio);
+        }
+        if (!empty($fim)) {
+            $dtfim = $this->Log->alteradata2($fim);
+            $this->db->where("datafim < ", $dtfim);
+        }
         $this->db->where('idfuncionario', $iduser);
         $this->db->order_by("datainicio", "desc");
         $dados['lista'] = $this->db->get('historicogeral')->result();

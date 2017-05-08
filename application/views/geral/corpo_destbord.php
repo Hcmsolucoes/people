@@ -311,14 +311,19 @@ $mes_ano = $mes." de ".date("Y");
         
     <div class="col-md-3">
       <!-- START WIDGET REGISTRED -->
-      <div class="widget widget-default widget-item-icon" onclick="location.href='#';">
+      <div class="widget widget-default widget-item-icon" >
         <div class="widget-item-left">
           <span class="fa fa-plane"></span>
         </div>
         <div class="widget-data">
-          <div class="widget-int num-count">01</div>
+          <div class="widget-int num-count">0<?php echo count($ferias); ?></div>
           <div class="widget-title">Férias</div>
-          <div class="widget-subtitle">Vencidas, <a href="#">clique para ver</a> </div>
+          <div class="widget-subtitle">Vencidas, 
+          <?php if (!empty($parametros)) { 
+                if((count($ferias)>0) && ($parametros->solicitarferias == 1)){ ?>
+                <a href="<?php echo base_url('home/programacao_ferias')?>">clique para ver</a> 
+          <?php } } ?>
+          </div>
         </div>
         <div class="widget-controls">                                
           <a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remover este Quadro"><span class="fa fa-times"></span></a>

@@ -1267,6 +1267,18 @@ public function colab_cargo(){
 
 }
 
+public function view_tabelasdashs(){
 
+    //    $ids = explode(",", $this->input->post("ids") );
+      //  $this->db->select("fun_idfuncionario, fun_foto, fun_nome, fun_sexo, contr_cargo");
+        //$this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
+        //$this->db->where_in("fun_idfuncionario", $ids);
+        //$dados['pessoas'] = $this->db->get('funcionario')->result();
+        $ids = $this->input->post("mesano");
+        
+        header ('Content-type: text/html; charset=ISO-8859-1');
+        $this->load->view("/geral/box/modal_dashboards", '');
+
+    }
 
 }

@@ -16,7 +16,7 @@ class Admin extends CI_Controller {
       public function index(){
             $this->Log->talogado(); 
             $this->session->set_userdata('perfil_atual', '3');
-            $dados = array('menupriativo' => 'painel' );
+            $dados = array('menupriativo' => 'inicio' );
             
             $iduser = $this->session->userdata('id_funcionario');
             
@@ -63,7 +63,7 @@ class Admin extends CI_Controller {
 
             $this->Log->talogado(); 
             $this->session->set_userdata('perfil_atual', '3');
-            $dados = array('menupriativo' => 'painel' );
+            $dados = array('menupriativo' => 'chefia' );
             
             $iduser = $this->session->userdata('id_funcionario');
             
@@ -94,7 +94,7 @@ class Admin extends CI_Controller {
       public function parametros(){ 
             $this->Log->talogado(); 
             $this->session->set_userdata('perfil_atual', '3');
-            $dados = array('menupriativo' => 'paramentros' );
+            $dados = array('menupriativo' => 'parametros' );
             $iduser = $this->session->userdata('id_funcionario');
             $idcliente = $this->session->userdata('idcliente');
             $idempresa = $this->session->userdata('idempresa');
@@ -333,6 +333,15 @@ class Admin extends CI_Controller {
 
             }
             echo 1;
+      }
+
+      public function acessocampos(){
+            $idcolab = $this->input->post("colab");
+            $this->db->select("usu_email, usu_perfil");
+            $this->db->where("usu_idfuncionario", $idcolab);
+            $usuario = $this->db->get("usuarios")->row();
+            
+            echo json_encode($usuario);
       }
 
 

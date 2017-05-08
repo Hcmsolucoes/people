@@ -180,12 +180,12 @@
 			</div>
 		</div>
 		
-		<div id="tela" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="false">
+		<div id="tela" class="modal fade" role="dialog" tabindex="-1" aria-labelledby="myLargeModalLabel" aria-hidden="false">
 			<div class="modal-dialog modal-sm">
 				<div class="modal-content" style="max-height:595px; ">
 					<div class="modal-body" id="corpotela" >
 						<div class="acenter">
-							<img  src="<?php echo base_url().'assets/img/logo-vert.png' ?>" style="max-width: 100%" >
+							<img  src="<?php echo base_url('assets/img/logo.png'); ?>" style="max-width: 100%" >
 						</div>
 						<span class="bold">Nome da Solução:</span> <span class="font-sub">HCM PEOPLE</span><br>
 						<span class="bold">Versão:</span> <span class="font-sub">1.0</span><br>
@@ -226,7 +226,7 @@
 						<ul class="x-navigation">
 							<li class="xn-logo">
 								<?php if(isset($nome_empresa)){ ?>
-									<a href="#" data-toggle="modal" data-target="#tela"><?php echo $nome_empresa; ?></a>
+									<a id="modaltela" href="#"><?php echo $nome_empresa; ?></a>
 								<?php } ?>
 								<a href="#" class="x-navigation-control"></a>
 							</li>
@@ -425,83 +425,80 @@
 								
 								<script type="text/javascript" src="<?php echo base_url('js/plugins.js') ?>"></script>        
 								<script type="text/javascript" src="<?php echo base_url('js/actions.js') ?>"></script>
-								<script>
-								$( "#feedrecebido" ).click(function(e) {e.preventDefault();window.location.href = "<?php echo base_url().'perfil/feedbacks' ?>";   });
-								/*
-								var skycons = new Skycons();
-								skycons.add("icon1", <?php echo $iconetempo ?>);
-								skycons.play();
-								*/
-								
-								$( document ).ready(function() {
-								
-								$(".notificacao").click(function(){
-								
-								var idnoti = $(this).attr("id");
-								
-								$.ajax({          
-								type: "POST",
-								url: '<?php echo base_url()."ajax/vistoNotificacao"; ?>',
-								dataType : 'json',
-								data: {
-								idnoti: idnoti
-								},           
-								success: function(msg){
+<script>
+	$( "#feedrecebido" ).click(function(e) {e.preventDefault();window.location.href = "<?php echo base_url().'perfil/feedbacks' ?>";   });
+
+	$( document ).ready(function() {
+
+		$(".notificacao").click(function(){
+
+			var idnoti = $(this).attr("id");
+
+			$.ajax({          
+				type: "POST",
+				url: '<?php echo base_url("ajax/vistoNotificacao"); ?>',
+				dataType : 'json',
+				data: {
+					idnoti: idnoti
+				},           
+				success: function(msg){
 								//console.log(msg);
 								if(msg.status === 'erro'){
-								
+
 								/* $(".alert").addClass("alert-danger")
 								.html("Houve um erro. Contate o suporte.")
 								.slideDown("slow");
 								$(".alert").delay( 3500 ).hide(500);
 								*/
 								
-								}else {
+							}else {
 								
 								//$("#it"+id).slideUp("fast");
 								
-								}
-								
-								} 
-								});
-								
-								});
-								
-								$(".autocompletar").keyup(function(){
-								
-								var busca = $.trim( $(this).val() );    
-								var div = $(this).data("div");
-								if(busca !=""){
-								
-								$.ajax({          
-								type: "POST",
-								url: '<?php echo base_url("ajax/autocompletePerfil"); ?>',
-								dataType : 'html',
-								data: {
-								busca: busca,
-								},           
-								success: function(msg){
+							}
+
+						} 
+					});
+
+		});
+
+		$(".autocompletar").keyup(function(){
+
+			var busca = $.trim( $(this).val() );    
+			var div = $(this).data("div");
+			if(busca !=""){
+
+				$.ajax({          
+					type: "POST",
+					url: '<?php echo base_url("ajax/autocompletePerfil"); ?>',
+					dataType : 'html',
+					data: {
+						busca: busca,
+					},           
+					success: function(msg){
 								//console.log(msg);
 								if(msg === 'erro'){
-								
-								$(".alert").addClass("alert-danger")
-								.html("Houve um erro. Contate o suporte.")
-								.slideDown("slow");
-								$(".alert").delay( 3500 ).hide(500);
-								
+
+									$(".alert").addClass("alert-danger")
+									.html("Houve um erro. Contate o suporte.")
+									.slideDown("slow");
+									$(".alert").delay( 3500 ).hide(500);
+
 								}else {
-								
-								$("#"+div).html(msg);
-								
+
+									$("#"+div).html(msg);
+
 								}
 								
-								} 
-								}); 
-								}else{
-								$("#"+div).html("");
+							} 
+						}); 
+			}else{
+				$("#"+div).html("");
 								}//if busca
-								});
-								
-								});
-								
-								</script>																																																								
+							});
+
+	$("#modaltela").click(function(){
+		$("#tela").modal("show");
+	})
+	});
+</script>																																																								

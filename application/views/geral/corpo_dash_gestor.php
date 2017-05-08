@@ -281,23 +281,31 @@ $arr_salariosexo .= "['".$value->fun_nome."','".$value->sexo."',".$value->idadef
                    </div> -->
                  <div class="table-responsive"  width="100%">
                     <table class="table table-bordered table-striped table-actions">
+                      <thead class="theadresponsive" style="display: none;">
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody class="tbodyt">    
                           <tr>                         
-                          <th width="20%"><div id="turnover_emp" ></div></th>
-                          <th width="30%"><div id="turnover_ccu" ></div></th>
-                          <th width="20%"><div id="turnover_ano"> </div></th>
-                          <th width="50%"><div id="turnover_mes"> </div></th>
+                          <td width="20%"><div id="turnover_emp" ></div></td>
+                          <td width="30%"><div id="turnover_ccu" ></div></td>
+                          <td width="20%"><div id="turnover_ano"> </div></td>
+                          <td width="50%"><div id="turnover_mes"> </div></td>
                          <!-- <th width="10%"><div>  <label>Mostrar Tabela</label>
                                                  <label class="switch"><input type="checkbox" class="check" /><span></span></label> </div></th> -->
                           </tr>                                             
                     
                        <tr>
-                        <td width="60%" colspan="2"><div id="chart_turnover" style="padding-top: 15px"></div></td>
-                        <td width="40%" colspan="2">
+                        <td width="100%" colspan="2"><div id="chart_turnover" style="padding-top: 15px"></div></td>
+                        <td width="100%" colspan="2">
                        <div id="table_turnover" style="padding-top: 20px"></div></td>
                         </tr>
-                      <tr>
-
-                      </tr>   
+                       
+                      </tbody> 
                     </table>   
                   </div>
                  </div>
@@ -378,7 +386,7 @@ $mes_ano = $mes."/".date("Y");
 
         <div role="tabpanel" class="tab-pane active" id="botao2">
 
-        <div class="col-md-12">
+    <div class="col-md-12">
             <div class="panel panel-default" style="float: left;">
                 <div class="panel-heading">
 
@@ -409,24 +417,32 @@ $mes_ano = $mes."/".date("Y");
                       <input class="knob" data-width="150" data-min="0" data-displayPrevious=true data-max="400" data-step="45" value="45" data-fgColor="#81C500"/>                                         
                    </div> -->
                  <div class="table-responsive"  width="100%">
-                    <table class="table table-bordered table-striped table-actions">
+          <table class="table table-bordered table-striped table-actions">
+              <thead class="theadresponsive" style="display: none;">
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody class="tbodyt">      
                           <tr>                         
-                          <th width="20%"><div id="categoryPicker_emp" ></div></th>
-                          <th width="30%"><div id="categoryPicker_ccu" ></div></th>
-                          <th width="20%"><div id="categoryPicker_div"> </div></th>
-                          <th width="40%"><div id="slider_div">         </div></th>
+                          <td width="20%"><div id="categoryPicker_emp" ></div></td>
+                          <td width="30%"><div id="categoryPicker_ccu" ></div></td>
+                          <td width="20%"><div id="categoryPicker_div"> </div></td>
+                          <td width="40%"><div id="slider_div">         </div></td>
                          <!-- <th width="10%"><div>  <label>Mostrar Tabela</label>
                                                  <label class="switch"><input type="checkbox" class="check" /><span></span></label> </div></th> -->
-                          </tr>                                             
-                    
+                          </tr>
                        <tr>
-                        <td width="60%" colspan="2"><div id="chart_div" style="padding-top: 15px"></div></td>
-                        <td width="40%" colspan="2">
-                       <div class="ttrshow" id="table_div" style="padding-top: 20px"></div></td>
+                        <td width="100%" colspan="2"><div id="chart_div" style="padding-top: 15px"></div></td>
+                        <td width="100%" colspan="2">
+                       <div id="table_div" style="padding-top: 15px"></div></td>
                         </tr>
-                      <tr>
-
-                      </tr>   
+                    
+ 
+                        </tbody>  
                     </table>   
                   </div>
                  </div>
@@ -434,6 +450,7 @@ $mes_ano = $mes."/".date("Y");
             
             </div>
         </div>
+
 
 
       <div class="col-md-4">
@@ -532,6 +549,71 @@ $mes_ano = $mes."/".date("Y");
         <div role="tabpanel" class="tab-pane active" id="botao1">
 
           <div class="row scRow">
+
+     <!-- Grafico de custos x Faturamento -->
+      <div class="col-md-12">
+            <div class="panel panel-default" style="float: left;">
+                <div class="panel-heading">
+
+                    <div class="panel-title-box">
+                    <h3 style="text-align:center;">Receita x Folha de Pagamento
+                      </h3>
+                     </div>                                   
+                   <ul class="panel-controls" style="margin-top: 2px;">
+                     <!--<li><a href="#" class="panel-fullscreen"><span class="fa fa-expand"></span></a></li>-->
+                     <li><a href="#" class="panel-fullscreen3" role="button" title=""><i class="glyphicon glyphicon-resize-full"></i></a></li>
+                     <li><a href="#" class="panel-refresh"><span class="fa fa-refresh"></span></a></li>
+                    <li class="dropdown">
+                      <a href="#" class="dropdown-toggle" data-toggle="dropdown"><span class="fa fa-cog"></span></a>                                        
+                      <ul class="dropdown-menu">
+                        <li><a href="#" class="panel-collapse"><span class="fa fa-angle-down"></span> Collapse</a></li>
+                        <li><a href="#" class="panel-remove"><span class="fa fa-times"></span> Remove</a></li>
+                      </ul>                                        
+                    </li>                                        
+                  </ul>     
+                </div>
+
+                <div class="panel-body">
+
+                 <!-- CORPO DO DASHBOARD -->                          
+                 <div id="dashboard_receita" >
+                  <!-- <div>
+                      <h5>5-digit values, step 1000</h5>
+                      <input class="knob" data-width="150" data-min="0" data-displayPrevious=true data-max="400" data-step="45" value="45" data-fgColor="#81C500"/>                                         
+                   </div> -->
+                 <div class="table-responsive"  width="100%">
+                    <table class="table table-bordered table-striped table-actions">
+                      <thead class="theadresponsive" style="display: none;">
+                <tr>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody class="tbodyt">    
+                          <tr>                         
+                          <td width="20%"><div id="receita_emp" ></div></td>
+                          <td width="30%"><div id="receita_ccu" ></div></td>
+                          <td width="20%"><div id="receita_ano"> </div></td>
+                          <td width="50%"><div id="receita_mes"> </div></td>
+                         <!-- <th width="10%"><div>  <label>Mostrar Tabela</label>
+                                                 <label class="switch"><input type="checkbox" class="check" /><span></span></label> </div></th> -->
+                          </tr>                                                               
+                       <tr>
+                        <td width="100%" colspan="4"><div id="chart_receita" style="padding-top: 15px"></div></td>
+                      
+                        </tr>
+                       
+                      </tbody> 
+                    </table>   
+                  </div>
+                 </div>
+                </div>
+            
+            </div>
+        </div>
+
 
     <div class="col-md-3 scCol">
       <div class="widget widget-default widget-item-icon" id="grid1">
@@ -1007,20 +1089,21 @@ $("#btnanalise").click(function(e){
    google.charts.load('current', {'packages':['corechart', 'table', 'gauge', 'controls']});
    google.charts.setOnLoadCallback(drawMainDashboard);
    google.charts.setOnLoadCallback(drawMainTurnover);
+   google.charts.setOnLoadCallback(drawMainReceita);
  
 //bind a resizing function to the window
-$(window).resize(function() {
-    if(this.resizeTO) clearTimeout(this.resizeTO);
-    this.resizeTO = setTimeout(function() {
-        $(this).trigger('resizeEnd');
-}, 500);
-});
+//$(window).resize(function() {
+ //   if(this.resizeTO) clearTimeout(this.resizeTO);
+  //  this.resizeTO = setTimeout(function() {
+     //   $(this).trigger('resizeEnd');
+//}, 500);
+//});
 //usage of resizeEnd
 
-$(window).bind('resizeEnd', function() {
-    drawMainDashboard();
-    drawMainTurnover();
-});
+//$(window).bind('resizeEnd', function() {
+  //  drawMainDashboard();
+ //   drawMainTurnover();
+//});
 
   function drawMainDashboard(operacao) {
 
@@ -1438,6 +1521,267 @@ function drawMainTurnover() {
 
 }    
 
+function drawMainReceita() {
+    var dashboard2 = new google.visualization.Dashboard(
+        document.getElementById('dashboard_receita'));
+
+
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Ano');
+    data.addColumn('date', 'Mes');  
+    data.addColumn('number', 'Receita Bruta');
+    data.addColumn('number', 'Valor Folha Pagamento');
+    data.addColumn('number', 'Salários');  
+    data.addColumn('number', 'Pró Labore');  
+    data.addColumn('number', 'Hora Extra');   
+    data.addColumn('number', 'Comissão');   
+    data.addColumn('number', 'Benefícios');
+    data.addColumn('number', 'Outros Custos');   
+    data.addColumn('string', 'Cargo');
+    data.addColumn('string', 'Empresa');
+    data.addColumn('string', 'Centro de Custo');
+    data.addRows([
+['2016',new Date('2016/09/01'),225000.00, 125860.00,16780.00,5280.20,9980.20,760.20,611.20,111.20,'Assistente administrativo','HCM Consultoria','administrativo'],
+['2016',new Date('2016/10/01'),325450.00, 165860.00,4780.00, 678.80,1440.20,7810.20,6721.20,121.20,'Operador de maquina','HCM Consultoria','Operacional'],
+['2016',new Date('2016/11/01'),228903.20, 165840.00,46780.00,6380.20,120.00,710.20,61210.20,19.20,'Assistente administrativo','HCM Consultoria','administrativo'],
+['2016',new Date('2016/12/01'),435030.00, 25860.00,56780.00,68.20,180.20,80.20,610.20,3451.20,'Assistente RH','HCM Consultoria','recursos humanos'],
+['2017',new Date('2017/01/01'),545030.00, 21840.00,5568.00,6760.20,1720.10,10.20,621.20,5367.89,'Assistente administrativo','HCM Consultoria','administrativo'],
+['2017',new Date('2017/02/01'),1125230.00, 12840.00,5168.00,2760.20,1320.10,110.20,421.20,567.89,'Assistente administrativo','HCM Consultoria','administrativo'],
+['2017',new Date('2017/03/01'),524500.00, 155860.00,34580.00,80.20,1530.20,720.24,644.20,67655.90,'Assistente administrativo','HCM Consultoria','administrativo'],
+['2017',new Date('2017/04/01'),426600.00, 11584.00,46560.00,671.20,1210.20,75.20,61919.20,2543.90,'Engenheiro','HCM Engenharia','Engenharia'],
+
+    ]);
+
+  var categoryPicker3 = new google.visualization.ControlWrapper({
+        controlType: 'DateRangeFilter',
+        containerId: 'receita_mes',
+        options: {
+            filterColumnLabel: 'Mes',
+            ui: {
+                labelStacking: 'horizontal',
+                 'format': { 'pattern': 'MM/yyyy' },
+                allowTyping: false,
+                allowMultiple: false,
+                height: 100
+            }
+        },
+        //state: {
+          //  selectedValues: ['01/2017']
+        //}
+    });
+
+    var categoryPickeremp2 = new google.visualization.ControlWrapper({
+      'controlType': 'CategoryFilter',
+      'containerId': 'receita_emp',
+      'options': {
+        //'filterColumnIndex': 8,
+        'filterColumnLabel': 'Empresa',
+        'ui': {
+          'labelStacking': 'horizontal',
+          'label': 'Empresa:',
+          'allowTyping': false,
+          'allowMultiple': true,
+          'selectedValuesLayout': 'belowWrapping',
+          'caption' : 'Selecione'
+        }
+      }
+    });
+
+     var categoryPickerccu2 = new google.visualization.ControlWrapper({
+      'controlType': 'CategoryFilter',
+      'containerId': 'receita_ccu',
+      'options': {
+       // 'filterColumnIndex': 5,
+       'filterColumnLabel': 'Centro de Custo',
+        'ui': {
+          'labelStacking': 'horizontal',
+          'label': 'Centro de Custo:',
+          'allowTyping': false,
+          'allowMultiple': true,
+          'selectedValuesLayout': 'aside',
+          'caption' : 'Selecione'
+        }
+      }
+    }); 
+
+  var categoryPickerano2 = new google.visualization.ControlWrapper({
+      'controlType': 'CategoryFilter',
+      'containerId': 'receita_ano',
+      'options': {
+       // 'filterColumnIndex': 5,
+       'filterColumnLabel': 'Ano',
+        'ui': {
+          'labelStacking': 'horizontal',
+          'label': 'Ano:',
+          'allowTyping': false,
+          'allowMultiple': false,
+        //  'selectedValuesLayout': 'aside',
+          'caption' : 'Selecione'
+        }
+      }
+    });      
+
+    var dateTicks = [];
+    for (var m = 1; m <= 12; m++)
+        dateTicks.push(new Date('2016-' + m));
+
+    var ticks = [];
+
+    for (var i = 0; i < data.getNumberOfRows(); i++) {
+
+      ticks.push(data.getValue(i, 1));
+
+    }
+
+    // Define a Bar chart
+    var chart1 = new google.visualization.ChartWrapper({
+        chartType: 'ComboChart',
+        containerId: 'chart_receita',
+        options: {
+            focusTarget: 'category',
+            width: '100%',
+           height: 400,
+            vAxis: {
+                textStyle: {
+                    fontSize: 12,
+                    fontName: 'Arial'
+                }
+               // viewWindowMode: 'maximized'
+
+            },
+            hAxis: {
+
+               format: 'MM/yyyy',
+               // ticks: ticks
+                ticks: [new Date(2016,09,01),new Date(2016,10,01), new Date(2016,11,01),new Date(2016,12,01), new Date(2017,01,01),new Date(2017,02,01),new Date(2017,03,01),new Date(2017,04,01)] 
+              
+            },
+
+            animation: {
+                duration: 1000,
+                easing: 'out'
+            },
+           // legend: 'none',
+            title: 'Receita x Folha de Pagamento',
+             seriesType: 'bars',
+             series: {
+            0: {  // set the options for the first series (columns)
+                type: "line",
+                targetAxisIndex: 1,
+
+            },
+            1: {  // set the options for the first series (columns)
+                type: "line",
+                targetAxisIndex: 1,
+
+            }
+        }
+        },
+        // Instruct the barchart to use columns 2, 3, 4 and 5
+        // from the 'data' DataTable.
+        view: {
+            columns: [1, 2,3,4,5,6,7,8,9]
+        }
+    });
+
+  var cssClassNames = {
+              'headerRow': 'cssHeaderRow',
+              'tableRow': 'cssTableRow',
+              'oddTableRow': 'cssOddTableRow',
+              'selectedTableRow': 'cssSelectedTableRow',
+              'hoverTableRow': 'cssHoverTableRow',
+              'headerCell': 'cssHeaderCell',
+              'tableCell': 'cssTableCell',
+              'rowNumberCell': 'cssRowNumberCell'
+          };
+
+    var table1 = new google.visualization.ChartWrapper({
+      chartType: 'Table',
+      containerId: 'table_receita',
+      options: {allowHtml: true,
+        width: '100%',
+        height: '50%',
+        page: 'enable',
+        cssClassNames: cssClassNames,
+        pageSize: 5
+      },
+      view: {
+        columns: [4,5,6,7,8]
+      }
+
+    });
+
+
+    //chama o modal
+  google.visualization.events.addListener(chart1, 'ready', function() {
+       // grab a few details before redirecting
+     google.visualization.events.addListener(chart1.getChart(), 'select', function() {
+          var selection = chart1.getChart().getSelection();
+           // get the data used by the chart
+       
+       if (selection.length) {
+            // the user selected a bar
+           // alert(data.getValue(selection[0].row, 1));
+            var teste2 = data.getValue(selection[0].row, 1);
+            var teste1 = data.getValue(selection[0].row, 2);
+        }
+        else {
+            // the user deselected a bar
+        }
+
+               var titulo = "Exportação dados";
+              $( "#dadosedit" ).html("<img id='load' src='<?php echo base_url('img/loaders/default.gif') ?>' alt='Loading...' >");
+              $("#titulomodal").text(titulo);
+              $('#myModal').modal('show');
+
+              $.ajax({             
+                  type: "POST",
+                  url: '<?php echo base_url('gestor/view_tabelasdashs') ?>',
+                  dataType : 'html',
+                  secureuri:false,
+                  cache: false,
+                  data:{
+                    mesano: teste1,
+                    testes: teste1
+                  },              
+                  success: function(msg) 
+                  {
+                    //console.log(msg);
+                    $( "#dadosedit" ).html(msg);
+                  } 
+              });
+
+
+      });
+     });
+
+    var formatter1 = new google.visualization.DateFormat({pattern: 'MM/yyyy'});
+     formatter1.format(data,1);
+
+    var formatter2 = new google.visualization.NumberFormat({pattern: 'R\u00A4 #,###########0.00'});
+
+    formatter2.format(data,2);
+    formatter2.format(data,3);
+    formatter2.format(data,4);
+    formatter2.format(data,5);
+    formatter2.format(data,6);
+    formatter2.format(data,7);
+    formatter2.format(data,8);
+    formatter2.format(data,9);
+
+    dashboard2.bind(categoryPickeremp2,categoryPickerccu2);
+    dashboard2.bind(categoryPickerccu2,categoryPickerano2);
+    dashboard2.bind(categoryPickerano2,categoryPicker3);
+    dashboard2.bind(categoryPicker3, [chart1]);
+    dashboard2.draw(data); 
+
+
+}  
+
 </script>
+<script type="text/javascript" src="js/plugins/rangeslider/jQAllRangeSliders-min.js"></script>       
+<script type="text/javascript" src="js/plugins/knob/jquery.knob.min.js"></script>
+<script type='text/javascript' src='js/plugins/icheck/icheck.min.js'></script>
+<script type="text/javascript" src="js/plugins/mcustomscrollbar/jquery.mCustomScrollbar.min.js"></script>
 <script type="text/javascript" src="js/plugins/rangeslider/jQAllRangeSliders-min.js"></script>       
 <script type="text/javascript" src="js/plugins/knob/jquery.knob.min.js"></script>

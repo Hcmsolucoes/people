@@ -648,20 +648,21 @@
 						<tbody>
 							<?php 
                                 $porc="";
-                                if (count($histsalarios)>1) {
-									/*   $ult_salario = $histsalarios[count($histsalarios) -1]->sal_valor;
+                                if (count($histsalarios)>0) {
+									/*
 										$pri_salario = $histsalarios[0]->sal_valor;
 										$porcentagem = 100 - (($pri_salario * 100) / $ult_salario);
 										$porc = number_format($porcentagem, 2). "%";                                  
-									*/ }
+									*/ 
+									$ult_salario = $histsalarios[count($histsalarios) -1]->sal_valor;
 									
-									$sal =0;
-									foreach ($histsalarios as $key => $value) {
-										
-										$porcentagem = 100 - (($sal * 100) / $value->sal_valor);
-										$porc = number_format($porcentagem, 2). "%";
-										$sal = $value->sal_valor;
-										
+									while ($value = current($histsalarios)) {
+
+										$sal = next($histsalarios);
+										$sal = (is_object($sal))? $sal->sal_valor : $ult_salario;
+										$porcentagem = (($value->sal_valor * 100) / $sal ) - 100;
+										$porc = number_format($porcentagem, 2). "%";					
+										//$sal = $value->sal_valor;
 										$valor = number_format($value->sal_valor, 2,".", ",");
 										$datadeinicio = $this->Log->alteradata1( $value->sal_dataini );
 									?>
@@ -671,12 +672,8 @@
 										<td><?php echo $porc;  ?></td>
 										<td><?php echo $datadeinicio; ?></td>
 									</tr>
-							<?php }  ?>
-							<!--<tr>
-								<td></td>
-								<td class="green bold"><?php echo $porc; ?> <span class="fa fa-arrow-up"></span> </td>
-								<td></td>
-							</tr>-->
+							<?php }  } ?>
+							
 						</tbody>
 					</table>
 				</div>

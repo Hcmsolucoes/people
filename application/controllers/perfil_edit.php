@@ -81,6 +81,8 @@ class Perfil_edit extends CI_Controller {
 
             if (!empty($this->input->post('for_senha'))) {$dados['fun_senha'] = $this->input->post('for_senha'); }
             if (!empty($this->input->post('for_senhaconfirma'))) {$dados['fun_senhaconfirma'] = $this->input->post('for_senhaconfirma'); }
+            if (!empty($this->input->post('usu_perfil'))) {$dados['fun_perfil'] = $this->input->post('usu_perfil'); }
+
 
             if($dados['fun_senha'] != $dados['fun_senhaconfirma']){
 
@@ -124,25 +126,28 @@ class Perfil_edit extends CI_Controller {
 
                 unset($dados['fun_senhaconfirma']);
                 $dados['fun_senha'] = md5($dados['fun_senha']);
+                $pass = $dados['fun_senha'];
 
                 $iduser = (!empty($this->input->post('colaborador')) )? $this->input->post('colaborador') : $this->session->userdata('id_funcionario');
                 
                 $this->db->where('fun_idfuncionario', $iduser);
                 $this->db->update('funcionario', $dados);
 
-                $dados['usu_senha'] = $dados['fun_senha'];
-                unset($dados['fun_senha']);
+                unset($dados);
 
                 $this->db->select('*');
                 $this->db->from('usuarios');
                 $this->db->where('usu_idfuncionario',$iduser);
                 $usuario = $this->db->get()->result();
 
+                if (!empty($this->input->post('usu_email'))) {$dados['usu_email'] = $this->input->post('usu_email'); }
+                if (!empty($this->input->post('usu_perfil'))) {$dados['usu_perfil'] = $this->input->post('usu_perfil'); }
+
                 if($usuario)
                 {
-
-                $this->db->where('usu_idfuncionario',$this->session->userdata('id_funcionario'));
-                $this->db->update('usuarios', $dados);                    
+                    $dados['usu_senha'] = $pass;
+                    $this->db->where('usu_idfuncionario', $iduser);
+                    $this->db->update('usuarios', $dados);                    
 
                 }
                 //echo $this->db->last_query();
