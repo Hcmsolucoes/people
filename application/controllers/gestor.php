@@ -432,7 +432,11 @@ public function solicitacoes(){
 
     
     $this->db->where('idempresa',$idempresa);
+    $this->db->order_by("descricao", "asc");
     $dados['cargos'] = $this->db->get('tabelacargos')->result();
+
+    $this->db->where('idempresa',$idempresa);
+    $dados['centrocusto'] = $this->db->get('tabelacentrocusto')->result();
 
     
     $this->db->select('tema_cor, tema_fundo');
@@ -460,6 +464,12 @@ public function salvarDesligamento(){
     if (!empty($this->input->post('motivo') ) ) {
         $dados['motivo_solicitacao'] = utf8_decode($this->input->post('motivo'));
     }
+    if (!empty($this->input->post('selectmotivo') ) ) {
+        $dados['motivo_desligamento'] = $this->input->post('selectmotivo');
+    }
+    if (!empty($this->input->post('reposicao') ) ) {
+        $dados['ic_reposicao_vaga'] = $this->input->post('reposicao');
+    }
     $dados['data_efetiva'] = $this->Log->alteradata2( $this->input->post('dt_desligamento') );
     $pag = (!empty($this->input->post('pag')) )? $this->input->post('pag'): 'gestor/solicitacoes';
 
@@ -480,7 +490,7 @@ public function salvarDesligamento(){
         $this->db->insert("solicitacoes", $dados);
         echo $this->db->insert_id();
     }
-    //
+
  }
 
 public function salvarAumentoSalaral(){
@@ -566,6 +576,54 @@ public function salvarMudancaCargo(){
     }
  }
 
+public function salvarQuadro(){
+
+    $iduser = $this->session->userdata('id_funcionario');
+    $idempresa = $this->session->userdata('idempresa');
+    $idcliente = $this->session->userdata('idcliente');    
+    $pag = (!empty($this->input->post('pag')) )? $this->input->post('pag'): 'gestor/solicitacoes';
+
+    if (!empty($this->input->post('dt_aumento_quadro') ) ) {
+    $dados['data_efetiva'] = $this->Log->alteradata2( $this->input->post('dt_aumento_quadro') );
+    }  
+
+    if (!empty($this->input->post('fk_cargo') ) ) {
+        $dados['fk_cargo'] = $this->input->post('fk_cargo');
+    }
+
+    if (!empty($this->input->post('selectipo') ) ) {
+        $dados['motivo_aumento'] = $this->input->post('selectipo');
+    }
+    if (!empty($this->input->post('centrocusto') ) ) {
+        $dados['fk_centrocusto'] = $this->input->post('centrocusto');
+    }
+
+    if (!empty($this->input->post('quadro_obs') ) ) {
+        $dados['motivo_solicitacao'] = utf8_decode($this->input->post('quadro_obs'));
+    }
+    if (!empty($this->input->post('quadro_salario'))) {
+       $dados['valor_aumento'] = $this->util->floatParaInsercao($this->input->post('quadro_salario'));
+    }
+
+    if ( !empty($this->input->post('alterar_quadro')) ) {
+
+        $idsol = $this->input->post('solicitacao');
+        $this->db->where("solicitacao_id", $idsol);
+        $this->db->update("solicitacoes", $dados);
+        header("Location: ". base_url($pag) );
+        exit;
+    }else{
+
+        $dados['idcliente'] = $idcliente;
+        $dados['idempresa'] = $idempresa;
+        $dados['id_solicitante'] = $iduser;
+        $dados['fk_tipo_solicitacao'] = $this->input->post('tipo');
+        $dados['sol_idfuncionario'] = $this->input->post('colaborador');
+        $this->db->insert("solicitacoes", $dados);
+        echo $this->db->insert_id();
+    }
+}
+
 public function minhaSolicitacao(){
 
    $iduser = $this->session->userdata('id_funcionario');
@@ -581,7 +639,7 @@ public function minhaSolicitacao(){
     $this->db->join('solicitacao_tipo', "fk_tipo_solicitacao = id_tipo_solicitacao");
     $this->db->join('solicitacao_status', "id_status_solicitacao = solicitacao_status");
     $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
-    $this->db->join("salarios", "sal_idfuncionario = fun_idfuncionario");
+    $this->db->join("salarios", "sal_idfuncionario = fun_idfuncionario", "left");
     $this->db->where('solicitacao_id', $idsolicitacao);
     $dados['solicitacao'] = $this->db->get('solicitacoes')->row();
     if (!empty($this->input->post('pag'))) {
@@ -701,7 +759,7 @@ public function solicitacao_busca(){
     $id = $this->input->post('id');
     $this->db->select("fun_idfuncionario, fun_foto, fun_nome, fun_status, fun_sexo, contr_cargo, fun_matricula, contr_data_admissao, contr_departamento, sal_valor");
     $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
-    $this->db->join("salarios", "sal_idfuncionario = fun_idfuncionario");
+    $this->db->join("salarios", "sal_idfuncionario = fun_idfuncionario", "left");
     $this->db->where("fun_idfuncionario", $id);
     $this->db->order_by("sal_idsalarios", "desc");
 
@@ -1245,7 +1303,7 @@ public function excluircargocurso(){
 
 public function colab_cargo(){
 
-     $idfun = $this->input->post("id");
+    $idfun = $this->input->post("id");
     $this->db->select('fun_nome, fun_foto, fun_status, fun_sexo, fun_matricula, contr_cargo, fk_idcargo, contr_data_admissao, contr_departamento, sal_valor');
 
     $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
@@ -1256,14 +1314,22 @@ public function colab_cargo(){
     if (!is_object($dados['colaborador'])) {
        return;
     }
+
+    $idcargo = ( !empty($this->input->post("idcargo")) )? $this->input->post("idcargo") : $dados['colaborador']->fk_idcargo;
+
     $this->db->join("cargocurso", "fk_idcurso = idcurso");
     $this->db->join('historicotreinamento', 'idcurso = hist_idcurso AND '.$idfun.' = hist_idfuncionario ', "left");
     $this->db->join('treinamento_status', 'hist_situacao = id_status_treinamento', "left");
-    $this->db->where('fk_idcargo', $dados['colaborador']->fk_idcargo );
+    $this->db->where('fk_idcargo', $idcargo );
     $dados['cursos'] = $this->db->get('cursos')->result();
 
     header ('Content-type: text/html; charset=ISO-8859-1');
-    $this->load->view('/geral/box/analisecargo',$dados);
+    switch ($this->input->post("tela")) {
+        case '1': $this->load->view('/geral/box/analisecargo_a',$dados); break;
+        
+        default: $this->load->view('/geral/box/analisecargo',$dados); break;
+    }
+    
 
 }
 

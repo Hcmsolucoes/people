@@ -898,7 +898,7 @@ class Perfil extends CI_Controller {
         }
         if (!empty($fim)) {
             $dtfim = $this->Log->alteradata2($fim);
-            $this->db->where("datafim < ", $dtfim);
+            $this->db->where("datainicio < ", $dtfim);
         }
         $this->db->where('idfuncionario', $iduser);
         $this->db->order_by("datainicio", "desc");

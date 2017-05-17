@@ -1,4 +1,4 @@
-<div class="fleft-7" style="margin: 10px 0px;border-top: 1px solid #eee;">
+<div  class="fleft-7 fleftmobile histajax" >
 
         <h3 class="">Histórico de Cargos</h3>
 

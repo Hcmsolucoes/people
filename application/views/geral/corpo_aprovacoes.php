@@ -141,6 +141,7 @@
     var titulo = $(this).data("titulo");
     $('#titulomodal').text(titulo);
     $( "#dadosedit" ).html("<img id='load' src='<?php echo base_url('img/loaders/default.gif') ?>' >");
+    $("#myModalTamanho").removeClass("modal-lg");
     $("#myModal").modal('show');
     $.ajax({            
       type: "POST",

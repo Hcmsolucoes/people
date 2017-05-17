@@ -62,10 +62,36 @@ if ($pag == "aprovacao") {
     </span>
   </div>
 
-  </div>
-  <!--<span class="bold">Colaborador: </span><span><?php echo $solicitacao->fun_nome; ?></span>-->
-  
+  </div>  
 </div>
+
+<div class="clearfix"></div>
+
+             <div class="fleft-7" style="margin-top: 20px;">
+                <label for="" class="control-label">Motivo do desligamento</label>
+                <div class="clearfix" ></div>
+                <?php  ?>
+                <select name="selectmotivo" id="selectmotivo" required="true">
+                  <option value="1" <?php echo ($solicitacao->motivo_desligamento==1)? "selected":""; ?>>Pedido de demissão</option>
+                  <option value="2" <?php echo ($solicitacao->motivo_desligamento==2)? "selected":""; ?>>Dispensa sem justa causa</option>
+                  <option value="3" <?php echo ($solicitacao->motivo_desligamento==3)? "selected":""; ?>>Dispensa com justa causa</option>
+                  <option value="4" <?php echo ($solicitacao->motivo_desligamento==4)? "selected":""; ?>>Término do contrato de experiência</option>
+                  <option value="5" <?php echo ($solicitacao->motivo_desligamento==5)? "selected":""; ?>>Rescisão antecipada do contrato de experiência pelo empregador</option>
+                  <option value="6" <?php echo ($solicitacao->motivo_desligamento==6)? "selected":""; ?>>Rescisão antecipada do contrato de experiência pelo funcionário</option>
+                  <option value="7" <?php echo ($solicitacao->motivo_desligamento==7)? "selected":""; ?>>Falecimento do empregado</option>
+                </select>
+             </div>
+
+             <div class="clearfix"></div>
+
+             <div class="fleft-7" style="margin-top: 20px;">
+                <label for="" class="control-label">Reposição de vaga</label>
+                <div class="clearfix" ></div>
+                <select name="reposicao" id="reposicao">
+                  <option value="0" <?php echo ($solicitacao->ic_reposicao_vaga==0)? "selected":""; ?>>Não</option>
+                  <option value="1" <?php echo ($solicitacao->ic_reposicao_vaga==1)? "selected":""; ?>>Sim</option>
+                </select>
+             </div>
 
 
 <div class="clearfix"></div>
@@ -73,7 +99,7 @@ if ($pag == "aprovacao") {
 <img id="load_acao" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Loading...">
 
 <div class="fleft" style="margin-top: 20px;">     
- <label for="motivo" class="control-label">Motivo do desligamento</label>
+ <label for="motivo" class="control-label">Observação</label>
  <div class="clearfix" ></div>
  <textarea required="true" class="form-control" name="motivo" id="motivo" cols="70" rows="5" style="width: 100%" <?php echo $disable; ?>><?php echo $solicitacao->motivo_solicitacao; ?></textarea>
  

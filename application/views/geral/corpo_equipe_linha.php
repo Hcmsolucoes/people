@@ -1,24 +1,48 @@
-<?php 
-
-
-?>
 <style type="text/css">
-    .timeline:before{
-        left: 80%;
-    }
-    .timeline .timeline-item.timeline-main{
-        width: 80%;
-    }
-    .timeline .timeline-item{
-        width: 80%;
-    }
+    
     .pad10{
         padding: 10px;
+    }
+    @media (max-width: 500px) {
+
+        .timeline .timeline-item .timeline-item-info{
+            left: 29%;
+            margin-top: 30px;
+
+        }
+        .timeline .timeline-item{
+            width: 100%;
+        }
+        .timeline .timeline-item .timeline-item-content{
+            margin: 30% 0px 20px 0px;
+            width: 100%;
+        }
+        .timeline .timeline-item .timeline-item-icon{
+            left: 42%;
+            top: -15px;
+            right: 0px;
+        }
+        .timeline-heading{
+            text-align: center;
+        }
+    }
+    @media (min-width: 1000px) {
+       .timeline:before{
+            left: 80%;
+        }
+
+        .timeline .timeline-item{
+            width: 80%;
+        }
+
+        .timeline .timeline-item.timeline-main{
+            width: 80%;
+        }
     }
 </style>
 <div class="fleft-10">
 
-<div class="fleft-2">
+<div class="fleft-2 fleftmobile">
 <label class=" control-label font-sub">A partir da data</label>
         <div class="" style="margin-right: 10px;">
           <div class='input-group date' >
@@ -30,7 +54,7 @@
         </div>
 </div>
 
-<div class="fleft-2">
+<div class="fleft-2 fleftmobile">
     <label class=" control-label font-sub">Até a data</label>
         <div class="" style="margin-right: 10px;">
           <div class='input-group date' >

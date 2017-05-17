@@ -18,12 +18,29 @@
   .divcombocolab{
     margin-top: 20px;
   }
-  @media (max-width: 400px) 
+  #aum_result, #deslig_result, #alt_result, #mud_result, #trei_result{
+    position: absolute;
+    top: 5%;
+    right: 0%;
+  }
+  .histajax{
+    margin: 90px 0px 10px 0px;
+    border-top: 1px solid #eee;
+  }
+  @media (max-width: 500px) 
 {
   .hcm 
    {
     width: 60%;
    }
+   #aum_result, #deslig_result, #alt_result, #mud_result, #trei_result{
+    position: relative;
+    top: 0px;
+    float: left;
+  }
+  .histajax{
+    margin: 20px 0px;
+  }
 }
 </style>
 <?php
@@ -70,9 +87,10 @@
             <a href="#deslig" aria-controls="abacalendario" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-times"></span> <span class="desc">Desligamento</span></a>
             <a href="#quadro" aria-controls="abacalendario" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-users"></span> <span class="desc">Aumento de Quadro</span></a>
             <a href="#altsal" aria-controls="abacalendario" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-money"></span> <span class="desc">Alteração Salarial</span></a>
-            <a href="#mudcar" aria-controls="abacalendario" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-random"></span> <span class="desc">Mudança de Cargo</span></a>
-                                   
+            <a href="#mudcar" aria-controls="abacalendario" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-random"></span> <span class="desc">Mudança de Cargo</span></a>                                   
             <a href="#treina" aria-controls="abacalendario" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-thumbs-o-up"></span> <span class="desc">Treinamento</span></a>
+            <a href="#combustivel" aria-controls="" role="tab" data-toggle="tab" class="list-group-item aba"><span class="fa fa-tint"></span> <span class="desc">Vale Combustível</span>
+            </a>
           </div>                        
         </div>
 
@@ -87,7 +105,6 @@
 
     <div class="col-md-9">
 
-
       <div class="tab-content">
 
         <!-- desligamento -->
@@ -97,19 +114,20 @@
              <h3><span class="fa fa-times"></span> Desligamento</h3>
              <form name="form_desligamento" id="form_desligamento">
              <span class="bold">Solicitante: </span><span><?php echo $funcionario[0]->fun_nome; ?></span>
-             <div class="clearfix" style="margin-bottom: 20px;"></div>
+             
+             <div class="clearfix" ></div>
 
-             <div class="fleft-3 hcm">
+             <div class="fleft-3 hcm" >
              <label for="colaboradores" class="control-label">Colaborador</label>
               <select name="colaborador" required="true" id="colaborador" class="selectpicker combocolab" data-live-search="true" data-div="deslig_result">
                <option value="">Colaborador</option>
                <?php foreach ($colaboradores as $key => $value) { ?>
                <option value="<?php echo $value->fun_idfuncionario; ?>"><?php echo $value->fun_nome; ?></option>
                <?php } ?>
-             </select>
+              </select>
 
 
-             <div class="fleft-7 divcombocolab">
+             <div class="fleft-7 fleftmobile divcombocolab">
              <label for="dt_desligamento" class="control-label">Data do desligamento</label>
              <div class='input-group' >
                 <input class="form-control txleft campodata" type="text" name="dt_desligamento" id="dt_desligamento" placeholder="Data do desligamento" required="" data-date-start-date="+0d">
@@ -125,17 +143,44 @@
 
              <div class="clearfix"></div>
 
+             <div class="fleft-7 fleftmobile" style="margin-top: 20px;">
+                <label for="" class="control-label">Motivo do desligamento</label>
+                <div class="clearfix" ></div>
+                <select name="selectmotivo" id="selectmotivo" required="true" style="max-width: 100%">
+                  <option value="">Escolha o Motivo</option>
+                  <option value="1">Pedido de demissão</option>
+                  <option value="2">Dispensa sem justa causa</option>
+                  <option value="3">Dispensa com justa causa</option>
+                  <option value="4">Término do contrato de experiência</option>
+                  <option value="5">Rescisão antecipada do contrato de experiência pelo empregador</option>
+                  <option value="6">Rescisão antecipada do contrato de experiência pelo funcionário</option>
+                  <option value="7">Falecimento do empregado</option>
+                </select>
+             </div>
+
+             <div class="clearfix"></div>
+
+             <div class="fleft-7" style="margin-top: 20px;">
+                <label for="" class="control-label">Reposição de vaga</label>
+                <div class="clearfix" ></div>
+                <select name="reposicao" id="reposicao">
+                  <option value="0">Não</option>
+                  <option value="1">Sim</option>
+                </select>
+             </div>
+
+             <div class="clearfix"></div>
+
              <div class="fleft" style="margin-top: 20px;">             
-             <label for="motivo" class="control-label">Motivo do desligamento</label>
+             <label for="motivo" class="control-label">Observação</label>
              <div class="clearfix" ></div>
                <textarea required="true" class="form-control" name="motivo" id="motivo" cols="70" rows="5" style="width: 100%"></textarea>
                <input type="submit" style="min-width: 105px;" id="salvar_desligamento" name="salvar_desligamento" value="Salvar" class="btn btn-primary">
-               <span style="min-width: 105px;display: none;" id="btnenc" class="btn btn-primary" >Encaminhar</span>
+               <span style="min-width: 105px;display: none;" id="btnenc" class="btn btn-primary encaminhar" data-acao="0" data-load="load_desligamento">Encaminhar</span>
                <span style="min-width: 105px;display: none;" id="limpar" class="btn btn-default" >OK</span>
-               <img id="load_desligamento" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Loading...">
+               <img id="load_desligamento" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" >
              </div>
              <input type="hidden" name="tipo" value="1">
-             <input type="hidden" id="acao_desl" name="acao_desl" value="0">
              </form>
          </div>
        </div>
@@ -148,18 +193,37 @@
              <h3><span class="fa fa-users"></span> Aumento de Quadro</h3>
              <form name="form_quadro" id="form_quadro">
              <span class="bold">Solicitante: </span><span><?php echo $funcionario[0]->fun_nome; ?></span>
-             <div class="clearfix" style="margin-bottom: 20px;"></div>
+             <div class="clearfix"></div>
 
-             <div class="fleft-3 hcm">
+             <div class="fleft-7 fleftmobile" style="margin-top: 20px;">
+                <label for="" class="control-label">Tipo de Aumento</label>
+                <div class="clearfix" ></div>
+                <select name="selectipo" id="selectipo" required="true" style="max-width: 100%;">
+                  <option value="">Escolha o aumento</option>
+                  <option value="1">Aumento de Quadro</option>
+                  <option value="2">Substituição por Desligamento</option>
+                  <option value="3">Substituição por transferência de Centro Custo</option>
+                  <option value="4">Substituição por licença médica</option>
+                </select>
+             </div>
+
+             <div class="clearfix"></div>
+
+             <div class="fleft-3 hcm" style="margin-top: 20px;display: none;" id="colabcentrocusto">
              <label for="colaboradores" class="control-label">Colaborador</label>
-              <select name="colaborador" required="true" id="colaborador" class="selectpicker combocolab" data-live-search="true" data-div="aum_result">
+              <select name="colaborador" required="true" id="colaborador_quadro" class="selectpicker combocolab" data-live-search="true" data-div="aum_result">
                <option value="">Colaborador</option>
                <?php foreach ($colaboradores as $key => $value) { ?>
                <option value="<?php echo $value->fun_idfuncionario; ?>"><?php echo $value->fun_nome; ?></option>
                <?php } ?>
              </select>
-            
-            <div class="fleft-7 divcombocolab">
+           </div>
+
+           <div id="aum_result"></div>
+
+           <div class="clearfix"></div>
+
+           <div class="fleft-2 fleftmobile divcombocolab">
              <label for="dt_desligamento" class="control-label">Data Aumento de Quadro</label>
              <div class='input-group' >
                 <input class="form-control txleft campodata" type="text" name="dt_aumento_quadro" id="dt_aumento_quadro" placeholder="Data do Aumento" required="" data-date-start-date="+0d">
@@ -169,19 +233,52 @@
              </div>
              </div>
 
-           </div>
-           <div id="aum_result"></div>
+             <div class="clearfix"></div>
+
+           <div class="fleft-3 fleftmobile " style="margin-top: 20px;">
+             <label for="colaboradores" class="control-label">Cod. Centro de Custo</label>
+              <select name="centrocusto" required="true" id="centrocusto" class="selectpicker " data-live-search="true" data-div="">
+               <option value="">Centro de Custo</option>
+               <?php foreach ($centrocusto as $key => $value) { ?>
+               <option value="<?php echo $value->idcentro; ?>"><?php echo $value->descricao; ?></option>
+               <?php } ?>
+              </select>
+            </div>
+
+             <div class="clearfix"></div>
+
+             <div class="fleft-3 fleftmobile " style="margin-top: 20px;">
+             <label for="" class="control-label">Cargo</label>
+             <select name="fk_cargo" required="true" id="quadro_cargo" class="form-control" >
+               <option value="">Selecione</option>
+               <?php foreach ($cargos as $key => $value) { ?>
+               <option value="<?php echo $value->idcargo; ?>"><?php echo $value->descricao; ?></option>
+               <?php } ?>
+             </select>
+             </div>
+
+             <div class="clearfix"></div>
+
+             <div class="fleft-3 fleftmobile " style="margin-top: 20px;">
+             <label for="" class="control-label">Salário</label>
+             <div class="input-group">                                            
+              <span class="input-group-addon">R$</span>
+              <input type="text" name="quadro_salario" id="quadro_salario" class="form-control campomoeda" placeholder="Novo Valor">
+            </div>
+             </div>
 
              <div class="clearfix"></div>
 
              <div class="fleft" style="margin-top: 20px;">             
-             <label for="motivo" class="control-label">Motivo do Aumento</label>
+             <label for="motivo" class="control-label">Observação</label>
 
              <div class="clearfix" ></div>
 
-               <textarea required="true" class="form-control" name="motivo" id="motivo" cols="70" rows="5" style="width: 100%"></textarea>
-               <input type="submit" style="" name="salvar_aumento" value="Salvar" class="btn btn-primary">
-               <img id="load_quadro" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Loading...">
+               <textarea required="true" class="form-control" name="quadro_obs" id="quadro_obs" cols="70" rows="5" style="width: 100%"></textarea>
+               <input type="submit" style="" name="salvar_quadro" value="Salvar" class="btn btn-primary">
+               <span style="min-width: 105px;display: none;" id="enc_quad" class="btn btn-primary encaminhar" data-load="load_quadro" data-acao="0">Encaminhar</span>
+               <span style="min-width: 105px;display: none;" id="limpar_quadro" class="btn btn-default" >OK</span>
+               <img id="load_quadro" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" >
              </div>
              <input type="hidden" name="tipo" value="2">
              </form>
@@ -212,7 +309,7 @@
              </select>
              </div>
 
-             <div class="fleft-7 divcombocolab">
+             <div class="fleft-7 fleftmobile divcombocolab">
              <label for="dt_desligamento" class="control-label">Data da alteração</label>
              <div class='input-group' >
                 <input class="form-control txleft campodata" type="text" name="dt_aumento" id="dt_aumento" placeholder="Data da alteração" required="" data-date-start-date="+0d">
@@ -222,7 +319,7 @@
              </div>
              </div>
 
-             <div class="fleft-7" style="margin-top: 20px;">
+             <div class="fleft-7 fleftmobile" style="margin-top: 20px;">
               <label for="" class="control-label">Motivo do alteração</label>
                <select name="motivo_aumento" required="true" id="motivo_aumento" class="form-control" >
                <option value="">Selecione</option>
@@ -232,7 +329,7 @@
                </select>
              </div>
 
-             <div class="fleft-8" style="margin-top: 20px;">
+             <div class="fleft-8 fleftmobile" style="margin-top: 20px;">
              <label for="" class="control-label">Novo Valor Proposto</label>
 
              <div class="input-group">                                            
@@ -256,14 +353,13 @@
 
                <textarea required="true" class="form-control" name="sal_obs" id="sal_obs" cols="70" rows="5" style="width: 100%"></textarea>
                <input type="submit" style="min-width: 105px;" name="salvar_aumento" id="salvar_aumento" value="Salvar" class="btn btn-primary">
-               <span style="min-width: 105px;display: none;" id="enc_sal" class="btn btn-primary" >Encaminhar</span>
+               <span style="min-width: 105px;display: none;" id="enc_sal" class="btn btn-primary encaminhar" data-load="load_aumento" data-acao="0">Encaminhar</span>
                <span style="min-width: 105px;display: none;" id="limpar_sal" class="btn btn-default" >OK</span>
-               <img id="load_aumento" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Loading...">
+               <img id="load_aumento" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>">
                
              </div>
 
              <input type="hidden" name="tipo" value="3">
-             <input type="hidden" id="acao_aumento" name="acao_aumento" value="0">
              </form>
 
       
@@ -289,7 +385,7 @@
                <?php } ?>
              </select>
 
-             <div class="fleft-7 divcombocolab" style="margin-bottom: 20px;">
+             <div class="fleft-7 fleftmobile divcombocolab" style="margin-bottom: 20px;">
              <label for="" class="control-label">Data da mudança</label>
              <div class='input-group' >
                 <input class="form-control txleft campodata" type="text" name="dt_mudanca" id="dt_mudanca" placeholder="Data da mudança" required="" data-date-start-date="+0d">
@@ -299,7 +395,7 @@
              </div>
              </div>
 
-             <div class="fleft-7 " style="margin-bottom: 20px;">
+             <div class="fleft-7 fleftmobile " style="margin-bottom: 20px;">
              <label for="" class="control-label">Motivo da mudança</label>
              <select name="motivo_aumento" required="true" id="mud_motivo" class="form-control" >
                <option value="">Selecione</option>
@@ -309,7 +405,7 @@
                </select>
              </div>
 
-             <div class="fleft-7 ">
+             <div class="fleft-7 fleftmobile ">
              <label for="" class="control-label">Novo Cargo</label>
              <select name="fk_cargo" required="true" id="fk_cargo" class="form-control" >
                <option value="">Selecione</option>
@@ -322,6 +418,7 @@
            </div>
            <div id="mud_result"></div>
            <div id="mud_hist"></div>
+           <div id="carcur"></div>
 
              <div class="clearfix"></div>
 
@@ -332,24 +429,23 @@
 
                <textarea required="true" class="form-control" name="obs_mudanca" id="obs_mudanca" cols="70" rows="5" style="width: 100%"></textarea>
                <input type="submit" style="" name="salvar_aumento" value="Salvar" class="btn btn-primary">
-               <span style="min-width: 105px;display: none;" id="enc_mud" class="btn btn-primary" >Encaminhar</span>
+               <span style="min-width: 105px;display: none;" id="enc_mud" class="btn btn-primary encaminhar" data-load="load_mudanca" data-acao="0">Encaminhar</span>
                <span style="min-width: 105px;display: none;" id="limpar_mud" class="btn btn-default" >OK</span>
-               <img id="load_mudanca" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Loading...">
+               <img id="load_mudanca" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>">
              </div>
              <input type="hidden" name="tipo" value="4">
-             <input type="hidden" id="acao_mudanca" name="acao_mudanca" value="0">
              </form>
        
      </div>
         </div>
 		<!-- fim mudança de cargo -->				
 		
-        <!-- solicitação férias
-        <div role="tabpanel" class="tab-pane" id="ferias">
+        <!-- solicitação combustivel -->
+        <div role="tabpanel" class="tab-pane" id="combustivel">
          <div class="widget widget-default">
            <div class="col-md-12">
-             <h3><span class="fa fa-plane"></span> Solicitação Férias</h3>
-             <form name="form_ferias" id="form_ferias">
+             <h3><span class="fa fa-tint"></span> Vale Combustível</h3>
+             <!--<form name="form_ferias" id="form_ferias">
              <span class="bold">Solicitante: </span><span><?php echo $funcionario[0]->fun_nome; ?></span>
              <div class="clearfix" style="margin-bottom: 20px;"></div>
 
@@ -387,10 +483,10 @@
                <img id="load_desligamento" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Loading...">
              </div>
              <input type="hidden" name="tipo" value="1">
-             </form>
+             </form>-->
            </div>
          </div>
-       </div> -->
+       </div>
 		<!-- fim solicitação férias -->					
 
         <!-- treinamento -->
@@ -445,7 +541,7 @@
              <div class="clearfix" ></div>
                <textarea required="true" class="form-control" name="motivo" id="motivo" cols="70" rows="5" style="width: 100%"></textarea>
                <input type="submit" style="" name="salvar_desligamento" value="Salvar" class="btn btn-primary">
-               <img id="load_desligamento" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Loading...">
+               <img id="load_desligamento" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" >
              </div>
              <input type="hidden" name="tipo" value="5">
              </form>
@@ -512,6 +608,15 @@
 
   $(document).ready(function(){
 
+    $("#selectipo").change(function(){
+        if ( $(this).val()>1 ) {
+          $("#colabcentrocusto").slideDown();
+        }else{
+          $("#colabcentrocusto").slideUp();
+          $("[name='colaborador']").val("").change();
+        }
+    });
+
     $(".campomoeda").maskMoney({thousands:'.',decimal:','});
     
     $("#novovalor").blur(function(){
@@ -535,7 +640,7 @@
       $("#motivo").val("");
       $("#colaborador").val("").change();
       $("#deslig_result").html("");
-      $("#acao_desl").val("");
+      $("#btnenc").val("");
       $(this).hide();
       $("#btnenc").hide();
       $("#salvar_desligamento").prop( "disabled", false );
@@ -549,11 +654,27 @@
       $("#colaboradorsal").val("").change();
       $("#aum_result").html("");
       $("#alt_hist").html("");
-      $("#acao_aumento").val("");
+      $("#enc_sal").data("acao", "");
       $(this).hide();
       $("#enc_sal").hide();
       $("#salvar_aumento").prop( "disabled", false );
       $('#altsal').removeClass("active");
+      $(".aba").removeClass("active");
+    });
+    $("#limpar_quadro").click(function(){
+      $("#dt_aumento_quadro").val("");
+      $("#selectipo").val("").change();
+      $("#centrocusto").val("").change();
+      $("#aum_result").html("");
+      $("#colaborador_quadro").val("").change();
+      $("#quadro_cargo").val("").change();
+      $("#enc_quad").data("acao", "");
+      $("#quadro_salario").val("");
+      $("#quadro_obs").val("");
+      $(this).hide();
+      $("#enc_quad").hide();
+      $("#salvar_quadro").prop( "disabled", false );
+      $('#quadro').removeClass("active");
       $(".aba").removeClass("active");
     });
 
@@ -563,7 +684,7 @@
       $("#fk_cargo").val("").change();
       $("#colaboradormud").val("").change();
       $("#mud_result").html("");
-      $("#acao_mudanca").val("");
+      $("#enc_mud").data("acao", 0);
       $(this).hide();
       $("#enc_mud").hide();
       $("#salvar_mudanca").prop( "disabled", false );
@@ -618,46 +739,11 @@
             format: 'dd/mm/yyyy'
         });
 
-    $("#btnenc").click(function(){
-      var id = $("#acao_desl").val();
-      $("#load_desligamento").show();
-
-      $.ajax({          
-        type: "POST",
-        url: '<?php echo base_url("gestor/acao_solicitacao"); ?>',
-        dataType : 'html',
-        data: {
-          id: id,
-          campo: "solicitacao_status",
-          valor: 2
-        },
-
-        success: function(msg){      
-          
-         if(msg === 'erro'){
-
-          $(".alert").addClass("alert-danger")
-          .html("Houve um erro. Contate o suporte.")
-          .slideDown("slow");
-          $(".alert").delay( 3500 ).hide(500);
-
-        }else if(msg>0){      
-          
-          $(".alert").addClass("alert-success");
-          $(".alert").html('Alteração realizada com sucesso.');
-          $(".alert").slideDown(300);
-          $(".alert").delay( 3500 ).slideUp(500, function(){
-            window.location.href = '<?php echo base_url("gestor/solicitacoes"); ?>';
-          });          
-       }
-     } 
-     });
-
-    });
-
-    $("#enc_sal").click(function(){
-      var id = $("#acao_aumento").val();
-      $("#load_aumento").show();
+    
+    $(".encaminhar").click(function(){
+      var id = $(this).data("acao");
+      var load = $(this).data("load");
+      $("#"+load).show();
 
       $.ajax({          
         type: "POST",
@@ -684,7 +770,7 @@
           $(".alert").html('Alteração realizada com sucesso.');
           $(".alert").slideDown(300);
           $(".alert").delay( 3500 ).slideUp(500, function(){
-            window.location.href = '<?php echo base_url("gestor/solicitacoes"); ?>';
+            window.location.reload();
           });          
        }
      } 
@@ -693,9 +779,10 @@
     });
 
     $("#form_desligamento").on("submit", function(e){
-
-      $("#load_desligamento").show();
+      
       e.preventDefault();
+      $("#load_desligamento").show();
+      $("#salvar_desligamento").prop( "disabled", true );
 
       $.ajax({          
         type: "POST",
@@ -715,17 +802,14 @@
         }else if(msg>0){
           $("#btnenc").show();
           $("#limpar").show();
-          $("#salvar_desligamento").prop( "disabled", true );
+          $("#btnenc").data("acao", msg);
           $("#load_desligamento").hide();
           $(".alert").addClass("alert-success");
           $(".alert").html('Solicitação feita com sucesso.');
           $(".alert").slideDown(300);
+          $(".alert").focus();
           $(".alert").delay( 3500 ).slideUp(500);
-          //$("#dt_desligamento").val("");
-          //$("#motivo").val("");
-          //$("#colaborador").val("").change();
-          //$("#deslig_result").html("");
-          $("#acao_desl").val(msg);
+          
        }
 
      } 
@@ -761,8 +845,48 @@
           $(".alert").addClass("alert-success");
           $(".alert").html('Solicitação feita com sucesso.');
           $(".alert").slideDown(300);
+          $(".alert").focus();
           $(".alert").delay( 3500 ).slideUp(500);
-          $("#acao_aumento").val(msg);
+          $("#enc_sal").data("acao", msg);
+       }
+
+     } 
+     });
+
+    });
+
+    $("#form_quadro").on("submit", function(e){      
+
+      e.preventDefault();
+      $("#load_quadro").show();
+      $("#salvar_quadro").prop( "disabled", true );
+
+      $.ajax({          
+        type: "POST",
+        url: '<?php echo base_url("gestor/salvarQuadro"); ?>',
+        dataType : 'html',
+        data: $( this ).serialize(),
+
+        success: function(msg){
+         
+         if(msg === 'erro'){
+
+          $(".alert").addClass("alert-danger")
+          .html("Houve um erro. Contate o suporte.")
+          .slideDown("slow");
+          $(".alert").delay( 3500 ).hide(500);
+
+        }else if(msg>0){
+          $("#enc_quad").show();
+          $("#limpar_quadro").show();
+          //$("#salvar_quadro").prop( "disabled", false );
+          $("#load_quadro").hide();
+          $(".alert").addClass("alert-success");
+          $(".alert").html('Solicitação feita com sucesso.');
+          $(".alert").slideDown(300);
+          $(".alert").focus();
+          $(".alert").delay( 3500 ).slideUp(500);
+          $("#enc_quad").data("acao", msg);
        }
 
      } 
@@ -798,8 +922,9 @@
           $(".alert").addClass("alert-success");
           $(".alert").html('Solicitação feita com sucesso.');
           $(".alert").slideDown(300);
+          $(".alert").focus();
           $(".alert").delay( 3500 ).slideUp(500);
-          $("#acao_mudanca").val(msg);
+          $("#enc_mud").data("acao", msg);
        }
 
      } 
@@ -835,6 +960,7 @@
           $(".alert").addClass("alert-success");
           $(".alert").html('Solicitação feita com sucesso.');
           $(".alert").slideDown(300);
+          $(".alert").focus();
           $(".alert").delay( 3500 ).slideUp(500);
           $("#acao_aumento").val(msg);
        }
@@ -844,42 +970,6 @@
 
     });
 
-    $("#enc_mud").click(function(){
-      var id = $("#acao_mudanca").val();
-      $("#load_mudanca").show();
-
-      $.ajax({          
-        type: "POST",
-        url: '<?php echo base_url("gestor/acao_solicitacao"); ?>',
-        dataType : 'html',
-        data: {
-          id: id,
-          campo: "solicitacao_status",
-          valor: 2
-        },
-
-        success: function(msg){      
-         
-         if(msg === 'erro'){
-
-          $(".alert").addClass("alert-danger")
-          .html("Houve um erro. Contate o suporte.")
-          .slideDown("slow");
-          $(".alert").delay( 3500 ).hide(500);
-
-        }else if(msg>0){      
-          
-          $(".alert").addClass("alert-success");
-          $(".alert").html('Alteração realizada com sucesso.');
-          $(".alert").slideDown(300);
-          $(".alert").delay( 3500 ).slideUp(500, function(){
-            window.location.href = '<?php echo base_url("gestor/solicitacoes"); ?>';
-          });          
-       }
-     } 
-     });
-
-    });
 
     $("#tabelasolicitacoes .linha").click(function(){
       var id = $(this).attr("id");
@@ -983,7 +1073,7 @@
       }
       $.ajax({          
         type: "POST",
-        url: '<?php echo base_url()."gestor/solicitacao_busca"; ?>',
+        url: '<?php echo base_url("gestor/solicitacao_busca"); ?>',
         dataType : 'html',
         data: {
           id: id,
@@ -1004,7 +1094,7 @@ function histsalarial(id, historico, div){
   $("#"+div).html( '<img id="" src="<?php echo base_url('img/loaders/default.gif') ?>">' );
   $.ajax({          
     type: "POST",
-    url: '<?php echo base_url()."gestor/historico"; ?>',
+    url: '<?php echo base_url("gestor/historico"); ?>',
     dataType : 'html',
     data: {
       id: id,
@@ -1019,5 +1109,42 @@ function histsalarial(id, historico, div){
    }
  });
 }
+
+
+$("#fk_cargo").change(function(){
+
+  if ($(this).val()=="") {return false;}
+  var id = $("#colaboradormud").val();
+  var idcargo = $(this).val();
+  $("#carcur").html("<img id='load' src='<?php echo base_url('img/loaders/default.gif') ?>' >")
+  .show();
+
+
+  $.ajax({          
+    type: "POST",
+    url: '<?php echo base_url("gestor/colab_cargo"); ?>',
+    dataType : 'html',
+    data: {
+      id: id,
+      idcargo: idcargo,
+      tela: 1
+    },
+
+    success: function(msg){
+
+      $("#carcur").html(msg).fadeIn();
+      
+    } 
+  });
+});
+
+$("#colaboradormud").change(function(){
+  
+    $("#fk_cargo").val("").change();
+    $("#carcur").html("");
+  
+});
+
+
 
 </script>
