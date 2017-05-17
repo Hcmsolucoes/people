@@ -33,10 +33,9 @@
 </div>
 
 <div class="page-title">                    
-	<h2><span class="fa fa-calendar"></span> Calendário</h2><div style="float: left; font-weight: bold; margin: 8px 0px 0px 10px;" id="itematual"></div>
-	
+	<h2><span class="fa fa-calendar"></span> Calendário</h2>
+	<div style="float: left; font-weight: bold; margin: 8px 0px 0px 10px;" id="itematual"></div>
 </div>
-
 
 <div class="row">
 	<div class="fleft-10">
@@ -46,20 +45,22 @@
 		<div class="col-md-3" >
 			<div class="content-frame-left ">
 				<div class="fleft-10" style="margin-bottom: 10px;">
-					<a href="#addlembrete" id="addlemb" aria-controls="addlembrete" role="tab" data-toggle="tab" class="btn btn-danger btn-block btn-lg"><span class="fa fa-edit"></span> <span class="desc">Novo Lembrete</span> </a>
+					<a href="#addlembrete" id="addlemb" aria-controls="addlembrete" role="tab" data-toggle="tab" class="btn btn-danger btn-block btn-lg">
+					<span class="fa fa-edit"></span> <span class="desc">Novo Lembrete</span>
+					</a>
 				</div>
 				
 				<div class="fleft-10" style="margin-bottom: 10px;">
 					<div class="list-group border-bottom">
-						
 						<a href="#abacalendario" aria-controls="abacalendario" role="tab" data-toggle="tab" class="list-group-item active aba">
-						<span class="fa fa-calendar"></span> <span class="desc">Calendário</span>
+						<span class="fa fa-calendar"></span> 
+						<span class="desc">Calendário</span>
 						</a>
-
+						
 						<a href="#lembrete" aria-controls="lembrete" role="tab" data-toggle="tab" class="list-group-item aba">
-              <span class="fa fa-calendar"></span> <span class="desc">Meus Lembretes</span>
-            </a>
-
+						<span class="fa fa-calendar"></span>
+						<span class="desc">Meus Lembretes</span>
+						</a>						
 					</div>                        
 				</div>
 			</div>
@@ -72,8 +73,9 @@
 				<div role="tabpanel" class="tab-pane " id="lembrete">
 					
 					<div class="widget widget-default">
+					<h3 class=""><span class="fa fa-calendar"></span> Meus Lembretes</h3>
 						<div class="col-md-12">
-							<strong>Meus lembretes</strong>
+					
 							<table id="tabela" class="table table-striped table-hover table-condensed table-responsive">
 								<thead>
 									<tr>
@@ -85,8 +87,7 @@
 										<th>Ações</th>
 									</tr>
 								</thead>
-								<tb.
-								6ody>
+								<tbody>
 									<?php
 										
 										foreach ($lem as $key => $value) {
@@ -587,180 +588,179 @@
 				}); 
 				}else{
 				$("#div_dep, #div_colab").html("");
-				}//if busca
-				});
-				
-				$(document).on("click",".exc", function(){
-				var id = $(this).attr("rm");
-				
-				$("#dep"+id).fadeOut("slow", function() {
+			}//if busca
+		});
+		
+		$(document).on("click",".exc", function(){
+			var id = $(this).attr("rm");
+			
+			$("#dep"+id).fadeOut("slow", function() {
 				$(this).remove();
 				$("#depart"+id).remove();
-				});
-				
-				
-				$("#colabor"+id).fadeOut("slow", function() {
+			});
+			
+			
+			$("#colabor"+id).fadeOut("slow", function() {
 				$(this).remove();
 				$("#colabs"+id).remove();
-				});
-				
-				
-				});
-				
-				//click no item do autocompletar departamento
-				$(document).on("click",".itemdep", function(){
-				var nome = $(this).data("nome");
-				var id = $(this).attr("id");    
-				
-				$("#busca_dep").val("");
-				
-				$("#busca_dep").before("<div class='btn btn-default fleft' id='dep"+id+"'>"+nome+" <i rm='"+id+"' class='fa fa-times exc'> </i></div>");
-				$("<input type='hidden' name='depts[]' id='depart"+id+"' value='"+id+"' >").appendTo("#selecionados");
-				
-				$("#div_dep").html(""); 
-				
-				});
-				
-				//click no item do autocompletar colaborador
-				$(document).on("click",".itemcolab", function(){
-				var nome = $(this).data("nome");
-				var id = $(this).attr("id");    
-				
-				$("#busca_colab").val("");
-				
-				$("#busca_colab").before("<div class='btn btn-default fleft' id='colabor"+id+"'>"+nome+" <i rm='"+id+"' class='fa fa-times exc'> </i></div>");
-				$("<input type='hidden' name='colabs[]' id='colabs"+id+"' value='"+id+"' >").appendTo("#selecionados");
-				
-				$("#div_colab").html(""); 
-				
-				});
-				
-				$(document).on("click",".itemcolabmsg", function(){
-				var nome = $(this).data("nome");
-				var id = $(this).attr("id");    
-				
-				$("#msgcolab").val("");
-				
-				$("#msgcolab").before("<div class='btn btn-default fleft' id='colabor"+id+"'>"+nome+" <i rm='"+id+"' class='fa fa-times exc'> </i></div>");
-				$("<input type='hidden' name='colabs[]' id='colabs"+id+"' value='"+id+"' >").appendTo("#msgselecionados");
-				
-				$("#div_colabmsg").html(""); 
-				
-				});
-				
-				$("#formlembrete").on("submit", function(e){
-				
-				$("#load").show();
-				e.preventDefault();
-				
-				$.ajax({          
+			});
+			
+			
+		});
+		
+		//click no item do autocompletar departamento
+		$(document).on("click",".itemdep", function(){
+			var nome = $(this).data("nome");
+			var id = $(this).attr("id");    
+			
+			$("#busca_dep").val("");
+			
+			$("#busca_dep").before("<div class='btn btn-default fleft' id='dep"+id+"'>"+nome+" <i rm='"+id+"' class='fa fa-times exc'> </i></div>");
+			$("<input type='hidden' name='depts[]' id='depart"+id+"' value='"+id+"' >").appendTo("#selecionados");
+			
+			$("#div_dep").html(""); 
+			
+		});
+		
+		//click no item do autocompletar colaborador
+		$(document).on("click",".itemcolab", function(){
+			var nome = $(this).data("nome");
+			var id = $(this).attr("id");    
+			
+			$("#busca_colab").val("");
+			
+			$("#busca_colab").before("<div class='btn btn-default fleft' id='colabor"+id+"'>"+nome+" <i rm='"+id+"' class='fa fa-times exc'> </i></div>");
+			$("<input type='hidden' name='colabs[]' id='colabs"+id+"' value='"+id+"' >").appendTo("#selecionados");
+			
+			$("#div_colab").html(""); 
+			
+		});
+		
+		$(document).on("click",".itemcolabmsg", function(){
+			var nome = $(this).data("nome");
+			var id = $(this).attr("id");    
+			
+			$("#msgcolab").val("");
+			
+			$("#msgcolab").before("<div class='btn btn-default fleft' id='colabor"+id+"'>"+nome+" <i rm='"+id+"' class='fa fa-times exc'> </i></div>");
+			$("<input type='hidden' name='colabs[]' id='colabs"+id+"' value='"+id+"' >").appendTo("#msgselecionados");
+			
+			$("#div_colabmsg").html(""); 
+			
+		});
+		
+		$("#formlembrete").on("submit", function(e){
+			
+			$("#load").show();
+			e.preventDefault();
+			
+			$.ajax({          
 				type: "POST",
 				url: '<?php echo base_url("ajax/salvarLembrete"); ?>',
 				dataType : 'html',
 				data: $( this ).serialize(),
 				
 				success: function(msg){
-				//console.log(msg);
-				if(msg === 'erro'){
-				
-				$(".alert").addClass("alert-danger")
-				.html("Houve um erro. Contate o suporte.")
-				.slideDown("slow");
-				$(".alert").delay( 3500 ).hide(500);
-				
-				}else if(msg>0){
-				
-				window.location.href = '<?php echo base_url("gestor/lembretes"); ?>';
-				
-				}
-				
+					//console.log(msg);
+					if(msg === 'erro'){
+						
+						$(".alert").addClass("alert-danger")
+						.html("Houve um erro. Contate o suporte.")
+						.slideDown("slow");
+						$(".alert").delay( 3500 ).hide(500);
+						
+						}else if(msg>0){
+						
+						window.location.href = '<?php echo base_url("gestor/lembretes"); ?>';
+						
+					}
+					
 				} 
-				});
-				
-				});
-				
-				$("#formmensagem").on("submit", function(e){
-				
-				$("#loadmsg").show();
-				e.preventDefault();
-				
-				$.ajax({          
+			});
+			
+		});
+		
+		$("#formmensagem").on("submit", function(e){
+			
+			$("#loadmsg").show();
+			e.preventDefault();
+			
+			$.ajax({          
 				type: "POST",
 				url: '<?php echo base_url("ajax/salvarMensagem"); ?>',
 				dataType : 'html',
 				data: $( this ).serialize(),
 				
 				success: function(msg){
-				//console.log(msg);
-				if(msg === 'erro'){
-				
-				$(".alert").addClass("alert-danger")
-				.html("Houve um erro. Contate o suporte.")
-				.slideDown("slow");
-				$(".alert").delay( 3500 ).hide(500);
-				
-				}else if(msg>0){
-				
-				window.location.href = '<?php echo base_url()."perfil/lembretes"; ?>';
-				
-				}
-				
+					//console.log(msg);
+					if(msg === 'erro'){
+						
+						$(".alert").addClass("alert-danger")
+						.html("Houve um erro. Contate o suporte.")
+						.slideDown("slow");
+						$(".alert").delay( 3500 ).hide(500);
+						
+						}else if(msg>0){
+						
+						window.location.href = '<?php echo base_url()."perfil/lembretes"; ?>';
+						
+					}
+					
 				} 
-				});
-				
-				});
-				
-				$("a").click(function(){
-				
-				$(".aba").removeClass("active");
-				
-				if( $(this).hasClass("list-group-item") ){        
+			});
+			
+		});
+		
+		$("a").click(function(){
+			
+			$(".aba").removeClass("active");
+			
+			if( $(this).hasClass("list-group-item") ){        
 				
 				$(this).addClass("active");
 				
-				}
-				});
-				
-				$(".del").click(function(){
-				
-				var id = $(this).attr("id");
-				//$("#it"+id).slideUp("slow");
-				
-				$.ajax({          
+			}
+		});
+		
+		$(".del").click(function(){
+			
+			var id = $(this).attr("id");
+			//$("#it"+id).slideUp("slow");
+			
+			$.ajax({          
 				type: "POST",
 				url: '<?php echo base_url()."ajax/excluirmensagens"; ?>',
 				dataType : 'json',
 				data: {
-				id: id,
-				acao: "del"
+					id: id,
+					acao: "del"
 				},           
 				success: function(msg){
-				console.log(msg);
-				if(msg.status === 'erro'){
-				
-				$(".alert").addClass("alert-danger")
-				.html("Houve um erro. Contate o suporte.")
-				.slideDown("slow");
-				$(".alert").delay( 3500 ).hide(500);
-				
-				}else {
-				
-				$("#it"+id).slideUp("fast");
-				
-				}
-				
+					console.log(msg);
+					if(msg.status === 'erro'){
+						
+						$(".alert").addClass("alert-danger")
+						.html("Houve um erro. Contate o suporte.")
+						.slideDown("slow");
+						$(".alert").delay( 3500 ).hide(500);
+						
+						}else {
+						
+						$("#it"+id).slideUp("fast");
+						
+					}
+					
 				} 
-				});
-				});
-				
-				$(".list-group-item, #addlem, #addm").click(function(){
-				var texto = $(this).find(".desc").text();
-				$("#itematual").html(" > "+texto);
-				
-				});
-				
-				});
-				
-				</script>
-				
-								
+			});
+		});
+		
+		$(".list-group-item, #addlem, #addm").click(function(){
+			var texto = $(this).find(".desc").text();
+			$("#itematual").html(" > "+texto);
+			
+		});
+		
+	});
+	
+</script>
+

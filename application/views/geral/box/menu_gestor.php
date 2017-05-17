@@ -12,13 +12,6 @@
 	</a>               
 </li>    
 
-<li>
-	<a href="#">
-	<span class="fa fa-desktop"></span>
-	<span class="xn-text">Dashboards</span>
-	</a>  
-</li>    
-
 <?php if( in_array("pontoaponto", $modulos) ){?>
 	<!-- menu ponto a ponto -->
 	<li class="xn-openable <?php echo ($menupriativo=="ponto")? "active":"" ?>">
