@@ -1,22 +1,31 @@
 
 
 <div class="fleft-7 fleftmobile histajax" >
+    <div class="panel-group accordion" style="margin-bottom: 0px">
+    <div class="panel panel-primary" >
+            <div class="panel-heading ui-draggable-handle">
+                <h4 class="panel-title">
+                    <a href="#hs">
+                        Histórico Salarial
+                    </a>
+                </h4>
+            </div>
 
-    <h3 class="">Histórico Salarial</h3>
+            <div class="panel-body panel-body-open" id="hs" style="display: block;">
 
-<table class="table table-striped table-hover" >
-    <thead>
-        <tr>
-            <th>Motivo</th>
-            <th>Valor</th>
-            <th>Percentual</th>
-            <th>Data</th>
-        </tr>
-    </thead>
-    <tbody>
-        <?php 
-        $porc="";
-        if (count($histsalarios)>1) {
+                <table class="table table-striped table-hover" >
+                    <thead>
+                        <tr>
+                            <th>Motivo</th>
+                            <th>Valor</th>
+                            <th>Percentual</th>
+                            <th>Data</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php 
+                        $porc="";
+                        if (count($histsalarios)>1) {
                                  /*   $ult_salario = $histsalarios[count($histsalarios) -1]->sal_valor;
                                     $pri_salario = $histsalarios[0]->sal_valor;
                                     $porcentagem = 100 - (($pri_salario * 100) / $ult_salario);
@@ -47,4 +56,39 @@
                                 </tr>-->
                             </tbody>
                         </table>
-</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <script type="text/javascript">
+            $(".accordion .panel-title a").on("click",function(){
+
+                var blockOpen = $(this).attr("href");
+                var accordion = $(this).parents(".accordion");        
+                var noCollapse = accordion.hasClass("accordion-dc");
+
+                if($(blockOpen).length > 0){
+                    if($(blockOpen).hasClass("panel-body-open")){
+                        $(blockOpen).slideUp(200,function(){
+                            $(this).removeClass("panel-body-open");
+                        });
+                    }else{
+                        $(blockOpen).slideDown(200,function(){
+                            $(this).addClass("panel-body-open");
+                        });
+                    }
+
+                    if(!noCollapse){
+                        accordion.find(".panel-body-open").not(blockOpen).slideUp(200,function(){
+                            $(this).removeClass("panel-body-open");
+                        });                                           
+                    }
+
+                    return false;
+                }
+
+            });
+        </script>

@@ -341,12 +341,13 @@
 
            </div>
 
-           <div id="alt_result"></div>
+            <div id="alt_result"></div>
             <div id="alt_hist"></div>
+            <div id="alt_feed" class="fright fleft-7 fleftmobile"></div>
 
            <div class="clearfix"></div>
 
-           <div class="fleft-5" style="margin-top: 20px;">             
+           <div class="fleft-5 fleftmobile" style="margin-top: 20px;">             
              <label for="sal_obs" class="control-label">Motivo do Aumento</label>
 
              <div class="clearfix" ></div>
@@ -418,6 +419,7 @@
            </div>
            <div id="mud_result"></div>
            <div id="mud_hist"></div>
+           <div id="mud_feed" class="fright fleft-7 fleftmobile"></div>
            <div id="carcur"></div>
 
              <div class="clearfix"></div>
@@ -609,18 +611,18 @@
   $(document).ready(function(){
 
     $("#selectipo").change(function(){
-        if ( $(this).val()>1 ) {
-          $("#colabcentrocusto").slideDown();
-        }else{
-          $("#colabcentrocusto").slideUp();
-          $("[name='colaborador']").val("").change();
-        }
+      if ( $(this).val()>1 ) {
+        $("#colabcentrocusto").slideDown();
+      }else{
+        $("#colabcentrocusto").slideUp();
+        $("[name='colaborador']").val("").change();
+      }
     });
 
     $(".campomoeda").maskMoney({thousands:'.',decimal:','});
     
     $("#novovalor").blur(function(){
-      
+
       var sal_atual = Number($("#salario").val() );
       var sal_novo = Number( $(this).val().replace(".", "").replace(/,/g , ".") );
       var dif = sal_novo - sal_atual;
@@ -654,6 +656,7 @@
       $("#colaboradorsal").val("").change();
       $("#aum_result").html("");
       $("#alt_hist").html("");
+      $("#alt_feed").html("");
       $("#enc_sal").data("acao", "");
       $(this).hide();
       $("#enc_sal").hide();
@@ -736,8 +739,8 @@
 
     $('.campodata').datepicker({
 
-            format: 'dd/mm/yyyy'
-        });
+      format: 'dd/mm/yyyy'
+    });
 
     
     $(".encaminhar").click(function(){
@@ -756,7 +759,7 @@
         },
 
         success: function(msg){      
-         
+
          if(msg === 'erro'){
 
           $(".alert").addClass("alert-danger")
@@ -765,21 +768,21 @@
           $(".alert").delay( 3500 ).hide(500);
 
         }else if(msg>0){      
-          
+
           $(".alert").addClass("alert-success");
           $(".alert").html('Alteração realizada com sucesso.');
           $(".alert").slideDown(300);
           $(".alert").delay( 3500 ).slideUp(500, function(){
             window.location.reload();
           });          
-       }
-     } 
-     });
+        }
+      } 
+    });
 
     });
 
     $("#form_desligamento").on("submit", function(e){
-      
+
       e.preventDefault();
       $("#load_desligamento").show();
       $("#salvar_desligamento").prop( "disabled", true );
@@ -791,7 +794,7 @@
         data: $( this ).serialize(),
 
         success: function(msg){
-         
+
          if(msg === 'erro'){
 
           $(".alert").addClass("alert-danger")
@@ -810,10 +813,10 @@
           $(".alert").focus();
           $(".alert").delay( 3500 ).slideUp(500);
           
-       }
+        }
 
-     } 
-     });
+      } 
+    });
 
     });
 
@@ -829,7 +832,7 @@
         data: $( this ).serialize(),
 
         success: function(msg){
-         
+
          if(msg === 'erro'){
 
           $(".alert").addClass("alert-danger")
@@ -848,10 +851,10 @@
           $(".alert").focus();
           $(".alert").delay( 3500 ).slideUp(500);
           $("#enc_sal").data("acao", msg);
-       }
+        }
 
-     } 
-     });
+      } 
+    });
 
     });
 
@@ -868,7 +871,7 @@
         data: $( this ).serialize(),
 
         success: function(msg){
-         
+
          if(msg === 'erro'){
 
           $(".alert").addClass("alert-danger")
@@ -887,10 +890,10 @@
           $(".alert").focus();
           $(".alert").delay( 3500 ).slideUp(500);
           $("#enc_quad").data("acao", msg);
-       }
+        }
 
-     } 
-     });
+      } 
+    });
 
     });
 
@@ -906,7 +909,7 @@
         data: $( this ).serialize(),
 
         success: function(msg){
-         
+
          if(msg === 'erro'){
 
           $(".alert").addClass("alert-danger")
@@ -925,10 +928,10 @@
           $(".alert").focus();
           $(".alert").delay( 3500 ).slideUp(500);
           $("#enc_mud").data("acao", msg);
-       }
+        }
 
-     } 
-     });
+      } 
+    });
 
     });
 
@@ -944,7 +947,7 @@
         data: $( this ).serialize(),
 
         success: function(msg){
-         
+
          if(msg === 'erro'){
 
           $(".alert").addClass("alert-danger")
@@ -963,10 +966,10 @@
           $(".alert").focus();
           $(".alert").delay( 3500 ).slideUp(500);
           $("#acao_aumento").val(msg);
-       }
+        }
 
-     } 
-     });
+      } 
+    });
 
     });
 
@@ -988,7 +991,7 @@
         },
 
         success: function(msg){
-       
+
          if(msg === 'erro'){
 
           $(".alert").addClass("alert-danger")
@@ -997,15 +1000,15 @@
           $(".alert").delay( 3500 ).hide(500);
 
         }else {
-           $("#titulomodal").text(titulo);
-           $( "#dadosedit" ).css("display", "inline-block");
-          $( "#dadosedit" ).html(msg);
-          $('#myModal').modal('show');
-          $("#load_sol").hide();
+         $("#titulomodal").text(titulo);
+         $( "#dadosedit" ).css("display", "inline-block");
+         $( "#dadosedit" ).html(msg);
+         $('#myModal').modal('show');
+         $("#load_sol").hide();
        }
 
      } 
-     });
+   });
     });
 
     $('#myModal').on('hidden.bs.modal', function (e) {
@@ -1042,16 +1045,16 @@
           $(".alert").delay( 3500 ).hide(500);
 
         }else if(msg>0){      
-          
+
           $(".alert").addClass("alert-success");
           $(".alert").html('Alteração realizada com sucesso.');
           $(".alert").slideDown(300);
           $(".alert").delay( 3500 ).slideUp(500, function(){
             window.location.href = '<?php echo base_url("gestor/solicitacoes"); ?>';
           });          
-       }
-     } 
-     });
+        }
+      } 
+    });
 
     });
 
@@ -1068,8 +1071,14 @@
       }
 
       switch(opt){
-          case "salario": histsalarial(id,1,"alt_hist"); break;
-          case "cargo": histsalarial(id,2,"mud_hist"); break;
+        case "salario": 
+        histsalarial(id,1,"alt_hist"); 
+        feedbacks(id, "alt_feed");
+        break;
+        case "cargo": 
+        histsalarial(id,2,"mud_hist"); 
+        feedbacks(id, "mud_feed"); 
+        break;
       }
       $.ajax({          
         type: "POST",
@@ -1081,11 +1090,11 @@
         },
 
         success: function(msg){
-         
+
          $("#"+div).html(msg);
-       
-        }
-       });
+
+       }
+     });
     });
 
   });
@@ -1100,6 +1109,24 @@ function histsalarial(id, historico, div){
       id: id,
       historico: historico,
       div: div
+    },
+
+    success: function(msg){
+
+     $("#"+div).html(msg);
+
+   }
+ });
+}
+
+function feedbacks(id, div){
+  $("#"+div).html( '<img id="" src="<?php echo base_url('img/loaders/default.gif') ?>">' );
+  $.ajax({          
+    type: "POST",
+    url: '<?php echo base_url("gestor/getFeedbacks"); ?>',
+    dataType : 'html',
+    data: {
+      id: id
     },
 
     success: function(msg){
@@ -1139,9 +1166,9 @@ $("#fk_cargo").change(function(){
 });
 
 $("#colaboradormud").change(function(){
-  
-    $("#fk_cargo").val("").change();
-    $("#carcur").html("");
+
+  $("#fk_cargo").val("").change();
+  $("#carcur").html("");
   
 });
 
