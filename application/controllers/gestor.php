@@ -142,8 +142,6 @@ public function index(){
     $this->db->where("chefiasubordinados.chefe_id", $iduser);
     $this->db->where('fun_status',"A");
     $dados['escolaridade'] = $this->db->get('funcionario')->result();
-    
-
 
     $this->db->select('fun_idfuncionario, fun_foto, fun_sexo, fun_nome, contr_data_admissao');
     $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
@@ -154,7 +152,6 @@ public function index(){
     $this->db->where('fun_idempresa', $idempresa);
     $this->db->where('fun_status', "A");
     $dados['admitidos'] =$this->db->get('funcionario')->result();
-    //$dados['sql'] = $this->db->last_query();
 
 
     $this->db->select('fun_idfuncionario, fun_foto, fun_sexo, fun_nome, datdem');
@@ -689,6 +686,48 @@ public function salvarQuadro(){
     }
 }
 
+public function salvarCombustivel(){
+
+    $iduser = $this->session->userdata('id_funcionario');
+    $idempresa = $this->session->userdata('idempresa');
+    $idcliente = $this->session->userdata('idcliente');    
+    $pag = (!empty($this->input->post('pag')) )? $this->input->post('pag'): 'gestor/solicitacoes';
+
+    if (!empty($this->input->post('dt_valecomb') ) ) {
+    $dados['data_efetiva'] = $this->Log->alteradata2( $this->input->post('dt_valecomb') );
+    }  
+
+    if (!empty($this->input->post('situacao_comb') ) ) {
+        $dados['situacao_combustivel'] = $this->input->post('situacao_comb');
+    }
+
+    if (!empty($this->input->post('obs_comb') ) ) {
+        $dados['motivo_solicitacao'] = utf8_decode($this->input->post('obs_comb'));
+    }
+    if (!empty($this->input->post('combvalor'))) {
+       $dados['valor_aumento'] = $this->util->floatParaInsercao($this->input->post('combvalor'));
+    }
+
+    if ( !empty($this->input->post('alterar_comb')) ) {
+
+        $idsol = $this->input->post('solicitacao');
+        $this->db->where("solicitacao_id", $idsol);
+        $this->db->update("solicitacoes", $dados);
+        header("Location: ". base_url($pag) );
+        exit;
+    }else{
+
+        $dados['idcliente'] = $idcliente;
+        $dados['idempresa'] = $idempresa;
+        $dados['id_solicitante'] = $iduser;
+        $dados['fk_tipo_solicitacao'] = $this->input->post('tipo');
+        $dados['sol_idfuncionario'] = $this->input->post('colaborador');
+        $this->db->insert("solicitacoes", $dados);
+        echo $this->db->insert_id();
+    }
+
+}
+
 public function minhaSolicitacao(){
 
    $iduser = $this->session->userdata('id_funcionario');
@@ -744,6 +783,8 @@ public function minhaSolicitacao(){
         $this->db->where('idempresa',$idempresa);
         $dados['cargos'] = $this->db->get('tabelacargos')->result();
         $this->load->view('/geral/edit/modal_mudanca',$dados); break;
+
+        case '7': $this->load->view('/geral/edit/modal_combustivel', $dados); break;
 
         default: break;
     }

@@ -27,9 +27,9 @@ foreach ($dadoschefe as $key => $value) {
   }
 
 ?>
-<div class="fleft-3" id="basic_perfil" style="top: auto;">
+<div class="fleft-2" id="basic_perfil" style="top: auto;">
    <div class="fleft">
-     <div class="panel panel-default">
+     <div class="panel panel-default" >
         <div class="panel-body profile">
             <div class="profile-image">
                 <img src="<?php echo $foto; ?>" alt=""/>
@@ -58,7 +58,7 @@ foreach ($dadoschefe as $key => $value) {
 
 <div class="fleft-10">
    <div class="list-group border-bottom" style="text-align: left;">
-    <a href="#subordinados" aria-controls="home" role="tab" data-toggle="tab" class="list-group-item active">
+    <a href="#subordinados" aria-controls="home" role="tab" data-toggle="tab" class="list-group-item ">
       <span class="fa fa-bar-chart-o"></span> Subordinados
     </a>
   <?php if (!empty($parametros)) {
@@ -74,49 +74,30 @@ foreach ($dadoschefe as $key => $value) {
     <a href="#consulta" aria-controls="home" role="tab" data-toggle="tab" class="list-group-item">
       <span class="fa fa-search"></span> Consulta
       </a>    
-     <!--<a href="#ferias" aria-controls="home" role="tab" data-toggle="tab" class="list-group-item">
-      <span class="fa fa-tachometer"></span> Recibo de férias
-      </a>-->
+    <a id="voltar" href="#" aria-controls="home" role="tab" data-toggle="tab" class="list-group-item">
+      <span class="fa fa-arrow-left"></span> Voltar
+    </a>
   </div>
 </div>
 
    
 </div>
 
-<!--
-<div class="col-md-4 btn-default list-group-item" style="height: 130px;">
-  <img src="<?php echo $value->fun_foto; ?>" class="imgcirculo_m fleft" style="margin: 0px 5px 0px 0px;" >
-  <span class="font-sub bold corsec"><?php echo $value->fun_nome; ?></span><br>
-  <span class="bold">Matricula: </span><span class="font-sub "><?php echo $value->fun_matricula; ?></span><br> 
-  <span class="bold ">Admissão: </span><span class="font-sub "><?php echo $admissao; ?></span><br>
-  <span class="bold ">Cargo: </span><span class="font-sub "><?php echo $value->fun_cargo; ?></span><br> 
-  <span class="bold ">Departamento: </span><span class="font-sub "><?php echo $value->contr_departamento; ?></span> 
-
-
-<div id="voltar" class="fright" style="font-size: 25px; cursor: pointer;">
-  <i class="fa fa-arrow-left" aria-hidden="true"></i>
-</div>
-
-</div>-->
 <?php } ?>
 
-<div class="col-md-8">
+<div class="fleft-7">
   <div class="tab-content">
-    <div role="tabpanel" class="tab-pane active" id="subordinados">
+    <div role="tabpanel" class="tab-pane" id="subordinados">
       <div class="widget widget-default" >
 
-<h3 class="fleft" style="width: 90%;">Liderados por <?php echo $nome; ?>
-  <div id="voltar" class="fright" style="font-size: 25px; cursor: pointer;">
-  <i class="fa fa-arrow-left" aria-hidden="true"></i>
-</div>
-</h3>
+<h3 class="fleft" style="width: 90%;">Liderados por <?php echo $nome; ?></h3>
 
 <div class="clearfix"></div>
 
 <?php foreach ($subordinados as $key => $value) {
   $admissao = $this->Log->alteradata1($value->contr_data_admissao); ?>
   
-<div class="col-md-6 btn-default list-group-item" style="min-height: 120px;">
+<div class="col-md-4 btn-default list-group-item" style="min-height: 120px;">
   <img src="<?php echo $value->fun_foto; ?>" class="imgcirculo_m fleft" style="margin: 0px 5px 0px 0px;" >
   <span class="font-sub bold "><?php echo $value->fun_nome; ?></span><br>
   <span class="bold ">Matricula: </span><span class="font-sub "><?php echo $value->fun_matricula; ?></span><br> 
@@ -266,8 +247,8 @@ $('a[href="#consulta"').on('shown.bs.tab', function (e) {
   }
 });
 
-$(".list-group-item").click(function(){
-    $(".list-group-item").removeClass("active");
+$("a.list-group-item").click(function(){
+    $('a.list-group-item').removeClass("active");
     $(this).addClass("active");
-    });
+});
 </script>

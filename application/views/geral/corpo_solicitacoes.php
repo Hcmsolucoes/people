@@ -18,7 +18,7 @@
   .divcombocolab{
     margin-top: 20px;
   }
-  #aum_result, #deslig_result, #alt_result, #mud_result, #trei_result{
+  .resultado{
     position: absolute;
     top: 5%;
     right: 0%;
@@ -33,7 +33,7 @@
    {
     width: 60%;
    }
-   #aum_result, #deslig_result, #alt_result, #mud_result, #trei_result{
+   .resultado{
     position: relative;
     top: 0px;
     float: left;
@@ -139,7 +139,7 @@
 
            </div> 
 
-            <div id="deslig_result"></div>
+            <div id="deslig_result" class="resultado"></div>
 
              <div class="clearfix"></div>
 
@@ -219,7 +219,7 @@
              </select>
            </div>
 
-           <div id="aum_result"></div>
+           <div id="aum_result" class="resultado"></div>
 
            <div class="clearfix"></div>
 
@@ -341,7 +341,7 @@
 
            </div>
 
-            <div id="alt_result"></div>
+            <div id="alt_result" class="resultado"></div>
             <div id="alt_hist"></div>
             <div id="alt_feed" class="fright fleft-7 fleftmobile"></div>
 
@@ -417,7 +417,7 @@
              </div>
 
            </div>
-           <div id="mud_result"></div>
+           <div id="mud_result" class="resultado"></div>
            <div id="mud_hist"></div>
            <div id="mud_feed" class="fright fleft-7 fleftmobile"></div>
            <div id="carcur"></div>
@@ -440,56 +440,7 @@
        
      </div>
         </div>
-		<!-- fim mudança de cargo -->				
-		
-        <!-- solicitação combustivel -->
-        <div role="tabpanel" class="tab-pane" id="combustivel">
-         <div class="widget widget-default">
-           <div class="col-md-12">
-             <h3><span class="fa fa-tint"></span> Vale Combustível</h3>
-             <!--<form name="form_ferias" id="form_ferias">
-             <span class="bold">Solicitante: </span><span><?php echo $funcionario[0]->fun_nome; ?></span>
-             <div class="clearfix" style="margin-bottom: 20px;"></div>
-
-             <div class="fleft-3 hcm">
-             <label for="colaboradores" class="control-label">Colaborador</label>
-              <select name="colaborador" required="true" id="" class="selectpicker combocolab" data-live-search="true" data-div="ferias_result">
-               <option value="">Colaborador</option>
-               <?php foreach ($colaboradores as $key => $value) { ?>
-               <option value="<?php echo $value->fun_idfuncionario; ?>"><?php echo $value->fun_nome; ?></option>
-               <?php } ?>
-             </select>
-
-
-             <div class="fleft-7 divcombocolab">
-             <label for="dt_desligamento" class="control-label">Data das férias</label>
-             <div class='input-group' >
-                <input class="form-control txleft campodata" type="text" name="dt_desligamento" id="dt_desligamento" placeholder="Data do desligamento" required="" >
-                <span class="input-group-addon">
-                    <span class="fa fa-calendar"></span>
-                </span>
-             </div>
-             </div>
-
-           </div> 
-
-            <div id="ferias_result"></div>
-
-             <div class="clearfix"></div>
-
-             <div class="fleft" style="margin-top: 20px;">             
-             <label for="motivo" class="control-label">Motivo</label>
-             <div class="clearfix" ></div>
-               <textarea required="true" class="form-control" name="motivo" id="motivo" cols="70" rows="5" style="width: 100%"></textarea>
-               <input type="submit" style="" name="salvar_desligamento" value="Salvar" class="btn btn-primary">
-               <img id="load_desligamento" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Loading...">
-             </div>
-             <input type="hidden" name="tipo" value="1">
-             </form>-->
-           </div>
-         </div>
-       </div>
-		<!-- fim solicitação férias -->					
+		<!-- fim mudança de cargo -->								
 
         <!-- treinamento -->
         <div role="tabpanel" class="tab-pane" id="treina">
@@ -534,7 +485,7 @@
 
            </div> 
 
-            <div id="trei_result"></div>
+            <div id="trei_result" class="resultado"></div>
 
              <div class="clearfix"></div>
 
@@ -545,12 +496,80 @@
                <input type="submit" style="" name="salvar_desligamento" value="Salvar" class="btn btn-primary">
                <img id="load_desligamento" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>" >
              </div>
-             <input type="hidden" name="tipo" value="5">
+             <input type="hidden" name="tipo" value="6">
              </form>
            </div>
          </div>
        </div>
-		<!-- fim treinamento -->				
+		<!-- fim treinamento -->
+
+
+        <!-- solicitação combustivel -->
+        <div role="tabpanel" class="tab-pane" id="combustivel">
+         <div class="widget widget-default">
+             <h3><span class="fa fa-tint"></span> Vale Combustível</h3>
+             <form name="form_combustivel" id="form_combustivel">
+             <span class="bold">Solicitante: </span><span><?php echo $funcionario[0]->fun_nome; ?></span>
+             <div class="clearfix" style="margin-bottom: 20px;"></div>
+
+             <div class="fleft-3 hcm">
+             <label for="" class="control-label">Colaborador</label>
+              <select name="colaborador" required="true" id="colaboradorcombustivel" class="selectpicker combocolab" data-live-search="true" data-div="comb_result" data-opt="">
+               <option value="">Colaborador</option>
+               <?php foreach ($colaboradores as $key => $value) { ?>
+               <option value="<?php echo $value->fun_idfuncionario; ?>"><?php echo $value->fun_nome; ?></option>
+               <?php } ?>
+             </select>
+
+             <div class="fleft-7 fleftmobile divcombocolab" style="margin-bottom: 20px;">
+             <label for="" class="control-label">Data para o vale</label>
+             <div class='input-group' >
+                <input class="form-control txleft campodata" type="text" name="dt_valecomb" id="dt_valecomb" placeholder="Data do vale" required="" data-date-start-date="+0d">
+                <span class="input-group-addon">
+                    <span class="fa fa-calendar"></span>
+                </span>
+             </div>
+             </div>
+
+             <div class="fleft-7 fleftmobile " style="margin-bottom: 20px;">
+             <label for="" class="control-label">Valor do vale</label>
+             <div class="input-group">                                            
+              <span class="input-group-addon">R$</span>
+              <input type="text" name="combvalor" id="combvalor" class="form-control campomoeda" placeholder="Valor">
+            </div>
+             </div>
+
+             <div class="fleft-7 fleftmobile ">
+             <label for="" class="control-label">Situação</label>
+             <select name="situacao_comb" required="true" id="situacao_comb" class="form-control" >
+               <option value="">Selecione</option>
+               <option value="1">Inclusão</option>
+               <option value="2">Alteração</option>
+               <option value="3">Exclusão</option>
+             </select>
+             </div>
+
+           </div>
+           <div id="comb_result" class="resultado"></div>
+
+             <div class="clearfix"></div>
+
+             <div class="fleft" style="margin-top: 20px;">             
+             <label for="motivo" class="control-label">Motivo do vale</label>
+
+             <div class="clearfix" ></div>
+
+               <textarea required="true" class="form-control" name="obs_comb" id="obs_comb" cols="70" rows="5" style="width: 100%"></textarea>
+               <input type="submit" style="" id="salvar_comb" name="salvar_comb" value="Salvar" class="btn btn-primary">
+               <span style="min-width: 105px;display: none;" id="enc_comb" class="btn btn-primary encaminhar" data-load="load_comb" data-acao="0">Encaminhar</span>
+               <span style="min-width: 105px;display: none;" id="limpar_comb" class="btn btn-default" >OK</span>
+               <img id="load_comb" style="display: none;" src="<?php echo base_url('img/loaders/default.gif') ?>">
+             </div>
+             <input type="hidden" name="tipo" value="7">
+             </form>
+         </div>
+       </div>
+    <!-- fim solicitação vale combustivel --> 			
 		
     <!-- Minhas Solicitações -->
         <div role="tabpanel" class="tab-pane" id="msol">
@@ -802,17 +821,54 @@
           .slideDown("slow");
           $(".alert").delay( 3500 ).hide(500);
 
+          }else if(msg>0){
+            $("#btnenc").show();
+            $("#limpar").show();
+            $("#btnenc").data("acao", msg);
+            $("#load_desligamento").hide();
+            $(".alert").addClass("alert-success");
+            $(".alert").html('Solicitação feita com sucesso.');
+            $(".alert").slideDown(300);
+            $(".alert").focus();
+            $(".alert").delay( 3500 ).slideUp(500);          
+          }
+
+        } 
+      });
+
+    });
+
+    $("#form_combustivel").on("submit", function(e){
+
+      e.preventDefault();
+      $("#load_comb").show();
+      $("#salvar_comb").prop( "disabled", true );
+
+      $.ajax({          
+        type: "POST",
+        url: '<?php echo base_url("gestor/salvarCombustivel"); ?>',
+        dataType : 'html',
+        data: $( this ).serialize(),
+
+        success: function(msg){
+
+         if(msg === 'erro'){
+
+          $(".alert").addClass("alert-danger")
+          .html("Houve um erro. Contate o suporte.")
+          .slideDown("slow");
+          $(".alert").delay( 3500 ).hide(500);
+
         }else if(msg>0){
-          $("#btnenc").show();
-          $("#limpar").show();
-          $("#btnenc").data("acao", msg);
-          $("#load_desligamento").hide();
+          $("#enc_comb").show();
+          $("#limpar_comb").show();
+          $("#enc_comb").data("acao", msg);
+          $("#load_comb").hide();
           $(".alert").addClass("alert-success");
           $(".alert").html('Solicitação feita com sucesso.');
           $(".alert").slideDown(300);
           $(".alert").focus();
-          $(".alert").delay( 3500 ).slideUp(500);
-          
+          $(".alert").delay( 3500 ).slideUp(500);          
         }
 
       } 

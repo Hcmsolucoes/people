@@ -101,7 +101,7 @@ foreach ($equipe as $key => $value) {
   $foto = ($value->fun_foto=="")? base_url("/img/".$avatar.".jpg") : $value->fun_foto;
   ?>
   
-<div class="col-md-3 btn-default list-group-item pessoa" id="<?php echo $value->fun_idfuncionario; ?>" style="height: 100px;">
+<div class="col-md-3 btn-default list-group-item pessoa" id="<?php echo $value->fun_idfuncionario; ?>" style="height: 140px;">
    <div class="list-group-status status-<?php echo $st; ?>"></div>
    <img src="<?php echo $foto; ?>" class="imgcirculo_m fleft" style="margin: 0px 5px 25px 0px;" >
   <span class="font-sub bold corsec"><?php echo $value->fun_nome; ?></span><br>

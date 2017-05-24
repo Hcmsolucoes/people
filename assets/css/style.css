@@ -236,8 +236,7 @@ color: #555;
 }
 
 #basic_perfil{
-  width: 30%;
-  margin: 0px auto;
+  margin: 0px 10px 0px 0px;
   text-align: center;
   position: relative; 
   /*top: 50%;*/
@@ -274,7 +273,12 @@ color: #555;
 .botoesanalise{
   margin: 0px 0px 0px 5px;
 }
-
+.meuwidget{
+  margin: 7px;
+}
+.widgetaltura{
+  min-height: 120px;
+}
 
 @media (max-width: 500px) {
 #menudashboard{
