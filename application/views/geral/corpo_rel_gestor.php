@@ -96,7 +96,7 @@ $arr_salariosexo .= "['".$value->fun_nome."','".$value->sexo."',".$value->idadef
 
 <div class="tab-content">
 	
-	<div role="tabpanel" class="tab-pane active" id="botao1">
+	<div role="tabpanel" class="tab-pane " id="botao1">
 		<div class="row scRow">
 			<!-- Grafico de custos x Faturamento -->
 			<div class="col-md-12">
@@ -279,7 +279,7 @@ $arr_salariosexo .= "['".$value->fun_nome."','".$value->sexo."',".$value->idadef
 <script type="text/javascript">
 google.charts.load('current', {'packages':['corechart', 'table', 'gauge', 'controls']});
 google.charts.setOnLoadCallback(drawMainDashboard);
-google.charts.setOnLoadCallback(drawMainReceita);
+//google.charts.setOnLoadCallback(drawMainReceita);
 google.charts.setOnLoadCallback(drawMainTurnover);
 
 $(".breadcrumb").remove();
@@ -1095,5 +1095,7 @@ function drawMainTurnover() {
     }
 }
 
-
+$('a[href="#botao1"]').on('shown.bs.tab', function (e) {
+   drawMainReceita();
+});
 </script>
