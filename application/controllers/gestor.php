@@ -10,22 +10,21 @@ public function __construct(){
     $this->load->model('Log'); 
     $this->load->model('Admbd');
 
+    $perfis = array(1=>2, 2=>4, 3=>7 );
+    if ( !in_array($this->session->userdata('perfil'), $perfis)  ) {
+
+        header("Location: ".base_url('home') ); exit;
+      
+    }
  }
 
-public function index(){ 
+public function index(){
     $this->Log->talogado(); 
     $this->session->set_userdata('perfil_atual', '2');
 
     $dados = array('menupriativo' => 'painel' );
     $dados['perfil_atual'] = 2;
-    switch ( $this->session->userdata('perfil') ) {
-
-      case '3':
-      header("Location: ".base_url('home') ); exit;
-      break;
-      
-  }
-
+    
     $idcli = $this->session->userdata('idcliente');
     $iduser = $this->session->userdata('id_funcionario');
     $idempresa = $this->session->userdata('idempresa');
@@ -1435,7 +1434,6 @@ public function colab_cargo(){
         
         default: $this->load->view('/geral/box/analisecargo',$dados); break;
     }
-    
 
 }
 
@@ -1514,6 +1512,7 @@ public function view_tabelasdashs2(){
 
 
     }
+
 public function view_tabelasdashs(){
 
 
@@ -1523,7 +1522,6 @@ public function view_tabelasdashs(){
     //var_dump($dados['turnoverexporta']);
 
     }
-
 
 public function view_cargatunover(){
 
@@ -1620,4 +1618,120 @@ public function getFeedbacks(){
 
 }
 
+public function relatorios(){
+
+    $this->Log->talogado(); 
+    $this->session->set_userdata('perfil_atual', '2');
+    
+    $dados = array('menupriativo' => 'relatorios' );
+    $dados['perfil_atual'] = 2;
+
+    $idcli = $this->session->userdata('idcliente');
+    $iduser = $this->session->userdata('id_funcionario');
+    $idempresa = $this->session->userdata('idempresa');
+
+    $this->db->where('fun_idfuncionario',$iduser);
+    $dados['funcionario'] = $this->db->get('funcionario')->result();
+
+    $this->db->where('feed_idfuncionario_recebe',$iduser);
+    $feeds = $this->db->get('feedbacks')->num_rows();
+    $dados['quantgeral'] = $feeds;
+
+    //Referente ao grafico charts - salario por sexo e idade
+    $this->db->select('fun_cargo, fun_idfuncionario, fun_foto, tipodesexo.descricao as sexo, fun_nome, empresa.em_nome,contr_centrocusto,contr_departamento,contr_data_admissao,FLOOR(DATEDIFF(DAY, fun_datanascimento, getdate()) / 365.25) AS idadefun,sal_valor');
+    $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
+    $this->db->join("tipodesexo", "tipSex = fun_sexo");
+    $this->db->join("empresa", "fun_idempresa = em_idempresa");
+    $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
+    $this->db->join("salarios", "sal_idfuncionario = fun_idfuncionario",'left');
+    $this->db->where("chefiasubordinados.chefe_id", $iduser);
+    $this->db->where("salarios.sal_dataini =(SELECT max(b.sal_dataini) FROM salarios b WHERE b.sal_idfuncionario=funcionario.fun_idfuncionario
+                                                                          AND b.sal_dataini<=getdate())");
+    $this->db->where('fun_status', "A");
+    $dados['salariosexo'] = $this->db->get('funcionario')->result(); 
+
+     //Query  - Turnover - Minha Equipe - Dashboard total
+    $um_ano = strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . " -12 month");
+    $m = date("m", $um_ano);
+    $a = date("Y", $um_ano);
+    $ultimo_dia = date("t", mktime(0,0,0,$m,'01',$a));
+    $um_ano = $a."-".$m."-".$ultimo_dia;
+    $xseq=0;
+    for ($i=0; $i < 12; $i++) {
+
+
+        $m++;
+        if ($m==13) {
+            $m= "01";
+            $a++;
+        }
+        $m = str_pad($m, 2, "0", STR_PAD_LEFT);
+
+        $ultimo_dia = date("t", mktime(0,0,0,$m,'01',$a));
+        $mesturn = $m."/".$a;
+        $mesano = $a."/".$m;
+        $admi = 0;
+        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,contr_data_admissao');
+        $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
+        $this->db->join("empresa", "fun_idempresa = em_idempresa");
+        $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
+        $this->db->where("chefiasubordinados.chefe_id", $iduser);
+        $this->db->where("MONTH(contr_data_admissao)", $m);
+        $this->db->where("YEAR(contr_data_admissao)", $a);
+        $resadm = $this->db->get('funcionario')->result();
+        $dados['turnoveradm1'] = $resadm;
+        $admi = count($resadm);
+        
+        $demi = 0;
+        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,datdem,contr_data_admissao');
+        $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
+        $this->db->join("empresa", "fun_idempresa = em_idempresa");
+        $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
+        $this->db->where("chefiasubordinados.chefe_id", $iduser);
+        $this->db->where("MONTH(datdem)", $m);
+        $this->db->where("YEAR(datdem)", $a);
+        $resdem = $this->db->get('funcionario')->result();
+        $dados['turnoverdem'] = $resdem;
+        $demi = count($resdem);
+
+        //$turn = number_format( ($y*100), 1, ",", "" ) ;
+        $ma = $mesturn;
+        //$dados['semestre'][$ma] = $turn;
+        $dados['turnovertotal'][$ma]=['Ano'=>$a,'Admissao'=>$admi,'Demissao'=>$demi,'mesano'=>$mesano];
+       if ($admi>0){
+          foreach ( $dados['turnoveradm1'] as $key => $value) { 
+
+        $xseq++;
+        //echo ' Mes/ano: '.$ma. ' admissão'.$value->fun_nome.'   '.$xseq;
+
+        $dados['turnoveradm'][$xseq]=['mes'=>$ma,'Ano'=>$a,'Movimentacao'=>'Admissão','colaborador'=>$value->fun_nome,'cargo'=>$value->fun_cargo,'Admissão'=>$value->contr_data_admissao,'empresa'=>$value->empresa,'Centro de Custo'=>$value->contr_centrocusto,'Demissão'=>'','mesano'=>$mesano];
+      }
+       }
+       if ($demi>0){
+         foreach ( $dados['turnoverdem'] as $key => $value) { 
+        $xseq++;
+        $dados['turnoveradm'][$xseq]=['mes'=>$ma,'Ano'=>$a,'Movimentacao'=>'Demissão','colaborador'=>$value->fun_nome,'cargo'=>$value->fun_cargo,'Admissão'=>$value->contr_data_admissao,'empresa'=>$value->empresa,'Centro de Custo'=>$value->contr_centrocusto,'Demissão'=>$value->datdem,'mesano'=>$mesano];
+    }
+       }
+    }
+    
+    $this->db->select('tema_cor, tema_fundo');
+    $this->db->where('fun_idfuncionario',$iduser);
+    $dados['tema'] = $this->db->get('funcionario')->result();
+    $dados['perfil'] = $this->session->userdata('perfil');
+
+    $this->db->where('feed_idfuncionario_recebe',$iduser);
+    $this->db->where('feed_data >=',date('Y/m/d'));
+    $this->db->where('feed_data >=',date('Y/m/d', strtotime('-10 days', strtotime(date('Y/m/d')))));
+    $feeds2 = $this->db->get('feedbacks')->num_rows();
+    $dados['quantultimos'] = $feeds2;
+
+    $dados['breadcrumb'] = array('Gestor'=>base_url('gestor'), "Relatórios"=>"#" );
+    $this->load->view('/geral/html_header',$dados);  
+    $this->load->view('/geral/corpo_rel_gestor',$dados);
+    $this->load->view('/geral/footer');
 }
+
+
+}
+

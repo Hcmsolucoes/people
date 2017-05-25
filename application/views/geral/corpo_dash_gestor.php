@@ -205,11 +205,22 @@ foreach ($salariosexo as $key => $value) {
 </div>
 
 <div class="content-frame">
+
+  <div class="content-frame-top">                        
+    <div class="page-title">                    
+    <h2><span class="fa fa-bar-chart-o"></span> Dashboards</h2>
+    </div>                                      
+    <div class="pull-right">
+      <button class="btn btn-default content-frame-left-toggle"><span class="fa fa-bars"></span></button>
+    </div>                        
+  </div>
+
   <div class="content-frame-left">
 
     <div class="fleft-10">
       <!-- START VISITORS BLOCK -->
       <div class="panel panel-default">
+      <a href="<?php echo base_url("gestor/relatorios"); ?>" style="text-decoration: none;" >
         <div class="panel-heading">
           <div class="panel-title-box">
             <h3>Relatórios</h3>           
@@ -278,6 +289,7 @@ foreach ($salariosexo as $key => $value) {
 
           </div>
         </div>
+        </a>
       </div>
       <!-- END VISITORS BLOCK -->
     </div><!--fim relatorio-->
@@ -295,7 +307,7 @@ foreach ($salariosexo as $key => $value) {
 
     <div class="linha fleft-10">
       <!-- Turn Over -->
-      <div class="fleft-3 meuwidget " id="w1">
+      <div class="fleft-3 meuwidget fleftmobile " id="w1">
         <div class="widget widget-default widget-carousel">
           <div class="owl" id="owl-example">
             <img id='loadturn' src='<?php echo base_url('img/loaders/default.gif') ?>' style="left: 40%;position: relative;">
@@ -307,7 +319,7 @@ foreach ($salariosexo as $key => $value) {
       </div>
       <!-- Fim do TurnOver -->
 
-      <div class="fleft-3 meuwidget " id="w2">
+      <div class="fleft-3 meuwidget fleftmobile " id="w2">
         <div class="widget widget-default widget-item-icon" >
           <div class="widget-item-left">
             <span class="fa fa-users"></span>
@@ -325,7 +337,7 @@ foreach ($salariosexo as $key => $value) {
 
 
       <!-- Indicadores de Situação -->
-      <div class="fleft-3 meuwidget " id="w3">
+      <div class="fleft-3 meuwidget fleftmobile" id="w3">
         <div class="widget widget-default widget-carousel">
           <span class="bold corsec acenter fleft" style="width: 100%;">Situação Atual da Equipe</span>
           <div class="owl-carousel" id="">
@@ -369,7 +381,7 @@ foreach ($salariosexo as $key => $value) {
       ?>
 
       <div class="linha fleft-10">
-      <div class="fleft-3 meuwidget " id="w4">                        
+      <div class="fleft-3 meuwidget fleftmobile " id="w4">                        
           <span class="tile tile-info tile-valign widgetaltura" id="grid2">
            <span style="line-height: 30px;float: center;margin: 19px 0px;">
              <?php echo number_format($media, 1, ",", ""); ?>
@@ -393,7 +405,7 @@ foreach ($salariosexo as $key => $value) {
       $media = $soma / $d;
       ?>
 
-      <div class="fleft-3 meuwidget" id="w5">                        
+      <div class="fleft-3 meuwidget fleftmobile" id="w5">                        
         <span class="tile tile-success tile-valign widgetaltura" >
           <span style="line-height: 30px;float: center; margin: 19px 0px;"><?php echo number_format($media, 1, ",", ""); ?></span>
           <div class="informer informer-default">Tempo médio de Empresa</div>
@@ -403,7 +415,7 @@ foreach ($salariosexo as $key => $value) {
 
 
       <!--vencimentos-->
-      <div class="fleft-3 meuwidget" id="w6" data-toggle="modal" data-target="#vencimentosmodal">
+      <div class="fleft-3 meuwidget fleftmobile" id="w6" data-toggle="modal" data-target="#vencimentosmodal">
         <!-- START WIDGET REGISTRED -->
         <div class="widget widget-default widget-item-icon" style="cursor: pointer;">
           <div class="widget-item-left">
@@ -429,7 +441,7 @@ foreach ($salariosexo as $key => $value) {
 
     ?>
     <div class="linha fleft-10">
-      <div class="fleft-3 meuwidget" id="w7">                        
+      <div class="fleft-3 meuwidget fleftmobile" id="w7">                        
         <a id="admitidos" href="#" data-toggle="modal" data-target="#admitidosmodal" class="tile tile-info tile-valign widgetaltura">
           <?php echo count($admitidos); ?>
           <div class="informer informer-default">Admitidos no mês</div>
@@ -440,7 +452,7 @@ foreach ($salariosexo as $key => $value) {
 
 
       <!-- Inicio Demitidos no mês -->  
-      <div class="fleft-3 meuwidget" id="w8">                        
+      <div class="fleft-3 meuwidget fleftmobile" id="w8">                        
         <a href="#" data-toggle="modal" data-target="#demitidosmodal" class="tile tile-default widgetaltura">
           <?php echo count($demitidos); ?>
           <p>Demitidos no mês</p>
@@ -451,7 +463,7 @@ foreach ($salariosexo as $key => $value) {
       <!-- Fim do Demitidos no mês -->
 
 
-      <div class="fleft-3 meuwidget" id="w9">                        
+      <div class="fleft-3 meuwidget fleftmobile" id="w9">                        
         <a href="<?php echo base_url("gestor/equipe"); ?>" data-toggle="" data-target="" class="tile tile-default widgetaltura">
           <?php echo count($equipe); ?>
           <p>Colaboradores</p>
@@ -463,7 +475,7 @@ foreach ($salariosexo as $key => $value) {
 
 
     <div class="linha fleft-10">
-      <div class="fleft-3 meuwidget"  id="w10">
+      <div class="fleft-3 meuwidget fleftmobile"  id="w10">
         <!-- START VISITORS BLOCK -->
         <div class="panel panel-default">
           <div class="panel-heading">
@@ -492,7 +504,7 @@ foreach ($salariosexo as $key => $value) {
 
 
       <!-- banco de horas da Equipe -->
-      <div class="fleft-3 meuwidget" id="w11">
+      <div class="fleft-3 meuwidget fleftmobile" id="w11">
         <div class="widget widget-default widget-item-icon" >
           <div class="widget-item-left">
            <span class="fa fa-clock-o"></span>
@@ -510,7 +522,7 @@ foreach ($salariosexo as $key => $value) {
     </div> 
 
 
-    <div class="fleft-3 meuwidget" id="examesmodal">
+    <div class="fleft-3 meuwidget fleftmobile" id="examesmodal">
       <div class="widget widget-default widget-carousel">
 
         <div class="" style="position: absolute;">
@@ -540,7 +552,7 @@ foreach ($salariosexo as $key => $value) {
 
   <div class="linha fleft-10">
 
-    <div class="fleft-3 meuwidget" id="w12">
+    <div class="fleft-3 meuwidget fleftmobile" id="w12">
       <div class="widget widget-default widget-item-icon" >
         <div class="widget-item-left">
           <span class="fa fa-user"></span>
@@ -557,7 +569,7 @@ foreach ($salariosexo as $key => $value) {
     </div>                            
   </div>    
 
-  <div class="fleft-3 meuwidget" id="w13">
+  <div class="fleft-3 meuwidget fleftmobile" id="w13">
     <div class="widget widget-default widget-item-icon" >
       <div class="widget-item-left">
         <span class="glyphicon glyphicon-fire"></span>
@@ -575,7 +587,7 @@ foreach ($salariosexo as $key => $value) {
 </div>    
 
 
-<div class="fleft-3 meuwidget" id="w14">                        
+<div class="fleft-3 meuwidget fleftmobile" id="w14">                        
   <a href="#" class="tile tile-default widgetaltura">
     32<p>EPIs Distribuídos</p>
     <div class="informer informer-primary">Minha Equipe</div>
@@ -585,7 +597,7 @@ foreach ($salariosexo as $key => $value) {
 </div><!--fim da quinta linha-->
 
 <div class="linha fleft-10">
-  <div class="fleft-3 meuwidget" id="w15">                        
+  <div class="fleft-3 meuwidget fleftmobile" id="w15">                        
     <a href="#" class="tile tile-default widgetaltura">
       09<p>Incidentes</p>
       <div class="informer informer-primary">Últimos 12 meses (Equipe)</div>
@@ -594,7 +606,7 @@ foreach ($salariosexo as $key => $value) {
   </div>      
 
 
-  <div class="fleft-3 meuwidget" id="w16">                        
+  <div class="fleft-3 meuwidget fleftmobile" id="w16">                        
     <a href="#" class="tile tile-default widgetaltura">
       03<p>Acidentes (CAT)</p>
       <div class="informer informer-primary">Últimos 12 meses (Equipe)</div>
