@@ -34,6 +34,13 @@
 		//$nome_empresa = ucwords_improved(htmlentities($nome_empresa), array('da', 'das', 'de', 'do', 'dos', 'e'));
 		
 	}
+	$menu = array();
+	$this->db->where('fk_idfuncionario', $iduser);
+	$this->db->where('fk_idempresa', $idemp);
+	if (is_object($this->db->get('lancamento_responsaveis')->row())) {
+		$menu['lancamento'] = true;
+	}
+	
 	
 	$fundo="default";
 	$cor="theme-default.css";
@@ -274,11 +281,11 @@
 								</li>
 								
 								<?php switch ($this->session->userdata('perfil_atual')) {
-									case '1':$this->load->view('/geral/box/menu_colab');break;
+									case '1':$this->load->view('/geral/box/menu_colab', $menu);break;
 									case '2':$this->load->view('/geral/box/menu_gestor');break;
 									case '3':$this->load->view('/geral/box/menu_adm');break;
 									case '5':$this->load->view('/geral/box/menu_rh');break;
-									default:$this->load->view('/geral/box/menu_colab');break;
+									default:$this->load->view('/geral/box/menu_colab', $menu);break;
 								}
 								
 								?>

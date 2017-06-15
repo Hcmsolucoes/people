@@ -71,6 +71,16 @@
 
     });
 
+    $(document).on("click",".itemlanc", function(){
+      var nome = $(this).data("nome");
+      var id = $(this).attr("id");    
+
+      $("#busca_colablanc").val("");
+      $("#busca_colablanc").before("<div class='btn btn-default fleft excolablanc' id='colanc"+id+"'>"+nome+" <i rm='"+id+"' class='fa fa-times exclanc'> </i></div>");
+      $("<input type='hidden' name='colabslanc[]' id='colabslanc"+id+"' value='"+id+"' >").appendTo("#selecionadoslanc");
+      $("#listalanc").html("");
+
+    });
     
 </script>
 

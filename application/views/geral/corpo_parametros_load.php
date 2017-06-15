@@ -24,7 +24,6 @@ switch ($parametros->Param_feed) {
 
 
 ?>
-
 <div class="row">
     <div class="col-md-12">
         <div class="alert acenter bold" role="alert" style="display: none;font-size: 15px;"></div>
@@ -35,6 +34,8 @@ switch ($parametros->Param_feed) {
   <li ><a href="#relat" aria-controls="relat" role="tab" data-toggle="tab">Relatórios</a></li>
   <li ><a href="#aprov" aria-controls="aprov" role="tab" data-toggle="tab">Aprovadores</a></li>
   <li ><a href="#rh" aria-controls="rh" role="tab" data-toggle="tab">RH</a></li>
+  <li ><a href="#lanc" aria-controls="lanc" role="tab" data-toggle="tab">Lançamentos</a></li>
+  <li ><a href="#admissoes" aria-controls="admissoes" role="tab" data-toggle="tab">Admissões</a></li>
 </ul>        
 
    
@@ -599,10 +600,10 @@ switch ($parametros->Param_feed) {
 <div role="tabpanel" class="tab-pane" id="aprov">
   <div class="row" >
     <div class="panel panel-default" style="padding: 20px 0px 0px 0px;margin-bottom: 1px">
-            <div class="fleft-1" style="padding: 7px 0px 7px 7px;">
-                <span class="bold">Solicitação: </span>
-            </div>
-           <div class="col-md-2">
+        <div class="fleft-1" style="padding: 7px 0px 7px 7px;">
+            <span class="bold">Solicitação: </span>
+        </div>
+        <div class="col-md-2">
             <select name="tipo_solicitacao" id="tipo_solicitacao" class="">
                 <option value="">Selecione</option>
                 <?php foreach ($tipo_solicitacoes as $key => $value) { ?>
@@ -611,34 +612,33 @@ switch ($parametros->Param_feed) {
 
                 <?php } ?>
             </select>
-            </div>
-            <div class="fleft-2">
-                <div class="autocomplete" >
-                  <input type="text" id="busca_colab" data-campo="colab" data-classe="itemcolab" data-div="lista" class="autocompletar form-control" placeholder="" style="background: transparent;border: none;width: 35px;"/>
-                  <div id="lista"></div>
-              </div>
-              <div id="selecionados"></div>
-          </div>
-          <div class="fleft-1">
-          <button id="salvar_solicitacao" class="btn btn-primary">Salvar</button>
-          </div>
-
-<div class="clearfix" style="margin-bottom: 10px;"></div>
-
-<div class="fleft-4" >
-    <div class="panel panel-default">
-        <div class="panel-heading ui-draggable-handle">
-            <span class="bold">Aprovadores</span>
         </div>
-        <div class="panel-body list-group list-group-contacts" id="aprovadores"></div>
+        <div class="fleft-2">
+            <div class="autocomplete" >
+              <input type="text" id="busca_colab" data-campo="colab" data-classe="itemcolab" data-div="lista" class="autocompletar form-control" placeholder="" style="background: transparent;border: none;width: 35px;"/>
+              <div id="lista"></div>
+          </div>
+          <div id="selecionados"></div>
+      </div>
+      <div class="fleft-1">
+          <button id="salvar_solicitacao" class="btn btn-primary">Salvar</button>
+      </div>
+
+      <div class="clearfix" style="margin-bottom: 10px;"></div>
+
+      <div class="fleft-4" >
+        <div class="panel panel-default">
+            <div class="panel-heading ui-draggable-handle">
+                <span class="bold">Aprovadores</span>
+            </div>
+            <div class="panel-body list-group list-group-contacts" id="aprovadores"></div>
+        </div>
     </div>
-</div>
 
-<img id="loadap" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Loading..." style="display: none;" >
-</div>
-  </div>
+    <img id="loadap" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Loading..." style="display: none;" >
+    </div>
+    </div>
 </div><!-- Fim tab Aprovadores -->
-
 
 <div role="tabpanel" class="tab-pane" id="rh">
   <div class="row" >
@@ -660,7 +660,7 @@ switch ($parametros->Param_feed) {
       <div class="clearfix" style="margin-bottom: 10px;"></div>
       <img id="loadap" src="<?php echo base_url('img/loaders/default.gif') ?>" alt="Loading..." style="display: none;" >
 
-<div class="fleft-4 fleftmobile">
+    <div class="fleft-4 fleftmobile">
       <div class="panel panel-default">
         <div class="panel-heading ui-draggable-handle">
             <span class="bold">Responsáveis</span>
@@ -681,11 +681,127 @@ switch ($parametros->Param_feed) {
         <?php } ?>                             
         </div>
     </div>
-</div>
+    </div>
   </div>
-</div>
+    </div>
 </div><!-- Fim tab RH -->
 
+<div role="tabpanel" class="tab-pane " id="lanc">
+  <div class="row" >
+        <div class="panel panel-default" style="padding: 20px 0px 0px 0px;margin-bottom: 1px">
+            <div class="col-md-2">
+                <span class="bold">Liberado: </span>
+            </div>
+            <div class="col-md-2">
+                <label class="switch switch-small">
+                    <input name="ic_lancamento" type="checkbox" <?php 
+                    if (!empty($parametros)) {
+                        echo ($parametros->ic_lancamento == 1)?"checked" : "" ; 
+                        }
+                        ?> class="check" />
+                    <span></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="panel panel-default" style="padding: 20px 0px 0px 0px;margin-bottom: 1px">
+            <div class="col-md-2" style="padding: 7px 0px 7px 7px;">
+                <span class="bold">Responsável pelos lançamentos: </span>
+            </div>
+            <div class="fleft-2">
+                <div class="autocomplete" >
+                <input type="text" id="busca_colablanc" data-campo="colab" data-classe="itemlanc" data-div="listalanc" class="form-control" placeholder="" style="background: transparent;border: none;width: 35px;"/>
+                  <div id="listalanc"></div>
+              </div>
+              <div id="selecionadoslanc"></div>
+          </div>
+          <div class="fleft-1">
+              <button id="salvar_resp_lanc" class="btn btn-primary">Salvar</button>
+          </div>
+
+          <div class="clearfix" style="margin-bottom: 10px;"></div>
+          <img id="loadresp" src="<?php echo base_url('img/loaders/default.gif') ?>" style="display: none;" >
+
+          <div class="fleft-4 fleftmobile">
+              <div class="panel panel-default">
+                <div class="panel-heading ui-draggable-handle">
+                    <span class="bold">Responsáveis</span>
+                </div>
+                <div class="panel-body list-group list-group-contacts" id="listaresplanc">
+                    <?php foreach ($resplanc as $key => $value) { 
+                        $avatar = ( $value->fun_sexo==1 )?"avatar1":"avatar2";
+                        $foto = (empty($value->fun_foto) )? base_url("img/".$avatar.".jpg") : $value->fun_foto;
+                        ?>                          
+                        <div id="lanc<?php echo $value->id_resp_lancamento; ?>" class="list-group-item fleft-10">                                    
+                            <img src="<?php echo $foto; ?>" class="pull-left" >
+                            <span class="contacts-title"><?php echo $value->fun_nome; ?></span>
+                            <div class="list-group-controls">
+                                <button data-id="<?php echo $value->id_resp_lancamento; ?>" class="btn btn-primary btn-rounded btnexclanc"><span class="fa fa-times"></span></button>
+                            </div>                                    
+                        </div>
+
+                        <?php } ?>                             
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default" style="padding: 20px 0px 0px 0px;margin-bottom: 1px">
+            <label class="col-md-2">Eventos a exibir</label>
+
+            <div class="col-md-3">
+                <select name="selectevento" required="true" id="selectevento" class="selectpicker" data-live-search="true" data-div="resultado">
+                    <option value="">Evento</option>
+                <?php foreach ($eventos as $key => $value) { ?>
+                    <option value="<?php echo $value->idevento; ?>"><?php echo $value->descricao; ?></option>
+                <?php } ?>
+                </select>
+
+            </div>
+
+            <div class="col-md-3">
+                <select name="selectcampo" required="true" id="selectcampo" class="" >
+                    <option value="">Tipo de campo</option>
+                    <option value="1">Hora</option>
+                    <option value="2">Valor</option>
+                    <option value="3">Ambos</option>
+                </select>
+
+                <span class="btn btn-default" id="salvar_evento">Salvar</span>
+            </div>
+
+            <div class="clearfix"></div>
+
+            <label class="col-md-2">Eventos Salvos</label>
+            <div class="col-md-5">
+                <div id="ev_salvos">
+                    <?php foreach ($evlancamentos as $key => $value) { 
+                        switch ($value->tipo_campo) {
+                            case '1': $campo = "Campo Hora";break;
+                            case '2': $campo = "Campo Valor";break;
+                            case '3': $campo = "Campo Hora/Valor";break;                            
+                            default:$campo = "Campo Hora";break;
+                        }
+                        
+                        ?>
+                    <li class='list-group-item'>
+                        <span><?php echo $value->descricao; ?></span>
+
+                        <button data-id="<?php echo $value->idevento; ?>" class="btn btn-primary btn-rounded btnexcevento fright"><span class="fa fa-times"></span>
+                        </button>
+
+                        <span class="fright" style="margin-right: 10px;"><?php echo $campo ; ?></span>
+                    </li>
+                    <?php } ?>
+                </div>
+            </div>
+
+           
+        </div>
+
+
+    </div>
+</div>
 
 
 </div>
@@ -696,6 +812,8 @@ switch ($parametros->Param_feed) {
 
 <script type="text/javascript">
 
+    $(".selectpicker").selectpicker();
+    
 	$(".rdchefia").change(function(){
 
         var valor = $(this).val();
@@ -705,7 +823,7 @@ switch ($parametros->Param_feed) {
 
         $.ajax({        
       type: "POST",
-      url: '<?php echo base_url()."admin/salvarparam";?>',
+      url: '<?php echo base_url("admin/salvarparam");?>',
       dataType : 'json',
       data:{
         valor: valor,
@@ -748,7 +866,7 @@ switch ($parametros->Param_feed) {
         var paramid = $("#paramid").val();
         var empresa = $("#selectempresas").val();
 
-        $.ajax({             
+        $.ajax({
             type: "POST",
             url: '<?php echo base_url("admin/salvarparam");?>',
             dataType : 'html',
@@ -762,8 +880,8 @@ switch ($parametros->Param_feed) {
             },              
             success: function(msg) 
             {    
-        //console.log(msg);
-        check.prop("disabled", false);
+                //console.log(msg);
+                check.prop("disabled", false);
 
         } 
         });
@@ -791,15 +909,15 @@ switch ($parametros->Param_feed) {
             },              
             success: function(msg) 
             {    
-                console.log(msg);
+                //console.log(msg);
                 //check.prop("disabled", false);
-
             } 
         });
 
     });
 
     $(".autocomplete").click(function(){
+
       $(this).find("input[type=text]").focus();
     });
 
@@ -887,6 +1005,49 @@ switch ($parametros->Param_feed) {
       }//if busca
     });
 
+    $("#busca_colablanc").keyup(function(){
+
+        var empresa = $("#selectempresas").val();
+        var busca = $.trim( $(this).val() );
+        var campo = $(this).data("campo");
+        var div = $(this).data("div");
+        var classe = $(this).data("classe");
+        if(busca !=""){
+
+            $.ajax({          
+              type: "POST",
+              url: '<?php echo base_url("admin/autocompleteRespRH"); ?>',
+              dataType : 'html',
+              cache: false,
+              data: {
+                busca: busca,
+                empresa: empresa,
+                classe: classe,
+                campo: campo,
+                todos: 1
+            },    
+            success: function(msg){
+          //console.log(msg);
+          if(msg === 'erro'){
+
+            $(".alert").addClass("alert-danger")
+            .html("Houve um erro. Contate o suporte.")
+            .slideDown("slow");
+            $(".alert").delay( 3500 ).hide(500);
+
+            }else {
+
+                $("#"+div).html(msg);
+
+            }
+
+            } 
+            }); 
+        }else{
+            $("#"+div).html("");
+      }//if busca
+    });
+
     $(document).on("click",".exc", function(){
       var id = $(this).attr("rm");
 
@@ -907,23 +1068,33 @@ switch ($parametros->Param_feed) {
 
      });
 
+    $(document).on("click",".exclanc", function(){
+      var id = $(this).attr("rm");
+      
+      $("#colanc"+id).fadeOut("slow", function() {
+        $(this).remove();
+        $("#colabslanc"+id).remove();
+        });
+
+     });
+
 
     $("#salvar_solicitacao").click(function(){
 
         var empresa = $("#selectempresas").val();
         var solicitacao = $("#tipo_solicitacao");
+        var aprovadores = [];
+        var x = 0;
+
         if(solicitacao.val()==""){
             solicitacao.focus();
             solicitacao.css("border-color", "red");
             return;
         }
-
-        var aprovadores = [];
-        var x = 0;
+        
         $("input[name='colabs[]']").each(function() {
             aprovadores[x] = $(this).val();
             x++;
-            //console.log($(this).val());
         });
         if (aprovadores.length<1) {
             return;
@@ -963,9 +1134,7 @@ switch ($parametros->Param_feed) {
 
     $("#salvar_resp_rh").click(function(){
 
-        var empresa = $("#selectempresas").val();
-        var solicitacao = $("#tipo_solicitacao");
-        
+        var empresa = $("#selectempresas").val();        
         var aprovadores = [];
         var x = 0;
         $("input[name='colabsrh[]']").each(function() {
@@ -1002,6 +1171,50 @@ switch ($parametros->Param_feed) {
 
           }
 
+        } 
+      });
+    });
+
+    $("#salvar_resp_lanc").click(function(){
+
+
+        var empresa = $("#selectempresas").val();        
+        var aprovadores = [];
+        var x = 0;
+        $("input[name='colabslanc[]']").each(function() {
+            aprovadores[x] = $(this).val();
+            x++;
+        });
+        if (aprovadores.length<1) {
+            return;
+        }
+        $(this).attr("disabled", true);
+
+        $.ajax({          
+          type: "POST",
+          url: '<?php echo base_url("admin/salvar_resp_lancamento"); ?>',
+          cache: false,
+          data: {
+            empresa: empresa,
+            aprovadores: aprovadores
+          },           
+          success: function(msg){
+
+          if(msg === 'erro'){
+
+            $(".alert").addClass("alert-danger")
+            .html("Houve um erro. Contate o suporte.")
+            .slideDown("slow");
+            $(".alert").delay( 3500 ).hide(500);
+
+          }else {
+
+             $(".excolablanc").remove();
+             $("#selecionadoslanc").html("");
+             $("#listaresplanc").html(msg);
+
+          }
+          $("#salvar_resp_lanc").attr("disabled", false);
         } 
       });
     });
@@ -1099,7 +1312,101 @@ switch ($parametros->Param_feed) {
                 
             } 
         });
-
     });
+
+    $(".btnexclanc").click(function(){
+
+        var id = $(this).data("id");
+
+        $.ajax({             
+            type: "POST",
+            url: '<?php echo base_url("admin/excluir_resplanc"); ?>',
+            dataType : 'html',
+            secureuri:false,
+            cache: false,
+            data:{
+                id: id
+            },              
+            success: function(msg) 
+            {
+                if (msg==1) {
+                   $("#lanc"+id).hide("slow"); 
+                }
+                
+            } 
+        });
+    });
+
+    $("#salvar_evento").on("click", function(){
+      
+      if ($("#selectevento").val()=="" || $("#selectcampo").val()=="") {
+        return false;
+      }
+
+      $("#selectevento").after('<img id="loadev" src="<?php echo base_url('img/loaders/default.gif') ?>" >');
+      var idevento = $("#selectevento").val();
+      var empresa = $("#selectempresas").val();
+      var campo = $("#selectcampo").val();
+      var operacao = 1;
+     
+      $.ajax({          
+        type: "POST",
+        url: '<?php echo base_url("admin/addevento_lancamento");?>',
+        dataType : 'html',
+        secureuri:false,
+        cache: false,
+        data:{
+          evento: idevento,
+          empresa: empresa,
+          campo: campo,
+          operacao: operacao
+        },              
+        success: function(msg) {
+        
+          if(msg === 'erro'){
+            $(".alert").addClass("alert-danger")
+            .html("Houve um erro. Contate o suporte.")
+            .slideDown("slow");
+            $(".alert").delay( 3500 ).hide(500);
+          }else{
+            $("#ev_salvos").html(msg);
+          }
+          $("#loadev").remove();
+                    
+        } 
+      });
+    });
+
+    $(document).on("click",".btnexcevento", function(){
+      var idevento = $(this).data("id");
+      var empresa = $("#selectempresas").val();
+      var operacao = 0;
+     
+      $.ajax({          
+        type: "POST",
+        url: '<?php echo base_url("admin/addevento_lancamento");?>',
+        dataType : 'html',
+        secureuri:false,
+        cache: false,
+        data:{
+          evento: idevento,
+          empresa: empresa,
+          operacao: operacao
+        },              
+        success: function(msg) {
+        
+          if(msg === 'erro'){
+            $(".alert").addClass("alert-danger")
+            .html("Houve um erro. Contate o suporte.")
+            .slideDown("slow");
+            $(".alert").delay( 3500 ).hide(500);
+          }else{
+            $("#ev_salvos").html(msg);
+          }
+          //$("#loadev").remove();
+                    
+        } 
+      });
+     });
 
 </script>

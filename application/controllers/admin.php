@@ -133,10 +133,24 @@ class Admin extends CI_Controller {
             $this->db->where('fun_idempresa', $idempresa);
             $dados['resprh'] = $this->db->get('responsavelrh')->result();
 
+            $this->db->select("lancamento_responsaveis.*, fun_nome, fun_foto, fun_sexo");
+            $this->db->join('funcionario',"fun_idfuncionario = fk_idfuncionario");
+            $this->db->where('fun_idempresa', $idempresa);
+            $dados['resplanc'] = $this->db->get('lancamento_responsaveis')->result();
+
             $dados['tipo_solicitacoes'] = $this->db->get('solicitacao_tipo')->result();
 
             $this->db->where("idempresa", $idempresa);
             $dados['parametros'] = $this->db->get('parametros')->row();
+
+            $this->db->order_by("descricao", "asc");
+            $this->db->where("idempresa", $idempresa);
+            $this->db->limit(20);
+            $dados['eventos'] = $this->db->get('eventos')->result();
+
+            $this->db->join("eventos", "idevento = fk_evento");
+            $this->db->where("fk_ev_empresa", $idempresa);
+            $dados['evlancamentos'] = $this->db->get('lancamento_eventos')->result();
 
             header ('Content-type: text/html; charset=ISO-8859-1');
             $this->load->view('/geral/corpo_parametros_load',$dados);
@@ -269,6 +283,14 @@ class Admin extends CI_Controller {
             echo 1;
       }
 
+      public function excluir_resplanc(){
+
+            $id = $this->input->post("id");
+            $this->db->where("id_resp_lancamento", $id);
+            $this->db->delete("lancamento_responsaveis");
+            echo 1;
+      }
+
       public function autocompleteRespRH(){
 
             $idempresa = (!empty($this->input->post('empresa')) )?$this->input->post('empresa') : $this->session->userdata('idempresa');
@@ -280,7 +302,11 @@ class Admin extends CI_Controller {
 
             $this->db->like("fun_nome", $busca);
             $this->db->where("fun_idempresa", $idempresa);
-            $this->db->where("fun_perfil in (5, 6, 7)");
+
+            if (empty($this->input->post('todos'))) {
+                  $this->db->where("fun_perfil in (5, 6, 7)");
+            }
+            $this->db->where("fun_status", "A");
             $dados['lista'] =$this->db->get("funcionario")->result();
 
             header ('Content-type: text/html; charset=ISO-8859-1');
@@ -335,6 +361,39 @@ class Admin extends CI_Controller {
             echo 1;
       }
 
+      public function salvar_resp_lancamento(){
+
+            $aprovadores = $this->input->post("aprovadores");
+            $dados['fk_idempresa'] = $this->input->post("empresa");
+
+            foreach ($aprovadores as $key => $value) {
+
+                  $dados['fk_idfuncionario'] = $value;
+                  $this->db->insert("lancamento_responsaveis", $dados);
+
+            }
+
+            $this->db->select("lancamento_responsaveis.*, fun_nome, fun_foto, fun_sexo");
+            $this->db->join('funcionario',"fun_idfuncionario = fk_idfuncionario");
+            $this->db->where('fun_idempresa', $dados['fk_idempresa']);
+            $resplanc = $this->db->get('lancamento_responsaveis')->result();
+            $ret = "";
+            foreach ($resplanc as $key => $value) { 
+                  $avatar = ( $value->fun_sexo==1 )?"avatar1":"avatar2";
+                  $foto = (empty($value->fun_foto) )? base_url("img/".$avatar.".jpg") : $value->fun_foto;
+
+                  $ret .= '<div id="lanc'.$value->id_resp_lancamento.'" class="list-group-item fleft-10">                                    
+                  <img src="'.$foto.'" class="pull-left" >
+                  <span class="contacts-title">'.$value->fun_nome.'</span>
+                  <div class="list-group-controls">
+                      <button data-id="'.$value->id_resp_lancamento.'" class="btn btn-primary btn-rounded btnexclanc"><span class="fa fa-times"></span></button>
+                  </div>                                    
+                  </div>';
+            }
+
+          echo $ret;
+      }
+
       public function acessocampos(){
             $idcolab = $this->input->post("colab");
             $this->db->select("usu_email, usu_perfil");
@@ -342,6 +401,48 @@ class Admin extends CI_Controller {
             $usuario = $this->db->get("usuarios")->row();
             
             echo json_encode($usuario);
+      }
+
+      public function addevento_lancamento(){
+            if (!empty($this->input->post('evento'))) {
+
+            $dados['fk_evento'] = $this->input->post('evento');
+            $dados['fk_ev_empresa'] = $this->input->post('empresa');
+
+            if ($this->input->post('operacao')==1) {
+
+                  $dados['tipo_campo'] = $this->input->post('campo');
+                  $this->db->insert("lancamento_eventos", $dados);
+                //echo $this->db->insert_id();
+
+            }else{
+
+                $this->db->where("fk_evento", $this->input->post('evento'));
+                $this->db->where("fk_ev_empresa", $this->input->post('empresa'));
+                $this->db->delete("lancamento_eventos");
+                //echo 0;
+            }
+
+            $this->db->join("eventos", "idevento = fk_evento");
+            $this->db->where("fk_ev_empresa", $this->input->post('empresa'));
+            $eventos = $this->db->get("lancamento_eventos")->result();
+            foreach ($eventos as $key => $value) {
+
+                  switch ($value->tipo_campo) {
+                            case '1': $campo = "Campo Hora";break;
+                            case '2': $campo = "Campo Valor";break;
+                            case '3': $campo = "Campo Hora/Valor";break;                            
+                            default:$campo = "Campo Hora";break;
+                        }
+                  echo "<li class='list-group-item'>
+                        <span>". $value->descricao ."</span>
+                        <button data-id='".$value->idevento."' class='btn btn-primary btn-rounded btnexcevento fright'><span class='fa fa-times'></span>
+                        </button>
+                        <span class='fright' style='margin-right: 10px;'>".$campo."</span>
+                    </li>";
+            }
+
+        }
       }
 
 

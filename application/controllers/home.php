@@ -532,6 +532,118 @@ class Home extends CI_Controller {
         $this->load->view('/geral/box/modalnoticias', $dados);
     }
 
+    public function lancamentos(){
+    	$this->Log->talogado();
+		$this->session->set_userdata('perfil_atual', '1');
+        $iduser = $this->session->userdata('id_funcionario');
+        $idempresa = $this->session->userdata('idempresa');
+        $idcli = $this->session->userdata('idcliente');
+        $dados = array('menupriativo' => 'lancamentos' );
 
+        $this->db->where('fk_idfuncionario', $iduser);
+		$this->db->where('fk_idempresa', $idempresa);
+		if ( !is_object($this->db->get('lancamento_responsaveis')->row())) {
+			header("Location: " . base_url("home") );
+			exit;
+		}
+
+        $this->db->where('fun_idfuncionario',$iduser);
+        $dados['funcionario'] = $this->db->get('funcionario')->result();
+        $dados['quantgeral'] = $this->db->get('feedbacks')->num_rows();
+
+        $this->db->where("idempresa", $idempresa);
+        $dados['parametros'] = $this->db->get("parametros")->row();
+
+        $this->db->where('fun_idempresa', $idempresa);
+        $this->db->where('fun_status',"A");
+        //$this->db->limit(10);
+        $dados['colaboradores'] = $this->db->get('funcionario')->result();
+        
+        $this->db->join("eventos", "idevento = fk_evento");
+        $this->db->where("fk_ev_empresa", $idempresa);
+        $dados['eventos'] = $this->db->get("lancamento_eventos")->result();
+
+        $this->db->where('situacao_competencia', 0);
+        $this->db->limit(1);
+        $this->db->order_by("mes_competencia", "desc");
+        $dados['competencia'] = $this->db->get("lancamento_competencia")->row();
+
+        $this->db->select('tema_cor, tema_fundo');
+        $this->db->where('fun_idfuncionario',$iduser);
+        $dados['tema'] = $this->db->get('funcionario')->result();
+        $dados['perfil'] = $this->session->userdata('perfil');
+		$dados['breadcrumb'] = array('Home'=>base_url('home'), "Lançamentos"=>"#" );
+
+
+        $this->load->view('/geral/html_header', $dados);  
+        $this->load->view('/geral/corpo_lancamentos', $dados);
+        $this->load->view('/geral/footer');
+    }
+
+    public function salvarLancamento(){
+    	$idempresa = $this->session->userdata('idempresa');
+        $iduser = $this->session->userdata('id_funcionario'); 
+
+        $dados["fk_colaborador"] = $this->input->post("selectcolab") ; 
+        $dados["fk_colaborador_emissor"] = $iduser ; 
+        $dados["fk_lancamento_empresa"] = $idempresa;
+        $dados["fkcompetencia"] = $this->input->post("competencia");
+        $ev = array();
+        if (!empty($this->input->post("hora"))) {
+        	foreach ($this->input->post("hora") as $key => $value) {
+
+        		$idevento = $this->input->post("eventos")[$key];
+        		if (!empty($value)) {        		    
+        			$ev[$idevento][] = $value;
+        		}       		
+        	}
+        }
+        if (!empty($this->input->post("valor"))) {
+        	foreach ($this->input->post("valor") as $key => $value) {
+
+        		$idevento = $this->input->post("eventos")[$key];
+        		if (!empty($value)) {        			
+        			$ev[$idevento][] = $this->util->floatParaInsercao($value);
+        		}        		
+        	}
+    	}
+
+    	foreach ($ev as $key => $value) {   		
+
+    		if (stripos($value[0], ":")) {
+    			$dados["horas"] = $value[0];
+    		}elseif(stripos($value[0], ".")){
+    			$dados["valor"] = $value[0];
+    		}
+
+    		if (isset($value[1])) {
+    			$dados["valor"] =$value[1];//posição 1 é valor
+    		}
+    		$dados["fk_codigo_evento"] = $key;
+    		$this->db->insert("lancamento", $dados);
+    		unset($dados["horas"]);
+    		unset($dados["valor"]);
+    	}
+        
+        $this->db->select("fun_nome, valor, horas, descricao, id_lancamento");
+        $this->db->join("funcionario", "fun_idfuncionario = fk_colaborador");
+        $this->db->join("eventos", "idevento = fk_codigo_evento");
+        $this->db->join("lancamento_competencia", "fkcompetencia = id_competencia");
+        $this->db->where("fk_colaborador", $this->input->post("selectcolab"));
+        $this->db->where("fkcompetencia", $this->input->post("competencia"));
+        $lanc['lancamentos'] = $this->db->get("lancamento")->result();
+
+        if (count($lanc['lancamentos'])>0) {
+        	header ('Content-type: text/html; charset=ISO-8859-1');
+        	$this->load->view('/geral/box/gridlancamento', $lanc);
+        }
+    }
+
+    public function excluirLancamento(){
+    	$id = $this->input->post("id");
+		$this->db->where("id_lancamento", $id);
+		$this->db->delete("lancamento");
+		echo 1;
+    }
 
 }

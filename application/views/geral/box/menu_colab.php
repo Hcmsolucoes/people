@@ -53,30 +53,26 @@ $iduser = $this->session->userdata('id_funcionario');
 <!-- menu gestão do dia a dia -->
 <li class="xn-openable <?php echo ($menupriativo=="gestao")? "active":"" ?>">
     <a href="#"><span class="fa fa-briefcase"></span> <span class="xn-text">Gestão do dia a dia</span></a>
-	<ul><?php if (!empty($parametros)) { 
-                if($parametros->solicitarferias == 1){ ?>                              
+    <ul><?php if (!empty($parametros)) { 
+        if($parametros->solicitarferias == 1){ ?>                              
         <li><a href="<?php echo base_url('home/programacao_ferias')?>">
             <span class="fa fa-plane"></span>
             <span class="xn-text">Programação de Férias</span></a>
         </li>
-		<?php } } ?>
-		
-		<!--
-		<li><a href="#">
-            <span class="fa fa-retweet"></span>
-            <span class="xn-text">Tarefas</span></a>
-        </li>
-        -->
-		
-	</ul>
-</li> 
+        <?php } } ?>
 
-<!-- menu feedback -->
-<li class="<?php echo ($menupriativo=="feedback")? "active":"" ?>">
-    <a href="<?php echo base_url('perfil/feedbacks') ?>">
-        <span class="fa fa-comments-o"></span><span class="xn-text">Feedbacks</span>
-    </a>  
-</li> 
+        <?php if (!empty($parametros)) { 
+            if( ($parametros->ic_lancamento == 1) && (isset($lancamento)) ){ ?>
+        <li>
+            <a href="<?php echo base_url('home/lancamentos') ?>">
+                <span class="fa fa-share-square-o"></span>
+                <span class="xn-text">Lançamentos</span>
+            </a>  
+        </li>
+        <?php } } ?>
+
+    </ul>
+</li>
 
 <!-- menu perfil público -->
 <li class="<?php echo ($menupriativo=="publico")? "active":"" ?>">
