@@ -5,7 +5,7 @@ $dadostabletunover ="";
 $ticks ="[";
 foreach ($turnovertotal as $key => $value) { 
 
-  $dadostabletunover .=  "['".$value['Ano']."','".$key."',".$value['Admissao'].",".$value['Demissao'].",'".$key."'],";
+  $dadostabletunover .=  "['".$value['Ano']."','".$key."',".$value['Admissao'].",".$value['Demissao'].",".$value['Ativos'].",'".$key."'],";
   $ticks .=  "new Date('".$value['mesano']."'),";
 
   }
@@ -17,7 +17,7 @@ foreach ($turnoveradm as $key => $value) {
 $dataadmissao = (!empty($value['Admissão']))? $value['Admissão'] : "";
 $datademisao = (!empty($value['Demissão']))? $value['Demissão'] : "";
 
-  $filtrostabelas .=  "['".$value['Ano']."',new Date('".$value['mesano']."'),'".$value['mes']."','".$value['Movimentacao']."','".$value['colaborador']."','".$value['cargo']."','".$dataadmissao."','".$datademisao."','".$value['empresa']."','".$value['Centro de Custo']."'],";
+  $filtrostabelas .=  "['".$value['Ano']."',new Date('".$value['mesano']."'),'".$value['mes']."','".$value['Movimentacao']."','".$value['colaborador']."','".$value['cargo']."','".$dataadmissao."','".$datademisao."','".$value['empresa']."','".$value['Centro de Custo']."',".$value['idccusto'].",".$value['idempresa']."],";
 
 
   }
@@ -751,34 +751,37 @@ function drawMainDashboard(operacao) {
 }
 
 function drawMainTurnover() {
-	var dashboard2 = new google.visualization.Dashboard(
-		document.getElementById('dashboard_turnover'));
+    var dashboard2 = new google.visualization.Dashboard(
+        document.getElementById('dashboard_turnover'));
 
+ 
+    var data = new google.visualization.DataTable();
+    data.addColumn('string', 'Ano');
+    data.addColumn('string', 'Mes');  
+    data.addColumn('number', 'Admissões');
+    data.addColumn('number', 'Demissões');
+    data.addColumn('number', 'Ativos');
+    data.addColumn('string', 'MesAno');
+    data.addRows([
+ <?php echo $dadostabletunover; ?>
+    ]);
 
-	var data = new google.visualization.DataTable();
-	data.addColumn('string', 'Ano');
-	data.addColumn('string', 'Mes');  
-	data.addColumn('number', 'Admissões');
-	data.addColumn('number', 'Demissões');
-	data.addColumn('string', 'MesAno');
-	data.addRows([
-		<?php echo $dadostabletunover; ?>
-		]);
-
-	var data3 = new google.visualization.DataTable();
-	data3.addColumn('string', 'Ano');
-	data3.addColumn('date', 'Mes');  
-	data3.addColumn('string', 'MesAno');
-	data3.addColumn('string', 'Movimentacao');
-	data3.addColumn('string', 'Colaborador');
-	data3.addColumn('string', 'Cargo');
-	data3.addColumn('string', 'Admissão');
-	data3.addColumn('string', 'Demissão');
-	data3.addColumn('string', 'Empresa');
-	data3.addColumn('string', 'Centro de Custo');
-	data3.addRows([
-		<?php echo $filtrostabelas; ?>
-		]);   
+var data3 = new google.visualization.DataTable();
+    data3.addColumn('string', 'Ano');
+    data3.addColumn('date', 'Mes');  
+    data3.addColumn('string', 'MesAno');
+    data3.addColumn('string', 'Movimentacao');
+    data3.addColumn('string', 'Colaborador');
+    data3.addColumn('string', 'Cargo');
+    data3.addColumn('string', 'Admissão');
+    data3.addColumn('string', 'Demissão');
+    data3.addColumn('string', 'Empresa');
+    data3.addColumn('string', 'Centro de Custo');
+    data3.addColumn('number', 'id Centro de Custo');
+    data3.addColumn('number', 'id empresa');
+data3.addRows([
+ <?php echo $filtrostabelas; ?>
+    ]);   
 
   //var categoryPicker2 = new google.visualization.ControlWrapper({
     //    controlType: 'DateRangeFilter',
@@ -799,100 +802,100 @@ function drawMainTurnover() {
         //}
     //});
 
-    var categoryPicker2 = new google.visualization.ControlWrapper({
-    	controlType: 'CategoryFilter',
-    	containerId: 'turnover_mes',
-    	dataTable: data3,
-    	options: {
+      var categoryPicker2 = new google.visualization.ControlWrapper({
+      controlType: 'CategoryFilter',
+      containerId: 'turnover_mes',
+       dataTable: data3,
+      options: {
         //'filterColumnIndex': 8,
         filterColumnLabel: 'MesAno',
-        ui: {
-        	labelStacking: 'horizontal',
-        	label: 'Mes/Ano:',
-        	allowTyping: false,
-        	allowMultiple: true,
-        	selectedValuesLayout: 'aside',
-        	caption : 'Selecione'
+         ui: {
+          labelStacking: 'horizontal',
+          label: 'Mes/Ano:',
+          allowTyping: false,
+          allowMultiple: true,
+          selectedValuesLayout: 'aside',
+          caption : 'Selecione'
         }
-    }
-	});
+      }
+    });
 
     var categoryPickeremp1 = new google.visualization.ControlWrapper({
-    	controlType: 'CategoryFilter',
-    	containerId: 'turnover_emp',
-    	dataTable: data3,
-    	options: {
+      controlType: 'CategoryFilter',
+      containerId: 'turnover_emp',
+       dataTable: data3,
+      options: {
         //'filterColumnIndex': 8,
         filterColumnLabel: 'Empresa',
-        ui: {
-        	labelStacking: 'horizontal',
-        	label: 'Empresa:',
-        	allowTyping: false,
-        	allowMultiple: true,
-        	selectedValuesLayout: 'belowWrapping',
-        	caption : 'Selecione'
+         ui: {
+          labelStacking: 'horizontal',
+          label: 'Empresa:',
+          allowTyping: false,
+          allowMultiple: true,
+          selectedValuesLayout: 'belowWrapping',
+          caption : 'Selecione'
         }
-    }
-	});
+      }
+    });
 
-    var categoryPickerccu1 = new google.visualization.ControlWrapper({
-    	controlType: 'CategoryFilter',
-    	containerId: 'turnover_ccu',
-    	dataTable: data3,
-    	options: {
+     var categoryPickerccu1 = new google.visualization.ControlWrapper({
+      controlType: 'CategoryFilter',
+      containerId: 'turnover_ccu',
+      dataTable: data3,
+      options: {
        // 'filterColumnIndex': 5,
        filterColumnLabel: 'Centro de Custo',
-       ui: {
-       	labelStacking: 'horizontal',
-       	label: 'Centro de Custo:',
-       	allowTyping: false,
-       	allowMultiple: true,
-       	selectedValuesLayout: 'aside',
-       	caption : 'Selecione'
-       }
-   }
-	}); 
+        ui: {
+          labelStacking: 'horizontal',
+          label: 'Centro de Custo:',
+          allowTyping: false,
+          allowMultiple: true,
+          selectedValuesLayout: 'aside',
+          caption : 'Selecione'
+        }
+      }
+    }); 
 
+     
+var aggregationCols = [{column: 3, aggregation: google.visualization.data.count, type: 'number',label: 'admissão'},
+                       {column: 1, aggregation: google.visualization.data.count, type: 'number',label: 'Demissão'}];
 
-    var aggregationCols = [{column: 3, aggregation: google.visualization.data.count, type: 'number',label: 'admissão'},
-    {column: 1, aggregation: google.visualization.data.count, type: 'number',label: 'Demissão'}];
+//        {'column': 2, 'aggregation': google.visualization.data.sum, 'type': 'number'}];
 
-	//{'column': 2, 'aggregation': google.visualization.data.sum, 'type': 'number'}];
-
-    //Define a Bar chart
+    // Define a Bar chart
     var chart1 = new google.visualization.ChartWrapper({
-    	chartType: 'AreaChart',
-    	containerId: 'chart_turnover',
-    	dataTable : data,
-    	options: {
-    		focusTarget: 'category',
-    		width: "1024",
-    		height: 400,
+        chartType: 'AreaChart',
+        containerId: 'chart_turnover',
+        dataTable : data,
+        options: {
+            focusTarget: 'category',
+           width: "1024",
+           height: 400,
          //  isStacked: 'relative',
            //legend: {position: 'top', maxLines: 2},
-           vAxis: {
-           	textStyle: {
-           		fontSize: 12,
-           		fontName: 'Arial'
-           	},
-           	viewWindow: {
-           		max: 30
-           	}
+            vAxis: {
+                textStyle: {
+                    fontSize: 12,
+                    fontName: 'Arial'
+                },
+               // viewWindow: {
+                 //   max: 30
+                //}
                 //viewWindowMode: 'maximized'
 
             },
             hAxis: {
 
-            	format: 'MM/yyyy',
+               format: 'MM/yyyy',
                // ticks: ticks
-               ticks:  <?php echo $ticks; ?> 
+             ticks:  <?php echo $ticks; ?> 
 
-           },
+            },
 
-           animation: {
-           	duration: 1000,
-           	easing: 'out'
-           },
+            animation: {
+                duration: 1000,
+                easing: 'out'
+            },
           //  series: {
             //0: {  // set the options for the first series (columns)
               //  type: "line",
@@ -907,52 +910,52 @@ function drawMainTurnover() {
           //},
           // colors: ["red", "green", "orange"],
            // legend: 'none',
-           title: 'Turnover (Admissões, Demissões)'
-       },
+            title: 'Turnover (Admissões, Demissões, Ativos)'
+        },
         // Instruct the barchart to use columns 2, 3, 4 and 5
         // from the 'data' DataTable.
         view: {
-        	columns: [1,2,3]
+            columns: [1,2,3,4]
         }
     });
 
-    var cssClassNames = {
-    	'headerRow': 'cssHeaderRow',
-    	'tableRow': 'cssTableRow',
-    	'oddTableRow': 'cssOddTableRow',
-    	'selectedTableRow': 'cssSelectedTableRow',
-    	'hoverTableRow': 'cssHoverTableRow',
-    	'headerCell': 'cssHeaderCell',
-    	'tableCell': 'cssTableCell',
-    	'rowNumberCell': 'cssRowNumberCell'
-    };
+  var cssClassNames = {
+              'headerRow': 'cssHeaderRow',
+              'tableRow': 'cssTableRow',
+              'oddTableRow': 'cssOddTableRow',
+              'selectedTableRow': 'cssSelectedTableRow',
+              'hoverTableRow': 'cssHoverTableRow',
+              'headerCell': 'cssHeaderCell',
+              'tableCell': 'cssTableCell',
+              'rowNumberCell': 'cssRowNumberCell'
+          };
 
     var table1 = new google.visualization.ChartWrapper({
-    	chartType: 'Table',
-    	dataTable: data3,
-    	containerId: 'table_turnover',
-    	options: {allowHtml: true,
-    		width: '100%',
-    		height: '50%',
-    		page: 'enable',
-    		cssClassNames: cssClassNames,
-    		pageSize: 5
-    	},
-    	view: {
-    		columns: [2,3,4,5,6,7,8]
-    	}
+      chartType: 'Table',
+      dataTable: data3,
+      containerId: 'table_turnover',
+      options: {allowHtml: true,
+        width: '100%',
+        height: '50%',
+        page: 'enable',
+        cssClassNames: cssClassNames,
+        pageSize: 5
+      },
+      view: {
+        columns: [2,3,4,5,6,7,8]
+      }
 
     });
 
 
 
-    google.visualization.events.addListener(categoryPicker2, 'statechange', setChartView);
-    google.visualization.events.addListener(categoryPickerccu1, 'statechange', setChartView);
-    google.visualization.events.addListener(categoryPickeremp1, 'statechange', setChartView);
+google.visualization.events.addListener(categoryPicker2, 'statechange', setChartView);
+google.visualization.events.addListener(categoryPickerccu1, 'statechange', setChartView);
+google.visualization.events.addListener(categoryPickeremp1, 'statechange', setChartView);
 
 
-    var formatter1 = new google.visualization.DateFormat({pattern: 'MM/yyyy'});
-    formatter1.format(data,1);
+       var formatter1 = new google.visualization.DateFormat({pattern: 'MM/yyyy'});
+       formatter1.format(data,1);
 
     dashboard2.bind(categoryPickeremp1,categoryPickerccu1);
     dashboard2.bind(categoryPickerccu1,categoryPicker2);
@@ -961,93 +964,70 @@ function drawMainTurnover() {
     //dashboard2.bind(categoryPickerccu1,categoryPickerano1);
    // dashboard2.bind(chart1);
 
-   dashboard2.draw(data3);
-   chart1.draw();
+    dashboard2.draw(data3);
+    chart1.draw();
 
-   google.visualization.events.addListener(chart1.getChart(), 'select', function() {
-   	var selection = chart1.getChart().getSelection();
+       google.visualization.events.addListener(chart1.getChart(), 'select', function() {
+          var selection = chart1.getChart().getSelection();
            // get the data used by the chart
-
-           if (selection.length) {
+       
+       if (selection.length) {
             // the user selected a bar
            // alert(data.getValue(selection[0].row, 1));
-           var teste2 = data.getValue(selection[0].row, 1);
-           var teste1 = data.getValue(selection[0].row, 2);
-       }
-       else {
+            var teste2 = data.getValue(selection[0].row, 1);
+            var teste1 = data.getValue(selection[0].row, 2);
+        }
+        else {
             // the user deselected a bar
         }
 
-        var titulo = "Exportação dados";
-        $( "#dadosedit" ).html("<img id='load' src='<?php echo base_url('img/loaders/default.gif') ?>' alt='Loading...' >");
-        $("#titulomodal").text(titulo);
-        $('#myModal').modal('show');
-
-        $.ajax({             
-        	type: "POST",
-        	url: '<?php echo base_url('gestor/view_tabelasdashs2') ?>',
-        	dataType : 'html',
-        	secureuri:false,
-        	cache: false,
-        	data:{
-        		dashboard: 'tunover'
-        	},              
-        	success: function(msg) 
-        	{
-                    //console.log(msg);
-                    $( "#dadosedit" ).html(msg);
-                } 
-            });
-
-
-    });
-
-
-   function setChartView () {
-
-   	var statemes = categoryPicker2.getState();
-   	var stateccu = categoryPickerccu1.getState();
-   	var stateemp = categoryPickeremp1.getState();
+        var statemes = categoryPicker2.getState();
+        var stateccu = categoryPickerccu1.getState();
+        var stateemp = categoryPickeremp1.getState();
       //  var stateano = categoryPickerano1.getState();
-
+        
         //alert(valLow+" ate"+valHigh);
         var row;
-        var view = {
-        	columns: [0]
-        };      
+        var view;      
         
         var acentrocusto = "";
+        var idcentrocusto = "";
         for (var i = 0; i < stateccu.selectedValues.length; i++) {
+          
+           
+            var acentrocusto = acentrocusto + stateccu.selectedValues[i]+',';
+        
+           row = data3.getFilteredRows([{column: 9, value: stateccu.selectedValues[i]}])[0];
 
+            var idcentrocusto = idcentrocusto+ data3.getValue(row,10)+',';
 
-        	var acentrocusto = acentrocusto + stateccu.selectedValues[i]+',';
+        } 
+        var aempresa = "";
+        var idempresa = "";
+        for (var i = 0; i < stateemp.selectedValues.length; i++) {
+          
+             var aempresa = aempresa + stateemp.selectedValues[i]+',';
 
-         //   row = columnsTable.getFilteredRows([{column: 1, value: state.selectedValues[i]}])[0];
-           // view.columns.push(columnsTable.getValue(row, 0));
-       } 
-       var aempresa = "";
-       for (var i = 0; i < stateemp.selectedValues.length; i++) {
+            row = data3.getFilteredRows([{column: 8, value: stateemp.selectedValues[i]}])[0];
 
-       	var aempresa = aempresa + stateemp.selectedValues[i]+',';
-         //   row = columnsTable.getFilteredRows([{column: 1, value: state.selectedValues[i]}])[0];
-           // view.columns.push(columnsTable.getValue(row, 0));
-       } 
+            var idempresa = idempresa+ data3.getValue(row,11)+',';
 
-       var aMes = ""; 
-       for (var i = 0; i < statemes.selectedValues.length; i++) {
+        } 
 
-       	var aMes = aMes + statemes.selectedValues[i]+',';
+        var aMes = ""; 
+         for (var i = 0; i < statemes.selectedValues.length; i++) {
+          
+           var aMes = aMes + statemes.selectedValues[i]+',';
 
-       } 
-
+        } 
+      
         // sort the indices into their original order
-        view.columns.sort(function (a, b) {
-        	return (a - b);
-        });
+     
+        console.log(acentrocusto);
         var n = acentrocusto.length;
         var n = n-1;
         var resccu = acentrocusto.substring(0, n);        
-
+      
         var n = aMes.length;
         var n = n-1;
         var resmes = aMes.substring(0, n);
@@ -1055,21 +1035,129 @@ function drawMainTurnover() {
         var n = aempresa.length;
         var n = n-1;
         var resemp = aempresa.substring(0, n);
+
+        var n = idcentrocusto.length;
+        var n = n-1;
+        var residcentro = idcentrocusto.substring(0, n);
+
+        var n = idempresa.length;
+        var n = n-1;
+        var residempresa = idempresa.substring(0, n);
+              
+               var titulo = "Exportação dados";
+              $( "#dadosedit" ).html("<img id='load' src='<?php echo base_url('img/loaders/default.gif') ?>' alt='Loading...' >");
+              $("#titulomodal").text(titulo);
+              $('#myModal').modal('show');
+
+              $.ajax({             
+                  type: "POST",
+                  url: '<?php echo base_url('gestor/view_tabelasdashs2') ?>',
+                  dataType : 'html',
+                  secureuri:false,
+                  cache: false,
+                  data:{
+                    dashboard: 'tunover',
+                    acentrocusto: resccu,
+                    acentrocusto2: resccu,
+                    aempresa: resemp,
+                    aempresa2: resemp,
+                    MesAno: resmes,
+                    idcentro: residcentro,
+                    idempresa: residempresa
+
+                  },              
+                  success: function(msg) 
+                  {
+                    //console.log(msg);
+                    $( "#dadosedit" ).html(msg);
+                  } 
+              });
+
+
+      });
+
+
+   function setChartView () {
         
+        var statemes = categoryPicker2.getState();
+        var stateccu = categoryPickerccu1.getState();
+        var stateemp = categoryPickeremp1.getState();
+      //  var stateano = categoryPickerano1.getState();
+        
+        //alert(valLow+" ate"+valHigh);
+        var row;
+        var view;      
+        
+        var acentrocusto = "";
+        var idcentrocusto = "";
+        for (var i = 0; i < stateccu.selectedValues.length; i++) {
+          
+           
+            var acentrocusto = acentrocusto + stateccu.selectedValues[i]+',';
+        
+           row = data3.getFilteredRows([{column: 9, value: stateccu.selectedValues[i]}])[0];
 
-        $.ajax({             
-        	type: "POST",
-        	url: '<?php echo base_url('gestor/view_cargatunover') ?>',
-        	dataType : 'json',              
-        	data:{
-        		acentrocusto: resccu,
-        		acentrocusto2: resccu,
-        		aempresa: resemp,
-        		aempresa2: resemp,
-        		MesAno: resmes
+            var idcentrocusto = idcentrocusto+ data3.getValue(row,10)+',';
 
-        	},              
-        	success:function(jsonData){ 
+        } 
+        var aempresa = "";
+        var idempresa = "";
+        for (var i = 0; i < stateemp.selectedValues.length; i++) {
+          
+             var aempresa = aempresa + stateemp.selectedValues[i]+',';
+
+               row = data3.getFilteredRows([{column: 8, value: stateemp.selectedValues[i]}])[0];
+
+            var idempresa = idempresa+ data3.getValue(row,11)+',';
+
+
+        } 
+
+        var aMes = ""; 
+         for (var i = 0; i < statemes.selectedValues.length; i++) {
+          
+           var aMes = aMes + statemes.selectedValues[i]+',';
+
+        } 
+      
+        // sort the indices into their original order
+     
+        var n = acentrocusto.length;
+        var n = n-1;
+        var resccu = acentrocusto.substring(0, n);        
+      
+        var n = aMes.length;
+        var n = n-1;
+        var resmes = aMes.substring(0, n);
+
+        var n = aempresa.length;
+        var n = n-1;
+        var resemp = aempresa.substring(0, n);
+
+        var n = idcentrocusto.length;
+        var n = n-1;
+        var residcentro = idcentrocusto.substring(0, n);
+
+        var n = idempresa.length;
+        var n = n-1;
+        var residempresa = idempresa.substring(0, n);
+        
+        //console.log(residcentro);
+               $.ajax({             
+                  type: "POST",
+                  url: '<?php echo base_url('gestor/view_cargatunover') ?>',
+                  dataType : 'json',              
+                  data:{
+                    acentrocusto: resccu,
+                    acentrocusto2: resccu,
+                    aempresa: resemp,
+                    aempresa2: resemp,
+                    MesAno: resmes,
+                    idcentro: residcentro,
+                    idempresa: residempresa
+
+                  },              
+                   success:function(jsonData){ 
                  //  alert('dentro');            
                  //  alert(JSON.stringify(jsonData));
 
@@ -1078,21 +1166,24 @@ function drawMainTurnover() {
 
       //console.log(teste);
       var data5 = new google.visualization.DataTable();
-      data5.addColumn('string', 'Ano');
-      data5.addColumn('string', 'Mes');  
-      data5.addColumn('number', 'Admissões');
-      data5.addColumn('number', 'Demissões');
-      data5.addColumn('string', 'MesAno');
-      data5.addRows(
-      	jsonData
-      	);
+    data5.addColumn('string', 'Ano');
+    data5.addColumn('string', 'Mes');  
+    data5.addColumn('number', 'Admissões');
+    data5.addColumn('number', 'Demissões');
+    data5.addColumn('number', 'Ativos');
+    data5.addColumn('string', 'MesAno');
+    data5.addRows(
+    jsonData
+    );
       chart1.setDataTable(data5);
       chart1.draw();
-
-  } 
-	});
+        
+                  } 
+              });
 
     }
+
+
 }
 
 $('a[href="#botao1"]').on('shown.bs.tab', function (e) {

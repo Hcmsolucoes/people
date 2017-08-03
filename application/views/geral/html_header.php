@@ -40,6 +40,11 @@
 	if (is_object($this->db->get('lancamento_responsaveis')->row())) {
 		$menu['lancamento'] = true;
 	}
+	$this->db->where('fk_idcolab_admissao', $iduser);
+	$this->db->where('fk_idempresa_admissao', $idemp);
+	if (is_object($this->db->get('responsaveladmissao')->row())) {
+		$menu['admissao'] = true;
+	}
 	
 	
 	$fundo="default";
@@ -154,7 +159,7 @@
 		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 		<script type="text/javascript" src="<?php echo base_url('js/jquery.complexify.js') ?>"></script>
 		<script type="text/javascript" src="<?php echo base_url('js/k.js') ?>"></script>
-		
+		<script type="text/javascript" src="<?php echo base_url('js/plugins/jquery-validation/jquery.validate.js') ?>"></script> 
 		<!--select search -->
 		<script type="text/javascript" src="<?php echo base_url('js/bootstrap-select.js') ?>"></script>
 		<link rel="stylesheet" type="text/css" id="" href="<?php echo base_url('assets/css/bootstrap-select.css') ?>"/>

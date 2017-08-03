@@ -35,7 +35,7 @@ switch ($parametros->Param_feed) {
   <li ><a href="#aprov" aria-controls="aprov" role="tab" data-toggle="tab">Aprovadores</a></li>
   <li ><a href="#rh" aria-controls="rh" role="tab" data-toggle="tab">RH</a></li>
   <li ><a href="#lanc" aria-controls="lanc" role="tab" data-toggle="tab">Lançamentos</a></li>
-  <li ><a href="#admissoes" aria-controls="admissoes" role="tab" data-toggle="tab">Admissões</a></li>
+  <!--<li ><a href="#admissoes" aria-controls="admissoes" role="tab" data-toggle="tab">Admissões</a></li>-->
 </ul>        
 
    
@@ -683,6 +683,51 @@ switch ($parametros->Param_feed) {
     </div>
     </div>
   </div>
+
+  <div class="panel panel-default" style="padding: 20px 0px 0px 0px;margin-bottom: 1px">
+      <div class="col-md-2" style="padding: 7px 0px 7px 7px;">
+            <span class="bold">Responsável por admissões: </span>
+        </div>
+        <div class="fleft-2">
+            <div class="autocomplete" >
+              <input type="text" id="busca_colabadmissao" data-campo="colab" data-classe="itemadmissao" data-div="listadmissao" class="autocompletar form-control" placeholder="" style="background: transparent;border: none;width: 35px;"/>
+              <div id="listadmissao"></div>
+          </div>
+          <div id="selecionadosadmissao"></div>
+      </div>
+      <div class="fleft-1">
+          <button id="salvar_resp_admissao" class="btn btn-primary">Salvar</button>
+      </div>
+
+      <div class="clearfix" style="margin-bottom: 10px;"></div>
+      <img id="loadad" src="<?php echo base_url('img/loaders/default.gif') ?>" style="display: none;" >
+
+      <div class="fleft-4 fleftmobile">
+      <div class="panel panel-default">
+        <div class="panel-heading ui-draggable-handle">
+            <span class="bold">Responsáveis</span>
+        </div>
+        <div class="panel-body list-group list-group-contacts">
+        <?php foreach ($respadm as $key => $value) { 
+            $avatar = ( $value->fun_sexo==1 )?"avatar1":"avatar2";
+            $foto = (empty($value->fun_foto) )? base_url("img/".$avatar.".jpg") : $value->fun_foto;
+        ?>                          
+            <div id="adm<?php echo $value->id_responsavel_admissao; ?>" class="list-group-item fleft-10">                                    
+                <img src="<?php echo $foto; ?>" class="pull-left" >
+                <span class="contacts-title"><?php echo $value->fun_nome; ?></span>
+                <div class="list-group-controls">
+                    <button data-id="<?php echo $value->id_responsavel_admissao; ?>" class="btn btn-primary btn-rounded btnexcadm"><span class="fa fa-times"></span></button>
+                </div>                                    
+            </div>
+
+        <?php } ?>                             
+        </div>
+    </div>
+    </div>
+  </div>
+
+
+
     </div>
 </div><!-- Fim tab RH -->
 
@@ -1048,6 +1093,49 @@ switch ($parametros->Param_feed) {
       }//if busca
     });
 
+    $("#busca_colabadmissao").keyup(function(){
+
+        var empresa = $("#selectempresas").val();
+      var busca = $.trim( $(this).val() );
+      var campo = $(this).data("campo");
+      var div = $(this).data("div");
+      var classe = $(this).data("classe");
+      if(busca !=""){
+
+        $.ajax({          
+          type: "POST",
+          url: '<?php echo base_url("admin/autocompleteRespRH"); ?>',
+          dataType : 'html',
+          cache: false,
+          data: {
+            busca: busca,
+            empresa: empresa,
+            classe: classe,
+            campo: campo, 
+            todos: 1
+          },           
+          success: function(msg){
+          //console.log(msg);
+          if(msg === 'erro'){
+
+            $(".alert").addClass("alert-danger")
+            .html("Houve um erro. Contate o suporte.")
+            .slideDown("slow");
+            $(".alert").delay( 3500 ).hide(500);
+
+          }else {
+
+            $("#"+div).html(msg);
+
+          }
+
+        } 
+      }); 
+      }else{
+        $("#"+div).html("");
+      }//if busca
+    });
+
     $(document).on("click",".exc", function(){
       var id = $(this).attr("rm");
 
@@ -1078,6 +1166,15 @@ switch ($parametros->Param_feed) {
 
      });
 
+    $(document).on("click",".excadm", function(){
+      var id = $(this).attr("rm");
+      
+      $("#coladm"+id).fadeOut("slow", function() {
+        $(this).remove();
+        $("#colabsadm"+id).remove();
+        });
+
+     });
 
     $("#salvar_solicitacao").click(function(){
 
@@ -1168,6 +1265,47 @@ switch ($parametros->Param_feed) {
              //window.location.href = '<?php echo base_url("admin/parametros"); ?>';
              $(".excolabrh").remove();
              $("#selecionadosrh").html("");
+
+          }
+
+        } 
+      });
+    });
+
+    $("#salvar_resp_admissao").click(function(){
+
+        var empresa = $("#selectempresas").val();        
+        var aprovadores = [];
+        var x = 0;
+        $("input[name='colabsadm[]']").each(function() {
+            aprovadores[x] = $(this).val();
+            x++;
+        });
+        if (aprovadores.length<1) {
+            return;
+        }
+
+        $.ajax({          
+          type: "POST",
+          url: '<?php echo base_url("admin/salvar_resp_admissao"); ?>',
+          cache: false,
+          data: {
+            empresa: empresa,
+            aprovadores: aprovadores
+          },           
+          success: function(msg){
+
+          if(msg === 'erro'){
+
+            $(".alert").addClass("alert-danger")
+            .html("Houve um erro. Contate o suporte.")
+            .slideDown("slow");
+            $(".alert").delay( 3500 ).hide(500);
+
+          }else if(msg==1) {
+
+             $(".excolabadm").remove();
+             $("#selecionadosadmissao").html("");
 
           }
 
@@ -1331,6 +1469,29 @@ switch ($parametros->Param_feed) {
             {
                 if (msg==1) {
                    $("#lanc"+id).hide("slow"); 
+                }
+                
+            } 
+        });
+    });
+
+    $(".btnexcadm").click(function(){
+
+        var id = $(this).data("id");
+
+        $.ajax({             
+            type: "POST",
+            url: '<?php echo base_url("admin/excluir_respadmissao"); ?>',
+            dataType : 'html',
+            secureuri:false,
+            cache: false,
+            data:{
+                id: id
+            },              
+            success: function(msg) 
+            {
+                if (msg==1) {
+                   $("#adm"+id).hide("slow"); 
                 }
                 
             } 

@@ -70,7 +70,7 @@ public function index(){
     $dados['salariosexo'] = $this->db->get('funcionario')->result(); 
     //var_dump($dados['salariosexo']);
 
-    //Query  - Turnover - Minha Equipe - Dashboard total
+     //Query  - Turnover - Minha Equipe - Dashboard total
     $um_ano = strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . " -12 month");
     $m = date("m", $um_ano);
     $a = date("Y", $um_ano);
@@ -88,12 +88,10 @@ public function index(){
         $m = str_pad($m, 2, "0", STR_PAD_LEFT);
 
         $ultimo_dia = date("t", mktime(0,0,0,$m,'01',$a));
-        $ultimo_dia2 = date("Y-m-d", mktime(0,0,0,$m,$ultimo_dia,$a));
         $mesturn = $m."/".$a;
         $mesano = $a."/".$m;
         $admi = 0;
-        //echo $ultimo_dia2;
-        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,contr_data_admissao,fk_idcentro,fun_idempresa');
+        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,contr_data_admissao');
         $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
         $this->db->join("empresa", "fun_idempresa = em_idempresa");
         $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
@@ -105,7 +103,7 @@ public function index(){
         $admi = count($resadm);
         
         $demi = 0;
-        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,datdem,contr_data_admissao,fk_idcentro,fun_idempresa');
+        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,datdem,contr_data_admissao');
         $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
         $this->db->join("empresa", "fun_idempresa = em_idempresa");
         $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
@@ -116,35 +114,23 @@ public function index(){
         $dados['turnoverdem'] = $resdem;
         $demi = count($resdem);
 
-
-        //ativos
-        $ativos = 0;
-        $this->db->select("COUNT(fun_idfuncionario) AS Ativos");
-        $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
-        $this->db->join("empresa", "fun_idempresa = em_idempresa");
-        $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
-        $this->db->where("chefiasubordinados.chefe_id", $iduser);
-        $this->db->where("(datdem > '".$ultimo_dia2."' OR datdem IS NULL)" );
-        $this->db->where("(contr_data_admissao <= '".$ultimo_dia2."')");
-        $dados['ativos'] = $this->db->get('funcionario')->row();
-
         //$turn = number_format( ($y*100), 1, ",", "" ) ;
         $ma = $mesturn;
         //$dados['semestre'][$ma] = $turn;
-        $dados['turnovertotal'][$ma]=['Ano'=>$a,'Admissao'=>$admi,'Demissao'=>$demi,'Ativos'=>$dados['ativos']->Ativos,'mesano'=>$mesano];
+        $dados['turnovertotal'][$ma]=['Ano'=>$a,'Admissao'=>$admi,'Demissao'=>$demi,'mesano'=>$mesano];
        if ($admi>0){
           foreach ( $dados['turnoveradm1'] as $key => $value) { 
 
         $xseq++;
         //echo ' Mes/ano: '.$ma. ' admissão'.$value->fun_nome.'   '.$xseq;
 
-        $dados['turnoveradm'][$xseq]=['mes'=>$ma,'Ano'=>$a,'Movimentacao'=>'Admissão','colaborador'=>$value->fun_nome,'cargo'=>$value->fun_cargo,'Admissão'=>$value->contr_data_admissao,'empresa'=>$value->empresa,'idccusto'=>$value->fk_idcentro,'idempresa'=>$value->fun_idempresa,'Centro de Custo'=>$value->contr_centrocusto,'Demissão'=>'','mesano'=>$mesano];
+        $dados['turnoveradm'][$xseq]=['mes'=>$ma,'Ano'=>$a,'Movimentacao'=>'Admissão','colaborador'=>$value->fun_nome,'cargo'=>$value->fun_cargo,'Admissão'=>$value->contr_data_admissao,'empresa'=>$value->empresa,'Centro de Custo'=>$value->contr_centrocusto,'Demissão'=>'','mesano'=>$mesano];
       }
        }
        if ($demi>0){
          foreach ( $dados['turnoverdem'] as $key => $value) { 
         $xseq++;
-        $dados['turnoveradm'][$xseq]=['mes'=>$ma,'Ano'=>$a,'Movimentacao'=>'Demissão','colaborador'=>$value->fun_nome,'cargo'=>$value->fun_cargo,'Admissão'=>$value->contr_data_admissao,'empresa'=>$value->empresa,'idccusto'=>$value->fk_idcentro,'idempresa'=>$value->fun_idempresa,'Centro de Custo'=>$value->contr_centrocusto,'Demissão'=>$value->datdem,'mesano'=>$mesano];
+        $dados['turnoveradm'][$xseq]=['mes'=>$ma,'Ano'=>$a,'Movimentacao'=>'Demissão','colaborador'=>$value->fun_nome,'cargo'=>$value->fun_cargo,'Admissão'=>$value->contr_data_admissao,'empresa'=>$value->empresa,'Centro de Custo'=>$value->contr_centrocusto,'Demissão'=>$value->datdem,'mesano'=>$mesano];
     }
        }
     }
@@ -1452,58 +1438,35 @@ public function colab_cargo(){
 }
 
 public function view_tabelasdashs2(){
-   $iduser = $this->session->userdata('id_funcionario');
-      $tipodash = $this->input->post("dashboard");
-      $centrocusto = explode(",", $this->input->post("acentrocusto") );
-      $centrocusto1 = (!empty($this->input->post("acentrocusto")) )? $this->input->post("acentrocusto") : "";
-      $idcentro = explode(",", $this->input->post("idcentro"));
-      $idempresa = explode(",", $this->input->post("idempresa"));
-      $mesano = explode(",", $this->input->post("MesAno"));
-      $mesano1 = (!empty($this->input->post("MesAno")) )? $this->input->post("MesAno") : "";
+  $iduser = $this->session->userdata('id_funcionario');
+  $tipodash = $this->input->post("dashboard");
+  if( $tipodash ="tunover"){
 
-      $empresa = explode(",", $this->input->post("aempresa") );
-      $empresa2 = (!empty($this->input->post("aempresa")) )? $this->input->post("aempresa") : "";
+     $um_ano = strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . " -12 month");
+     $m = date("m", $um_ano);
+    $a = date("Y", $um_ano);
+    $ultimo_dia = date("t", mktime(0,0,0,$m,'01',$a));
+    $um_ano = $a."-".$m."-".$ultimo_dia;
+    $xseq=0;
+    for ($i=0; $i < 12; $i++) {
 
-        if ( empty($mesano1) ) {
-          $um_ano = strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . " -12 month");
-          $m = date("m", $um_ano);
-          $a = date("Y", $um_ano);
-            for ($i=0; $i < 12; $i++) {
 
-                $m++;
-                if ($m==13) {
-                    $m= "01";
-                    $a++;
-                }
-                $m = str_pad($m, 2, "0", STR_PAD_LEFT);
-                $mesturn = $m."/".$a;
+        $m++;
+        if ($m==13) {
+            $m= "01";
+            $a++;
+        }
+        $m = str_pad($m, 2, "0", STR_PAD_LEFT);
 
-              $mesano[$i] = $mesturn;
-              //echo "dentro do while Key: $mesturn; <br />\n";
-              
-                }
-         
-             
-         }
-
-       if( $tipodash ="tunover"){
-
-        $xseq=0;
-        foreach ($mesano as $key => $value) {
-         $m = substr($value,0,2);
-         $a = substr($value,3,4);
-         $mesbase = $m."/".$a;
-       // echo "Key: $key; Value: $value;mes: $m ;ano: $a<br />\n";
+        $ultimo_dia = date("t", mktime(0,0,0,$m,'01',$a));
+        $mesturn = $m."/".$a;
+        $mesano = $a."/".$m;
         $admi = 0;
         $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,contr_data_admissao');
         $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
         $this->db->join("empresa", "fun_idempresa = em_idempresa");
         $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
         $this->db->where("chefiasubordinados.chefe_id", $iduser);
-        if ( !empty($centrocusto1) ) {
-        $this->db->where_in("contratos.fk_idcentro", $idcentro);}
-        if ( !empty($empresa2) ) {
-        $this->db->where_in("fun_idempresa", $idempresa);}
         $this->db->where("MONTH(contr_data_admissao)", $m);
         $this->db->where("YEAR(contr_data_admissao)", $a);
         $resadm = $this->db->get('funcionario')->result();
@@ -1516,10 +1479,6 @@ public function view_tabelasdashs2(){
         $this->db->join("empresa", "fun_idempresa = em_idempresa");
         $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
         $this->db->where("chefiasubordinados.chefe_id", $iduser);
-        if ( !empty($centrocusto1) ) {
-        $this->db->where_in("contratos.fk_idcentro", $idcentro);}
-        if ( !empty($empresa2) ) {
-        $this->db->where_in("fun_idempresa", $idempresa);}
         $this->db->where("MONTH(datdem)", $m);
         $this->db->where("YEAR(datdem)", $a);
         $resdem = $this->db->get('funcionario')->result();
@@ -1527,7 +1486,7 @@ public function view_tabelasdashs2(){
         $demi = count($resdem);
 
         //$turn = number_format( ($y*100), 1, ",", "" ) ;
-        $ma = $mesbase;
+        $ma = $mesturn;
         //$dados['semestre'][$ma] = $turn;
        if ($admi>0){
           foreach ( $dados['turnoveradm1'] as $key => $value) { 
@@ -1542,7 +1501,7 @@ public function view_tabelasdashs2(){
          foreach ( $dados['turnoverdem'] as $key => $value) { 
         $xseq++;
         $dados['turnoverexporta'][$xseq]=['mes'=>$ma,'Ano'=>$a,'Movimentacao'=>'Demissão','colaborador'=>$value->fun_nome,'cargo'=>$value->fun_cargo,'Admissão'=>$value->contr_data_admissao,'empresa'=>$value->empresa,'Centro de Custo'=>$value->contr_centrocusto,'Demissão'=>$value->datdem,'mesano'=>$mesano];
-         }
+    }
        }
     }
 
@@ -1566,102 +1525,81 @@ public function view_tabelasdashs(){
 
 public function view_cargatunover(){
 
-   $iduser = $this->session->userdata('id_funcionario');
-        $centrocusto = explode(",", $this->input->post("acentrocusto") );
-        $centrocusto1 = (!empty($this->input->post("acentrocusto")) )? $this->input->post("acentrocusto") : "";
-        $idcentro = explode(",", $this->input->post("idcentro"));
-        $idempresa = explode(",", $this->input->post("idempresa"));
-        $mesano = explode(",", $this->input->post("MesAno"));
-        $mesano1 = (!empty($this->input->post("MesAno")) )? $this->input->post("MesAno") : "";
+    $iduser = $this->session->userdata('id_funcionario');
+    $centrocusto = explode(",", $this->input->post("acentrocusto") );
+    $centrocusto1 = (!empty($this->input->post("acentrocusto")) )? $this->input->post("acentrocusto") : "";
+    $mesano = explode(",", $this->input->post("MesAno"));
+    $mesano1 = (!empty($this->input->post("MesAno")) )? $this->input->post("MesAno") : "";
 
-        $empresa = explode(",", $this->input->post("aempresa") );
-        $empresa2 = (!empty($this->input->post("aempresa")) )? $this->input->post("aempresa") : "";
+    $empresa = explode(",", $this->input->post("aempresa") );
+    $empresa2 = (!empty($this->input->post("aempresa")) )? $this->input->post("aempresa") : "";
 
+    if ( empty($mesano1) ) {
+      $um_ano = strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . " -12 month");
+      $m = date("m", $um_ano);
+      $a = date("Y", $um_ano);
+      for ($i=0; $i < 12; $i++) {
 
-        if ( empty($mesano1) ) {
-          $um_ano = strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . " -12 month");
-          $m = date("m", $um_ano);
-          $a = date("Y", $um_ano);
-            for ($i=0; $i < 12; $i++) {
+        $m++;
+        if ($m==13) {
+            $m= "01";
+            $a++;
+        }
+        $m = str_pad($m, 2, "0", STR_PAD_LEFT);
+        $mesturn = $m."/".$a;
 
-                $m++;
-                if ($m==13) {
-                    $m= "01";
-                    $a++;
-                }
-                $m = str_pad($m, 2, "0", STR_PAD_LEFT);
-                $mesturn = $m."/".$a;
-
-              $mesano[$i] = $mesturn;
+        $mesano[$i] = $mesturn;
               //echo "dentro do while Key: $mesturn; <br />\n";
-              
-                }
-         
-             
-         }
 
-        foreach ($mesano as $key => $value) {
-         $m = substr($value,0,2);
-         $a = substr($value,3,4);
-         $mesbase = $m."/".$a;
-         $ultimo_dia = date("t", mktime(0,0,0,$m,'01',$a));
-         $ultimo_dia2 = date("Y-m-d", mktime(0,0,0,$m,$ultimo_dia,$a));
+        }
 
-       // echo "Key: $key; Value: $value;mes: $m ;ano: $a<br />\n";
-        $admi = 0;
-
-        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,contr_data_admissao');
-        $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
-        $this->db->join("empresa", "fun_idempresa = em_idempresa");
-        $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
-        $this->db->where("chefiasubordinados.chefe_id", $iduser);
-        if ( !empty($centrocusto1) ) {
-        $this->db->where_in("contratos.fk_idcentro", $idcentro);}
-        if ( !empty($empresa2) ) {
-        $this->db->where_in("fun_idempresa", $idempresa);}
-        $this->db->where("MONTH(contr_data_admissao)", $m);
-        $this->db->where("YEAR(contr_data_admissao)", $a);
-        $resadm = $this->db->get('funcionario')->result();
-        $dados['turnoveradm1'] = $resadm;
-        $admi = count($resadm);
-
-        $demi = 0;
-        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,datdem');
-        $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
-        $this->db->join("empresa", "fun_idempresa = em_idempresa");
-        $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
-        $this->db->where("chefiasubordinados.chefe_id", $iduser);
-        if ( !empty($centrocusto1) ) {
-        $this->db->where_in("contratos.fk_idcentro", $idcentro);}
-        if ( !empty($empresa2) ) {
-        $this->db->where_in("fun_idempresa", $idempresa);}
-        $this->db->where("MONTH(datdem)", $m);
-        $this->db->where("YEAR(datdem)", $a);
-        $resdem = $this->db->get('funcionario')->result();
-        $dados['turnoverdem'] = $resdem;
-        $demi = count($resdem);
-
-        $ativos = 0;
-        $this->db->select("COUNT(fun_idfuncionario) AS Ativos");
-        $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
-        $this->db->join("empresa", "fun_idempresa = em_idempresa");
-        $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
-        $this->db->where("chefiasubordinados.chefe_id", $iduser);
-        if ( !empty($centrocusto1) ) {
-        $this->db->where_in("contratos.fk_idcentro", $idcentro);}
-        if ( !empty($empresa2) ) {
-        $this->db->where_in("fun_idempresa", $idempresa);}
-        $this->db->where("(datdem > '".$ultimo_dia2."' OR datdem IS NULL)" );
-        $this->db->where("(contr_data_admissao <= '".$ultimo_dia2."')");
-        $dados['ativos'] = $this->db->get('funcionario')->row();
-
-
-       $dadostabletunover[] =  [$a,$mesbase,$admi,$demi,$dados['ativos']->Ativos,$mesbase];
-
-      }
-        echo json_encode($dadostabletunover);
 
     }
+
+    foreach ($mesano as $key => $value) {
+       $m = substr($value,0,2);
+       $a = substr($value,3,4);
+       $mesbase = $m."/".$a;
+       // echo "Key: $key; Value: $value;mes: $m ;ano: $a<br />\n";
+       $admi = 0;
+
+       $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,contr_data_admissao');
+       $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
+       $this->db->join("empresa", "fun_idempresa = em_idempresa");
+       $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
+       $this->db->where("chefiasubordinados.chefe_id", $iduser);
+       if ( !empty($centrocusto1) ) {
+        $this->db->where_in("contratos.contr_centrocusto", $centrocusto);}
+        if ( !empty($empresa1) ) {
+            $this->db->where_in("empresa.em_nome", $empresa);}
+            $this->db->where("MONTH(contr_data_admissao)", $m);
+            $this->db->where("YEAR(contr_data_admissao)", $a);
+            $resadm = $this->db->get('funcionario')->result();
+            $dados['turnoveradm1'] = $resadm;
+            $admi = count($resadm);
+
+            $demi = 0;
+            $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,datdem');
+            $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
+            $this->db->join("empresa", "fun_idempresa = em_idempresa");
+            $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
+            $this->db->where("chefiasubordinados.chefe_id", $iduser);
+            if ( !empty($centrocusto1) ) {
+                $this->db->where_in("contratos.contr_centrocusto", $centrocusto);}
+                if ( !empty($empresa1) ) {
+                    $this->db->where_in("empresa.em_nome", $empresa);}
+                    $this->db->where("MONTH(datdem)", $m);
+                    $this->db->where("YEAR(datdem)", $a);
+                    $resdem = $this->db->get('funcionario')->result();
+                    $dados['turnoverdem'] = $resdem;
+                    $demi = count($resdem);
+
+                    $dadostabletunover[] =  [$a,$mesbase,$admi,$demi,$mesbase];
+
+                }
+                echo json_encode($dadostabletunover);
+
+            }
 
 public function getFeedbacks(){
     $idfun = $this->input->post("id");
@@ -1712,7 +1650,7 @@ public function relatorios(){
     $this->db->where('fun_status', "A");
     $dados['salariosexo'] = $this->db->get('funcionario')->result(); 
 
-    //Query  - Turnover - Minha Equipe - Dashboard total
+     //Query  - Turnover - Minha Equipe - Dashboard total
     $um_ano = strtotime(date("Y-m-d", strtotime(date("Y-m-d"))) . " -12 month");
     $m = date("m", $um_ano);
     $a = date("Y", $um_ano);
@@ -1730,12 +1668,10 @@ public function relatorios(){
         $m = str_pad($m, 2, "0", STR_PAD_LEFT);
 
         $ultimo_dia = date("t", mktime(0,0,0,$m,'01',$a));
-        $ultimo_dia2 = date("Y-m-d", mktime(0,0,0,$m,$ultimo_dia,$a));
         $mesturn = $m."/".$a;
         $mesano = $a."/".$m;
         $admi = 0;
-        //echo $ultimo_dia2;
-        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,contr_data_admissao,fk_idcentro,fun_idempresa');
+        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,contr_data_admissao');
         $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
         $this->db->join("empresa", "fun_idempresa = em_idempresa");
         $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
@@ -1747,7 +1683,7 @@ public function relatorios(){
         $admi = count($resadm);
         
         $demi = 0;
-        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,datdem,contr_data_admissao,fk_idcentro,fun_idempresa');
+        $this->db->select('fun_cargo, fun_idfuncionario, fun_nome, empresa.em_nome as empresa,contr_centrocusto,contr_departamento,datdem,contr_data_admissao');
         $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
         $this->db->join("empresa", "fun_idempresa = em_idempresa");
         $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
@@ -1758,35 +1694,23 @@ public function relatorios(){
         $dados['turnoverdem'] = $resdem;
         $demi = count($resdem);
 
-
-        //ativos
-        $ativos = 0;
-        $this->db->select("COUNT(fun_idfuncionario) AS Ativos");
-        $this->db->join("contratos", "contr_idfuncionario = fun_idfuncionario");
-        $this->db->join("empresa", "fun_idempresa = em_idempresa");
-        $this->db->join("chefiasubordinados", "subor_idfuncionario = contr_idfuncionario");
-        $this->db->where("chefiasubordinados.chefe_id", $iduser);
-        $this->db->where("(datdem > '".$ultimo_dia2."' OR datdem IS NULL)" );
-        $this->db->where("(contr_data_admissao <= '".$ultimo_dia2."')");
-        $dados['ativos'] = $this->db->get('funcionario')->row();
-
         //$turn = number_format( ($y*100), 1, ",", "" ) ;
         $ma = $mesturn;
         //$dados['semestre'][$ma] = $turn;
-        $dados['turnovertotal'][$ma]=['Ano'=>$a,'Admissao'=>$admi,'Demissao'=>$demi,'Ativos'=>$dados['ativos']->Ativos,'mesano'=>$mesano];
+        $dados['turnovertotal'][$ma]=['Ano'=>$a,'Admissao'=>$admi,'Demissao'=>$demi,'mesano'=>$mesano];
        if ($admi>0){
           foreach ( $dados['turnoveradm1'] as $key => $value) { 
 
         $xseq++;
         //echo ' Mes/ano: '.$ma. ' admissão'.$value->fun_nome.'   '.$xseq;
 
-        $dados['turnoveradm'][$xseq]=['mes'=>$ma,'Ano'=>$a,'Movimentacao'=>'Admissão','colaborador'=>$value->fun_nome,'cargo'=>$value->fun_cargo,'Admissão'=>$value->contr_data_admissao,'empresa'=>$value->empresa,'idccusto'=>$value->fk_idcentro,'idempresa'=>$value->fun_idempresa,'Centro de Custo'=>$value->contr_centrocusto,'Demissão'=>'','mesano'=>$mesano];
+        $dados['turnoveradm'][$xseq]=['mes'=>$ma,'Ano'=>$a,'Movimentacao'=>'Admissão','colaborador'=>$value->fun_nome,'cargo'=>$value->fun_cargo,'Admissão'=>$value->contr_data_admissao,'empresa'=>$value->empresa,'Centro de Custo'=>$value->contr_centrocusto,'Demissão'=>'','mesano'=>$mesano];
       }
        }
        if ($demi>0){
          foreach ( $dados['turnoverdem'] as $key => $value) { 
         $xseq++;
-        $dados['turnoveradm'][$xseq]=['mes'=>$ma,'Ano'=>$a,'Movimentacao'=>'Demissão','colaborador'=>$value->fun_nome,'cargo'=>$value->fun_cargo,'Admissão'=>$value->contr_data_admissao,'empresa'=>$value->empresa,'idccusto'=>$value->fk_idcentro,'idempresa'=>$value->fun_idempresa,'Centro de Custo'=>$value->contr_centrocusto,'Demissão'=>$value->datdem,'mesano'=>$mesano];
+        $dados['turnoveradm'][$xseq]=['mes'=>$ma,'Ano'=>$a,'Movimentacao'=>'Demissão','colaborador'=>$value->fun_nome,'cargo'=>$value->fun_cargo,'Admissão'=>$value->contr_data_admissao,'empresa'=>$value->empresa,'Centro de Custo'=>$value->contr_centrocusto,'Demissão'=>$value->datdem,'mesano'=>$mesano];
     }
        }
     }

@@ -70,8 +70,27 @@ $iduser = $this->session->userdata('id_funcionario');
             </a>  
         </li>
         <?php } } ?>
-
+        
+        <?php if( isset($admissao) ){ ?>
+        <li>
+            <a href="<?php echo base_url('home/admissao') ?>">
+                <span class="fa fa-plus-circle"></span>
+                <span class="xn-text">Admissão</span>
+            </a>  
+        </li>
+       <?php } ?>
+        <li><a href="<?php echo base_url('perfil/relatorios'); ?>">
+            <span class="fa fa-file-text"></span>
+            <span class="xn-text">Relatórios</span></a>
+        </li>
     </ul>
+</li>
+
+<!-- menu feedback -->
+<li class="<?php echo ($menupriativo=="feedback")? "active":"" ?>">
+    <a href="<?php echo base_url('perfil/feedbacks') ?>">
+        <span class="fa fa-comments-o"></span><span class="xn-text">Feedbacks</span>
+    </a>  
 </li>
 
 <!-- menu perfil público -->

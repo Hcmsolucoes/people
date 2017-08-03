@@ -36,7 +36,7 @@
 				</tr>
 			<?php }  ?>
 			<tr>
-				<td></td>
+				<td class="bold">Totais</td>
 				<td class="bold"><?php echo $total_horas." Hrs"; ?></td>
 				<td class="bold"><?php echo "R$ " . number_format($valor_total, 2, ",", "."); ?></td>
 				<td></td>

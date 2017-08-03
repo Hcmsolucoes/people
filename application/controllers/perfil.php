@@ -63,6 +63,7 @@ class Perfil extends CI_Controller {
         $this->db->select('*');
         $this->db->join('motivos', 'motivos.mot_idmotivos = salarios.sal_idmotivo');
         $this->db->where('sal_idfuncionario', $iduser);
+        $this->db->order_by('sal_valor', "desc");
         $this->db->order_by('sal_dataini', "desc");
         $dados['histsalarios'] = $this->db->get('salarios')->result();
 
@@ -229,7 +230,7 @@ class Perfil extends CI_Controller {
                     $dados['competencias'][$value->feed_idfeedback] = $this->db->get("feedbacks_competencia")->result();
                 }
 
-                $dados['breadcrumb'] = array('Colaborador'=>base_url().'home', "Perfil público"=>"#" );
+                $dados['breadcrumb'] = array('Colaborador'=>base_url().'home', "Perfil pÃºblico"=>"#" );
                 
                 $this->load->view('/geral/html_header', $dados);  
                 $this->load->view('/geral/corpo_perfil_publico',$dados);
@@ -238,7 +239,7 @@ class Perfil extends CI_Controller {
             }else{
                 redirect( base_url("/perfil/pessoal_publico"."/".$idvisita) );
                 /*$this->load->view('/geral/html_header_proibido');  
-                 echo '<p class="text-center tit" style="margin-top: 30px">Você não pode ver esse perfil.</p>';
+                 echo '<p class="text-center tit" style="margin-top: 30px">VocÃª nÃ£o pode ver esse perfil.</p>';
                  $this->load->view('/geral/footer');*/                
              }            
          }
@@ -258,7 +259,7 @@ class Perfil extends CI_Controller {
             $this->db->where('tipo_idfuncionario',$iduser);
             $this->db->order_by("tipo_mesref", "desc");
             $this->db->order_by("tipo_tipocal", "desc");
-            $this->db->limit(6);
+            $this->db->limit(12);
             $dados['tipodecalculo'] = $this->db->get('tipodecalculo')->result();             
             $this->session->set_userdata('perfil_atual', '1');
 
@@ -907,5 +908,47 @@ class Perfil extends CI_Controller {
         $this->load->view('/geral/corpo_equipe_linha', $dados);
 
     }
+ public function relatorios(){
+        $this->Log->talogado(); 
+        $iduser = $this->session->userdata('id_funcionario');
+        $idempresa = $this->session->userdata('idempresa');
+
+        $this->session->set_userdata('perfil_atual', '1');
+        $dados = array(
+            'menupriativo' => 'relatorios'
+            );
+
+        $this->db->where('fun_idfuncionario',$iduser);
+        $dados['funcionario'] = $this->db->get('funcionario')->result();
+
+
+        $feeds = $this->db->get('feedbacks')->num_rows();
+        $dados['quantgeral'] = $feeds;
+        $idcli = $this->session->userdata('idcliente');
+        $this->db->select('tema_cor, tema_fundo');
+        $this->db->where('fun_idfuncionario',$iduser);
+        $dados['tema'] = $this->db->get('funcionario')->result();
+        $dados['perfil'] = $this->session->userdata('perfil');
+
+        $this->db->select("fun_registro,fun_nome,fun_datanascimento,contr_data_admissao,CASE WHEN fun_sexo = 1 THEN 'M' ELSE 'F' END AS sexo,
+CASE WHEN fun_estadocivil =1 THEN 'S' WHEN fun_estadocivil =2 THEN 'C' WHEN fun_estadocivil =3 THEN 'D' WHEN fun_estadocivil =4 THEN 'V' ELSE 'O' END AS ESTADOCIVIL,
+doc_rg,doc_rg_orgaoemissor,fun_cpf,doc_passaporte_emissor,doc_nis,doc_ctps,doc_ctps_serie,doc_ctps_uf,'N' AS DEFICIENTE,
+fun_status,contr_centrocusto,contr_departamento,fk_idcargo,fun_cargo,contr_codigocbo_cargo,
+fil_razaosocial,fil_nomefantasia,fil_cnpj,fil_insestadual,fil_ativcnae,fil_endereco,fil_endnum ,fil_endcpl,fil_endcep,fil_bairro,fil_cidade,fil_estado,fil_idfilial");
+        $this->db->join("filial", "funcionario.fun_idempresa = filial.fil_idempresa and funcionario.fk_filial = filial.fil_idfilial",'left');
+        $this->db->join("contratos", "contratos.contr_idfuncionario = funcionario.fun_idfuncionario",'left');
+        $this->db->join("documentos", "documentos.doc_idfuncionario = funcionario.fun_idfuncionario",'left');
+        $this->db->where("fun_idempresa", $idempresa);
+        $this->db->where('fun_status', "A");
+        $dados['relatorioexportacao'] = $this->db->get('funcionario')->result(); 
+  // var_dump($dados['relatorioexportacao'] );
+      //  $this->db->where("idempresa", $idempresa);
+        //$dados['parametros'] = $this->db->get("parametros")->row();
+
+        $dados['breadcrumb'] = array('Colaborador'=>base_url('home'), "relatorios"=>"#" );
+        $this->load->view('/geral/html_header',$dados);  
+        $this->load->view('/geral/corpo_relatorios',$dados);
+        $this->load->view('/geral/footer');
+    }    
 
 }

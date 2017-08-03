@@ -646,4 +646,373 @@ class Home extends CI_Controller {
 		echo 1;
     }
 
+    public function admissao(){
+    	$this->Log->talogado();
+		$this->session->set_userdata('perfil_atual', '1');
+        $iduser = $this->session->userdata('id_funcionario');
+        $idempresa = $this->session->userdata('idempresa');
+        $idcli = $this->session->userdata('idcliente');
+        $dados = array('menupriativo' => 'admissao' );
+	 
+        $this->db->where('idempresa', $idempresa);
+		$dados['cargos'] = $this->db->get('tabelacargos')->result();
+
+		$this->db->where('fil_idempresa', $idempresa);
+		$dados['filial'] = $this->db->get('filial')->result();
+
+		$this->db->where('idempresa', $idempresa);
+		$dados['departamentos'] = $this->db->get('tabeladepartamento')->result();
+
+		$this->db->order_by("est_nomeestado", "asc");
+		$dados['estados'] = $this->db->get('estado')->result();
+		$dados['estadocivis'] = $this->db->get('estadocivil')->result();
+		$dados['etnia'] = $this->db->get('etnia')->result();
+		$dados['deficiencia'] = $this->db->get('tipodeficiencia')->result();
+		$dados['bancos'] = $this->db->get('bancos')->result();
+		$dados['logradouros'] = $this->db->get('tipologradouro')->result();
+
+		$this->db->where('escolaridade_idcliente', $idcli);
+		$dados['escolaridade'] = $this->db->get('escolaridade')->result();
+
+		$this->db->where('idcliente', $idcli);
+		$dados['parentesco'] = $this->db->get('tipodependente')->result();
+
+		$this->db->join("tabelacargos", "idcargo = fk_cargo_admissao", "left");
+		$this->db->join("filial", "fil_idempresa = adm_idfilial", "left");
+		$this->db->where("admissao_status", 0);
+		$this->db->where("fk_admidempresa", $idempresa);
+		$this->db->where("fk_colaborador_emissor", $iduser);
+		$dados['rascunho'] = $this->db->get("admissao")->result();
+	 
+        $this->db->where('fun_idfuncionario',$iduser);
+        $dados['funcionario'] = $this->db->get('funcionario')->result();
+        $dados['quantgeral'] = $this->db->get('feedbacks')->num_rows();
+
+        $this->db->where("idempresa", $idempresa);
+        $dados['parametros'] = $this->db->get("parametros")->row();
+
+
+        $this->db->select('tema_cor, tema_fundo');
+        $this->db->where('fun_idfuncionario',$iduser);
+        $dados['tema'] = $this->db->get('funcionario')->result();
+        $dados['perfil'] = $this->session->userdata('perfil');
+		$dados['breadcrumb'] = array('Home'=>base_url('home'), "Admissao"=>"#" );
+
+
+        $this->load->view('/geral/html_header', $dados);  
+        $this->load->view('/geral/corpo_admissao', $dados);
+        $this->load->view('/geral/footer');
+    }
+
+
+    public function salvar_admissao(){
+    	//$this->Log->talogado();
+    	$idempresa = $this->session->userdata('idempresa');
+        $iduser = $this->session->userdata('id_funcionario');
+        
+
+       /* $dados["nome_admissao"] = $this->input->post("nome");
+        $dados["fk_admdepartamento"] = $this->input->post("departamento");
+        $dados["sexo_admissao"] = $this->input->post("sexo");
+        */
+
+        $datas = array("dtnascimento_admissao", "data_admissao", "dt_emissaoctps", "dt_emissaopis", "rg_emissao", "vencimentocnh");
+        
+        $id = $this->input->post("id");
+        $campo = $this->input->post("campo");
+        $valor = $this->input->post("valor");
+        $required = $this->input->post("required");
+
+        if ( in_array($campo, $datas)) {
+
+        	$dados[$campo] = $this->Log->alteradata2($valor);
+
+        }else if($campo == "salario_admissao"){
+
+        	$dados[$campo] = $this->util->floatParaInsercao($valor);
+        
+        }else{
+        
+        	$dados[$campo] = $valor;
+        
+        }
+
+        if ($required && trim($valor)=="") {
+            $r['acao'] = "erro";
+        	echo json_encode($r);
+        	return;
+        }    
+
+
+        if ($id==0) {
+        	$dados["fk_colaborador_emissor"] = $iduser ;
+        	$dados["fk_admidempresa"] = $idempresa ;
+        	$this->db->insert("admissao", $dados);
+        	$r['acao'] = "insert";
+        	$r['id'] = $this->db->insert_id();
+        	
+        }else{
+        	$this->db->where("id_admissao", $id);
+        	$r['acao'] = "update";
+        	$r['id'] = $this->db->update("admissao", $dados);
+        }
+        echo json_encode($r);
+		/*
+        $dados["salario_admissao"] = $this->util->floatParaInsercao($this->input->post("salario"));
+        $dados["tiposalario_admissao"] = $this->input->post("tiposalario");
+        //$dados["nome_admissao"] = $this->input->post("nome");
+        $dados["ic_pis"] = $this->input->post("pis");
+        $dados["ic_emprego"] = $this->input->post("emprego");
+        $dados["fk_cargo_admissao"] = $this->input->post("selectcargo");
+        $dados["horaentrada"] = $this->input->post("entrada");
+        $dados["horasaidainter"] = $this->input->post("saidaintervalo");
+        $dados["horaentradainter"] = $this->input->post("entradaintervalo");
+        $dados["horasaida"] = $this->input->post("saida");
+        $dados["sabadoentrada"] = $this->input->post("sabadoentrada");
+        $dados["sabadosaida"] = $this->input->post("sabadosaida");
+        $dados["hrsemanal"] = $this->input->post("hrsemanal");
+        $dados["hrmensal"] = $this->input->post("hrmensal");
+        $dados["hrdsr"] = $this->input->post("hrdsr");
+
+        if (!empty($this->input->post("dtnascimento"))) {
+        	$dados["dtnascimento_admissao"] = $this->Log->alteradata2($this->input->post("dtnascimento"));
+        }
+        
+        $dados["fkestadonascimento"] = $this->input->post("estado");
+        $dados["fkcidadenascimento"] = $this->input->post("cidade");
+        $dados["fkestadocivil"] = $this->input->post("estadocivil");
+        $dados["nr_ctps"] = $this->input->post("ctps");
+        $dados["serie_ctps"] = $this->input->post("serie");
+        $dados["estado_ctps"] = $this->input->post("ctpsestado");
+
+        if (!empty($this->input->post("dtctps"))) {
+        	$dados["dt_emissaoctps"] = $this->Log->alteradata2($this->input->post("dtctps"));
+        }        
+        
+        $pis = array(".", "-", "-");
+        $dados["nr_pis"] = str_replace($pis, "", $this->input->post("numeropis"));;
+
+        if (!empty($this->input->post("dtpis"))) {
+        	$dados["dt_emissaopis"] = $this->Log->alteradata2($this->input->post("dtpis"));
+        } 
+        $dados["reservista"] = $this->input->post("reservista");
+        $dados["cpf"] = str_replace($pis, "", $this->input->post("cpf") );
+        $dados["rg"] = $this->input->post("rg");
+        $dados["rgorgao"] = $this->input->post("orgaoemissor");
+        if (!empty($this->input->post("dtrg"))) {
+        	$dados["rg_emissao"] = $this->Log->alteradata2($this->input->post("dtrg"));
+        }
+        $dados["rg_estado"] = $this->input->post("estadorg");
+        $dados["cnh"] = $this->input->post("cnhnumero");
+
+        if (!empty($this->input->post("vencimentocnh"))) {
+        	$dados["vencimentocnh"] = $this->Log->alteradata2($this->input->post("vencimentocnh"));
+        }
+
+        $dados["adm_idfilial"] = $this->input->post("cbofilial");
+        $dados["adm_tipocontrato"] = $this->input->post("tipocontrato");
+        $dados["cnhcategoria"] = $this->input->post("cnhcategoria");
+        $dados["titulo"] = $this->input->post("titulo");
+        $dados["zona"] = $this->input->post("zona");
+        $dados["secao"] = $this->input->post("secao");
+        $dados["fk_escolaridade_admissao"] = $this->input->post("escolaridade");
+        $dados["fk_etnia_admissao"] = $this->input->post("etnia");
+        $dados["fk_deficiencia_admissao"] = $this->input->post("deficiencia");
+        $dados["ic_reabilitado"] = $this->input->post("reabilitado");
+        $dados["fk_logradouro_admissao"] = $this->input->post("tipologradouro");
+        $dados["endereco_admissao"] = $this->input->post("endereco");
+        $dados["endereconumero"] = $this->input->post("numeroendereco");
+        $dados["enderecocomplemento"] = $this->input->post("complemento");
+        $dados["fk_enderecoestado"] = $this->input->post("estadoendereco");
+        $dados["fk_enderecocidade"] = $this->input->post("cidadeendereco");
+        $dados["fk_enderecobairro"] = $this->input->post("bairro");
+        $dados["cep_admissao"] = str_replace($pis, "", $this->input->post("cep") );
+        $dados["telefone_admissao"] = $this->input->post("telefone");
+        $dados["celular_admissao"] = $this->input->post("celular");
+        $dados["nomemae"] = $this->input->post("mae");
+        $dados["nomepai"] = $this->input->post("pai");
+        //$dados["nomeconjuge"] = $this->input->post("conjuge");
+        //$dados["nascimentoconjuge"] = $this->Log->alteradata2($this->input->post("dtconjuge"));
+        $dados["ic_contribuicaosindical"] = $this->input->post("contr");
+        $dados["ic_periculosidade"] = $this->input->post("peric");
+        $dados["valorpericulosidade"] = $this->input->post("peric_perc");
+        $dados["ic_insalubridade"] = $this->input->post("insal");
+        $dados["valorinsalubridade"] = $this->input->post("insa_perc");
+        $dados["contratoexperiencia"] = $this->input->post("contrato");
+        $dados["contratoprorrogacao"] = $this->input->post("prorrogacao");
+        $dados["tipopagamento"] = $this->input->post("pagamento");
+        $dados["bancoagencia"] = $this->input->post("agencia");
+        $dados["bancoconta"] = $this->input->post("conta");
+        $dados["contadigito"] = $this->input->post("digito");
+        $dados["tipoconta"] = $this->input->post("tipoconta");
+        $dados["ic_adiantamento"] = $this->input->post("adiantamento");
+        $dados["fk_idbanco"] = $this->input->post("banco");
+        $dados["ic_decimoterceiro"] = $this->input->post("decimoterceiro");
+        $dados["ic_vt"] = $this->input->post("vt");
+        //$dados["vt_qtd"] = $this->input->post("vtqtd");
+        //$dados["vt_tipo"] = $this->input->post("vttipo");
+        $dados["ic_vr"] = $this->input->post("vr");
+        $dados["ic_assistenciamedica"] = $this->input->post("med");
+        /*if (empty($this->input->post("medvalor"))) {
+        	$dados["valorassistencia"] = 0;
+        }else{
+        	$dados["valorassistencia"] = $this->util->floatParaInsercao($this->input->post("medvalor"));	
+        }*/
+        /*
+        $dados["ic_segurodesemprego"] = $this->input->post("segurodesemprego");
+        $dados["emailcomercial"] = $this->input->post("emailcom");
+        
+        $dados["emailparticular"] = $this->input->post("emailpar");
+        $this->db->db_debug = FALSE;
+        $this->db->insert("admissao", $dados);
+        $_SESSION['admmsg'] = $this->db->_error_message();
+
+        if ( (!isset($_SESSION['admmsg'])) || ( strrpos($_SESSION['admmsg'], "context") ) ) {
+        	$_SESSION['admmsg'] = "Dados cadastrados com sucesso";
+        	$_SESSION['admclass'] = "alert-success";
+        }else{
+        	$_SESSION['admmsg'] = "Erro ao gravar.";
+        	$_SESSION['admclass'] = "alert-danger";
+        }
+        
+        $id = $this->db->insert_id();
+        $d['fk_depadmissao'] = $id;
+        $depcpf = $this->input->post("cpfdep");
+        $depnome = $this->input->post("depnome");
+        $depmae = $this->input->post("depmae");
+        $depsexo = $this->input->post("depsexo");
+        $depaux = $this->input->post("auxfamilia");
+        $depir = $this->input->post("depimposto");
+        $depnasc = $this->input->post("depnascimento");
+        $depparentesco = $this->input->post("depparentesco");
+        $i=0;
+
+        
+        foreach ($depnasc as $key => $value) {
+        	if (!empty($value)) {
+        		$d['nome_depadmissao'] = $depnome[$i];
+        		$d['ic_ir_depadmissao'] = $depir[$i];
+        		$d['sexo_depadmissao'] = $depsexo[$i];
+        		$d['nascimento_depadmissao'] = $this->Log->alteradata2($depnasc[$i]);
+        		$d['fk_idparentesco'] = $depparentesco[$i];
+        		$d['cpf_depadmissao'] = $depcpf[$i];
+        		$d['nomemae'] = $depmae[$i];
+        		$d['ic_auxfamilia'] = $depaux[$i];
+        		$i++;
+        		$this->db->insert("admissao_dependente", $d);
+        	}
+    	}
+    	$this->db->db_debug = TRUE;
+        header("Location: ".base_url('home/admissao'));*/
+    }
+
+    public function salvar_dependente(){
+    	
+    	if ($this->input->post("id")==0) {        	
+        	
+        	$r['acao'] = "erro";
+        	$r['mensagem'] = "Preencha os dados pessoais primeiro";
+        	echo json_encode($r);
+        	return;
+        	
+        }
+        $dados['fk_depadmissao'] = $this->input->post("id");
+        $dados["nome_depadmissao"] = $this->input->post("nome");
+        $dados["cpf_depadmissao"] = $this->input->post("cpf");
+        $dados["ic_ir_depadmissao"] = $this->input->post("ir");
+        $dados["sexo_depadmissao"] = $this->input->post("sexo");
+        $dados["fk_idparentesco"] = $this->input->post("parentesco");
+        $dados["nascimento_depadmissao"] = $this->Log->alteradata2($this->input->post("nasc"));
+        $dados["ic_auxfamilia"] = $this->input->post("aux");
+        $dados["nomemae"] = $this->input->post("mae");
+
+        if($this->input->post("iddep")>0){
+
+        	$this->db->where("id_dependenteadmissao", $this->input->post("iddep"));
+        	$r['acao'] = "update";
+        	$r['id'] = $this->db->update("admissao_dependente", $dados);
+
+        }else{
+        	
+        	$this->db->insert("admissao_dependente", $dados);
+        	$r['acao'] = "insertdp";
+        	$r['id'] = $this->db->insert_id();
+        }
+
+        
+        echo json_encode($r);        
+
+    }
+
+    public function estadocidade(){
+
+    	$id = $this->input->post("id");
+    	$idcli = $this->session->userdata('idcliente');    	
+
+    	if ($this->input->post("campo")=="estado") {
+    		$array="<option value=''>Cidade</option>";
+    		$this->db->where("cid_idestado", $id);
+    		$this->db->order_by("cid_nomecidade", "asc");
+    		foreach ($this->db->get('cidade')->result() as $key => $value) {
+    			$array .= '<option value="'.$value->cid_idcidade.'">'.$value->cid_nomecidade.'</option>';
+    		}
+    	}elseif($this->input->post("campo")=="cidade") {
+    		$array="<option value=''>Bairro</option>";
+    		$this->db->where("bair_idcidade", $id);
+    		$this->db->where("idcliente", $idcli);
+    		$this->db->order_by("bair_nomebairro", "asc");
+    		foreach ($this->db->get('bairro')->result() as $key => $value) {
+    			$array .= '<option value="'.$value->bair_idbairro.'">'.$value->bair_nomebairro.'</option>';
+    		}
+    	}
+
+		echo $array;
+    }
+
+    public function rascunhoadmissao(){
+
+    	$id = $this->input->post("id");
+    	$this->db->where('id_admissao', $id);
+		$admissao = $this->db->get('admissao')->row();
+
+		foreach ($admissao as $key => $value) {
+			$array[$key] = $value;
+		}
+
+		if (!empty($admissao->data_admissao)) {
+			$admissao->data_admissao=$this->Log->alteradata1($admissao->data_admissao);
+		}
+		if (!empty($admissao->dtnascimento_admissao)) {
+			$admissao->dtnascimento_admissao=$this->Log->alteradata1($admissao->dtnascimento_admissao);
+		}
+		if (!empty($admissao->dt_emissaoctps)) {
+			$admissao->dt_emissaoctps=$this->Log->alteradata1($admissao->dt_emissaoctps);
+		}
+		if (!empty($admissao->rg_emissao)) {
+			$admissao->rg_emissao=$this->Log->alteradata1($admissao->rg_emissao);
+		}
+		if (!empty($admissao->vencimentocnh)) {
+			$admissao->vencimentocnh=$this->Log->alteradata1($admissao->vencimentocnh);
+		}
+		echo json_encode($admissao);
+
+    }
+
+    public function excluirdependente(){
+    	$id = $this->input->post("id");
+		$this->db->where("id_dependenteadmissao", $id);
+		$this->db->delete("admissao_dependente");
+		echo 1;
+    }
+
+    public function getDependentes(){
+    	$id = $this->input->post("id");
+    	$this->db->join("tipodependente", "tipdep = fk_idparentesco", "left");
+		$this->db->where('fk_depadmissao', $id);
+		$dados['dependente'] = $this->db->get('admissao_dependente')->result();
+
+		header ('Content-type: text/html; charset=ISO-8859-1');
+		$this->load->view('/geral/edit/getdependentes', $dados);
+    }
+
 }

@@ -81,6 +81,18 @@
       $("#listalanc").html("");
 
     });
+
+
+    $(document).on("click",".itemadmissao", function(){
+      var nome = $(this).data("nome");
+      var id = $(this).attr("id");    
+
+      $("#busca_colabadmissao").val("");
+      $("#busca_colabadmissao").before("<div class='btn btn-default fleft excolabadm' id='coladm"+id+"'>"+nome+" <i rm='"+id+"' class='fa fa-times excadm'> </i></div>");
+      $("<input type='hidden' name='colabsadm[]' id='colabsadm"+id+"' value='"+id+"' >").appendTo("#selecionadosadmissao");
+      $("#listadmissao").html("");
+
+    });
     
 </script>
 

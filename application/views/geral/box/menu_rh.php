@@ -49,7 +49,7 @@
     <a href="#">
       <span class="fa fa-briefcase"></span>
       <span class="xn-text">Gestão do dia a dia</span></a>
-  <ul>
+      <ul>
         <li class="<?php echo ($menupriativo=="aprovacoes")? "active":"" ?>">
           <a href="<?php echo base_url('rh/aprovacoes'); ?>">
             <span class="fa fa-thumbs-o-up"></span>
@@ -60,8 +60,14 @@
               <span class="fa fa-cubes"></span>
               <span class="xn-text">Consulta Integrações</span></a>
             </li>
+            <li>
+            <a href="<?php echo base_url('rh/admissao') ?>">
+                <span class="fa fa-plus-circle"></span>
+                <span class="xn-text">Admissão</span>
+              </a>  
+            </li>
 
-  </ul>
+          </ul>
 </li>
 
 <li class="<?php echo ($menupriativo=="mensagem")? "active":"" ?>">

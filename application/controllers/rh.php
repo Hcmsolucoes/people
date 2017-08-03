@@ -339,4 +339,92 @@ class Rh extends CI_Controller {
 	}
 
 
+	public function admissao(){
+		$this->Log->talogado();
+		$this->session->set_userdata('perfil_atual', '5');
+		$iduser = $this->session->userdata('id_funcionario');
+		$idempresa = $this->session->userdata('idempresa');
+		$idcli = $this->session->userdata('idcliente');
+		$dados = array('menupriativo' => 'admissao' );
+
+		$this->db->select("id_admissao, nome_admissao, data_admissao, fun_nome, descricao");
+		$this->db->join("funcionario", "fun_idfuncionario = fk_colaborador_emissor");
+		$this->db->join("tabelacargos", "idcargo = fk_cargo_admissao");
+		$this->db->where("fk_admidempresa", $idempresa);
+		$this->db->where("admissao_status", 1);
+		$dados['admissoes'] = $this->db->get("admissao")->result();
+
+
+		$this->db->where('fun_idfuncionario',$iduser);
+		$dados['funcionario'] = $this->db->get('funcionario')->result();
+		$dados['quantgeral'] = $this->db->get('feedbacks')->num_rows();
+
+		$this->db->where("idempresa", $idempresa);
+		$dados['parametros'] = $this->db->get("parametros")->row();
+
+		$this->db->select('tema_cor, tema_fundo');
+		$this->db->where('fun_idfuncionario',$iduser);
+		$dados['tema'] = $this->db->get('funcionario')->result();
+		$dados['perfil'] = $this->session->userdata('perfil');
+		$dados['breadcrumb'] = array('Gestor'=>base_url('gestor'), "Admissao"=>"#" );
+
+
+		$this->load->view('/geral/html_header', $dados);  
+		$this->load->view('/geral/corpo_admissaorh', $dados);
+		$this->load->view('/geral/footer');
+	}
+
+	public function veradmissao(){
+
+		$iduser = $this->session->userdata('id_funcionario');
+        $idempresa = $this->session->userdata('idempresa');
+        $idcli = $this->session->userdata('idcliente');
+        $dados = array('menupriativo' => 'admissao' );
+	 	$id = $this->input->post("id");
+
+	 	$this->db->where('id_admissao', $id);
+		$dados['admissao'] = $this->db->get('admissao')->row();
+
+		$this->db->join("tipodependente", "tipdep = fk_idparentesco", "left");
+		$this->db->where('fk_depadmissao', $id);
+		$dados['dependente'] = $this->db->get('admissao_dependente')->result();
+
+        $this->db->where('idempresa', $idempresa);
+		$dados['cargos'] = $this->db->get('tabelacargos')->result();
+
+		$this->db->where('fil_idempresa', $idempresa);
+		$dados['filial'] = $this->db->get('filial')->result();
+
+		$this->db->where('idempresa', $idempresa);
+		$dados['departamentos'] = $this->db->get('tabeladepartamento')->result();
+
+		$this->db->order_by("est_nomeestado", "asc");
+		$dados['estados'] = $this->db->get('estado')->result();
+
+		$this->db->where('cid_idestado', $dados['admissao']->fkestadonascimento);
+		$dados['cidades'] = $this->db->get('cidade')->result();
+
+		$this->db->where('cid_idestado', $dados['admissao']->fk_enderecoestado);
+		$dados['cidadesendereco'] = $this->db->get('cidade')->result();
+
+		$this->db->where('bair_idcidade', $dados['admissao']->fk_enderecocidade);
+		$dados['bairrosendereco'] = $this->db->get('bairro')->result();
+
+
+		$dados['estadocivis'] = $this->db->get('estadocivil')->result();
+		$dados['etnia'] = $this->db->get('etnia')->result();
+		$dados['deficiencia'] = $this->db->get('tipodeficiencia')->result();
+		$dados['bancos'] = $this->db->get('bancos')->result();
+		$dados['logradouros'] = $this->db->get('tipologradouro')->result();
+
+		$this->db->where('escolaridade_idcliente', $idcli);
+		$dados['escolaridade'] = $this->db->get('escolaridade')->result();
+		$this->db->where('idcliente', $idcli);
+		$dados['parentesco'] = $this->db->get('tipodependente')->result();
+
+		header ('Content-type: text/html; charset=ISO-8859-1');
+		$this->load->view('/geral/edit/modal_rhadmissao', $dados);
+	}
+
+
 }

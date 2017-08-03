@@ -91,7 +91,7 @@ foreach ($tipodecalculo as $value) {
           </thead>
           <tbody>
            <?php $this->db->where('even_idtipodecalculo',$value->tipo_idtipodecalculo);
-           $this->db->order_by("even_valor", "desc");
+           $this->db->order_by("even_tipoevento", "desc");
            $eventos = $this->db->get('eventoscalculo')->result();
            
            $totaldesconto = 0;
@@ -119,20 +119,20 @@ foreach ($tipodecalculo as $value) {
                   case '#':echo '<span class="glyph-icon icon-info" style="color: #00a4e0"></span>';break;
                 }?>
               </td> 
-              <td><?php echo $dados->even_descrievento ?></td>
-              <td><?php echo number_format($dados->even_referencia, 2, ",", "."); ?></td>
-              <td style="color:#e91b23"><?php if($dados->even_tipoevento == '-'){echo 'R$ '.number_format($dados->even_valor, 2, ",", ".").'';}?></td>
-              <td style=" <?php if($dados->even_tipoevento == '#'){echo 'color:#00a4e0';}else{echo 'color:#3fb663';}?>">
+              <td class="tdleft w45"><?php echo $dados->even_descrievento ?></td>
+              <td class="tdleft w25"><?php echo number_format($dados->even_referencia, 2, ",", "."); ?></td>
+              <td class="tdleft w30" style="color:#e91b23"><?php if($dados->even_tipoevento == '-'){echo 'R$ '.number_format($dados->even_valor, 2, ",", ".").'';}?></td>
+              <td class="tdleft" style=" <?php if($dados->even_tipoevento == '#'){echo 'color:#00a4e0';}else{echo 'color:#3fb663';}?>">
                 <?php if($dados->even_tipoevento != '-'){echo 'R$ '.number_format($dados->even_valor, 2, ",", ".");}?>
               </td>
             </tr>
             <?php }?>
             <tr>
               <td></td>
-              <td><strong><i>Total</i></strong></td>
-              <td></td>
-              <td style="color:#e91b23"><strong><i>R$ <?php echo number_format($totaldesconto, 2, ",", "."); ?></i></strong></td>
-              <td style="color:#3fb663"><strong><i>R$ <?php echo number_format($totalproventos, 2, ",", "."); ?></i></strong></td>
+              <td class="tdleft"><strong><i>Total</i></strong></td>
+              <td class="tdleft"></td>
+              <td class="tdleft" style="color:#e91b23"><strong><i>R$ <?php echo number_format($totaldesconto, 2, ",", "."); ?></i></strong></td>
+              <td class="tdleft" style="color:#3fb663"><strong><i>R$ <?php echo number_format($totalproventos, 2, ",", "."); ?></i></strong></td>
             </tr>
             <tr>
               <td></td>

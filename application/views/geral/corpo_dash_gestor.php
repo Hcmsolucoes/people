@@ -237,7 +237,7 @@ foreach ($salariosexo as $key => $value) {
               <div class="" style="padding: 0px 5px;">
                 <span class="bold" >Acompanhe os Gráficos</span>
                 <br><br>
-                <p>Teste 1</p>
+                <p>Uma imagem vale mais do que mil palavras, diz o ditado. Ao transformar informações em gráficos, você a enxerga com mais clareza os dados relevantes para sua empresa</p>
               </div>
             </div> 
 
@@ -249,7 +249,7 @@ foreach ($salariosexo as $key => $value) {
               <div class="" style="padding: 0px 5px;">
                 <span class="bold" >Tome melhores decisões</span>
                 <br><br>
-                <p>Teste 2</p>
+                <p>A tomada de decisão é um processo que consta identificação do problema, dos critérios, a forma de elaborar, analisar e escolher alternativas, verificando a eficácia da decisão.</p>
               </div>
             </div>
 
@@ -260,7 +260,7 @@ foreach ($salariosexo as $key => $value) {
               <div class="" style="padding: 0px 5px;">
                 <span class="bold" >Seja mais eficiente</span>
                 <br><br>
-                <p>Teste 3</p>
+                <p>O desempenho de uma empresa deve ser avaliado a partir de um conjunto de informações que permitam conhecer sua realidade num dado momento.</p>
               </div>
             </div>
 
@@ -271,7 +271,7 @@ foreach ($salariosexo as $key => $value) {
               <div class="" style="padding: 0px 5px;">
                 <span class="bold" >Mantenha o foco nos negócios</span>
                 <br><br>
-                <p>Teste 4</p>
+                <p>Posicionamento junto á concorrência, desenvolvimento e negociação de produtos, evolução de profissionais, individual e em equipe.</p>
               </div>
             </div>
 
@@ -282,7 +282,7 @@ foreach ($salariosexo as $key => $value) {
               <div class="" style="padding: 0px 5px;">
                 <span class="bold" >Não perca de vista suas metas</span>
                 <br><br>
-                <p>Teste 5</p>
+                <p>Ao estabelecer uma meta, a direção da empresa deverá considerar alguns fatores importantes para que o objetivo seja cumprido.</p>
               </div>
             </div>
 

@@ -138,6 +138,11 @@ class Admin extends CI_Controller {
             $this->db->where('fun_idempresa', $idempresa);
             $dados['resplanc'] = $this->db->get('lancamento_responsaveis')->result();
 
+            $this->db->select("responsaveladmissao.*, fun_nome, fun_foto, fun_sexo");
+            $this->db->join('funcionario',"fun_idfuncionario = fk_idcolab_admissao");
+            $this->db->where('fun_idempresa', $idempresa);
+            $dados['respadm'] = $this->db->get('responsaveladmissao')->result();
+
             $dados['tipo_solicitacoes'] = $this->db->get('solicitacao_tipo')->result();
 
             $this->db->where("idempresa", $idempresa);
@@ -291,6 +296,14 @@ class Admin extends CI_Controller {
             echo 1;
       }
 
+      public function excluir_respadmissao(){
+
+            $id = $this->input->post("id");
+            $this->db->where("id_responsavel_admissao", $id);
+            $this->db->delete("responsaveladmissao");
+            echo 1;
+      }
+
       public function autocompleteRespRH(){
 
             $idempresa = (!empty($this->input->post('empresa')) )?$this->input->post('empresa') : $this->session->userdata('idempresa');
@@ -391,7 +404,22 @@ class Admin extends CI_Controller {
                   </div>';
             }
 
-          echo $ret;
+            echo $ret;
+      }
+
+      public function salvar_resp_admissao(){
+
+            $idempresa = $this->input->post("empresa");
+            $aprovadores = $this->input->post("aprovadores");
+            $dados['fk_idempresa_admissao'] = $idempresa;
+
+            foreach ($aprovadores as $key => $value) {
+
+                  $dados['fk_idcolab_admissao'] = $value;
+                  $this->db->insert("responsaveladmissao", $dados);
+
+            }
+            echo 1;
       }
 
       public function acessocampos(){
