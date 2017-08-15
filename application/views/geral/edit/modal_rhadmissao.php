@@ -206,7 +206,7 @@
 							</div>
 						</div>
 
-						<div class="fleft-2 fleftmobile md10 borda" >
+						<div class="fleft-2 fleftmobile borda" >
 							<div class="fleft fleftmobile md10">
 
 							<select name="adm_tipocontrato" class="fleft fleftmobile md10" required="true" style="margin-bottom: 20px;">
@@ -691,10 +691,11 @@
 					</div>
 					<div class="clearfix"></div>
 					<button class="btn btn-primary" style="margin-top: 7px;">Aprovar</button>
+					</form>
 			</div><!--fim da aba pessoais-->
 
 			<div class="tab-pane " id="dependentes">
-			
+			<form id="formdep" class="form" method="post" action="<?php echo base_url('home/salvar_dependente'); ?>">
 				<div class="fleft" style="margin-top: 10px;">
 					<span class="btn btn-primary" id="add">Salvar</span>
 				</div>
@@ -704,20 +705,20 @@
 				<!--linha 1-->
 				<div id="linha" class="fleft" style="margin-top: 10px;">
 				
-					<input type="text" name="nome_depadmissao" class="fleft fleftmobile md10 grande" placeholder="Nome Completo:" >
+					<input type="text" name="nome_depadmissao" class="fleft fleftmobile md10 grande" placeholder="Nome Completo:" required >
 
 					<input type="number" name="cpf_depadmissao" class="fleft fleftmobile md10" placeholder="CPF:" >
 
 					<div class="fleft fleftmobile md10">
 						<div class='input-group date' >
-							<input type="text" name="nascimento_depadmissao" class="data fleft" placeholder="Data de Nascimento" >
+							<input type="text" name="nascimento_depadmissao" class="data fleft" placeholder="Data de Nascimento" required >
 							<span class="input-group-addon fleft">
 								<span class="fa fa-calendar" id='' style="margin-left: -5px;"></span>
 							</span>
 						</div>
 					</div>
 
-					<select name="sexo_depadmissao" class="fleft fleftmobile md10" >
+					<select name="sexo_depadmissao" class="fleft fleftmobile md10" required >
 						<option value="">Sexo</option>
 						<option value="1">Masculino</option>
 						<option value="2">Feminino</option>
@@ -727,21 +728,21 @@
 					
 					<div class="fleft" style="margin-top: 10px;">
 					
-					<select name="ic_ir_depadmissao" class="fleft fleftmobile md10" >
+					<select name="ic_ir_depadmissao" class="fleft fleftmobile md10" required >
 						<option value="">Imposto de Renda</option>
 						<option value="1">Sim</option>
 						<option value="0">Não</option>
 					</select>
-					</div>					
+								
 					
-					<select name="fk_idparentesco" class="fleft fleftmobile md10" >
+					<select name="fk_idparentesco" class="fleft fleftmobile md10" required >
 						<option value="">Parentesco</option>
 						<?php foreach ($parentesco as $key => $value) { ?>
 							<option value="<?php echo $value->tipdep; ?>"><?php echo $value->descricao; ?></option>
 						<?php } ?>
 					</select>
 
-					<select name="ic_auxfamilia" class="fleft fleftmobile md10" >
+					<select name="ic_auxfamilia" class="fleft fleftmobile md10" required >
 						<option value="">Auxilio Familia</option>
 						<option value="1">Sim</option>
 						<option value="0">Não</option>
@@ -749,9 +750,12 @@
 
 					<input type="text" name="nomemae" class="fleft fleftmobile md10 grande" placeholder="Nome da Mãe:" >
 					</div>
+					</div>
+					</form>
 
 					<div class="clearfix"></div>
 
+					<div id="rascdep">
                     <table id="tbdep" class="table table-striped table-hover" style="margin-top: 20px;">
                     	<thead>
                     		<tr>
@@ -788,9 +792,10 @@
                     			<?php } ?>
                     		</tbody>
                     	</table>
+                    	</div><!--tabela dependentes-->
 
 			</div><!-- tab dependentes-->
-			</form>
+			
 			<div class="tab-pane " id="docs">
 				<form id="documento" action="<?php echo base_url("home/salvarDocAdmissao"); ?>" class="dropzone">
 					<div class="fallback">
@@ -1227,6 +1232,7 @@
 						}else{
 							$("#formdep input").val("");
 							$("#formdep select").val("").change();
+							getdependentes(id);
 						}
 						$("#loadadm").hide();			
 
@@ -1238,6 +1244,36 @@
 
 			}
 		});
+
+		function getdependentes(id){
+			$.ajax({      
+				type: "POST",
+				url: '<?php echo base_url('home/getDependentes') ?>',
+				secureuri:false,
+				cache: false,
+				data:{
+					id: id
+				},
+				success: function(j){
+					$("#rascdep").html(j);	
+				} 
+			});
+		}
+
+		function getdocs(id){
+			$.ajax({      
+				type: "POST",
+				url: '<?php echo base_url('home/getDocs') ?>',
+				secureuri:false,
+				cache: false,
+				data:{
+					id: id
+				},
+				success: function(j){
+					$("#docsalvos").html(j);	
+				} 
+			});
+		}
 
 		$(".excdep").click(function(){
 			var id = $(this).data("id");
