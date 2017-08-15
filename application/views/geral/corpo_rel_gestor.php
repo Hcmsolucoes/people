@@ -70,7 +70,7 @@ $arr_salariosexo .= "['".$value->fun_nome."','".$value->sexo."',".$value->idadef
 
 <ul class="barra">
 	<div class="btn-group fleft fleftmobile" id="menudashboard" >
-		<a href="#" data-toggle="dropdown" class="btn btn-primary fleftmobile">Relatórios<span class="caret"></span></a>
+		<a href="#" data-toggle="dropdown" class="btn btn-primary fleftmobile">Indicadores<span class="caret"></span></a>
 		<ul class="dropdown-menu" id="menudash" >
 			<li>
 				<a href="#botao1" role="tab" data-toggle="tab"><i class="fa fa-users"></i> Adm de Pessoal</a>

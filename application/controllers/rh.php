@@ -209,7 +209,8 @@ class Rh extends CI_Controller {
 
 	public function aprovacoes(){
 
-		$this->Log->talogado(); 
+		$this->Log->talogado();
+		$this->session->set_userdata('perfil_atual', '5');
 		$dados = array('menupriativo' => 'aprovacoes' );
 		$iduser = $this->session->userdata('id_funcionario');
 		$idempresa = $this->session->userdata('idempresa');
@@ -239,7 +240,8 @@ class Rh extends CI_Controller {
 	}
 
 	public function mensagem(){
-		$this->Log->talogado(); 
+		$this->Log->talogado();
+		$this->session->set_userdata('perfil_atual', '5');
 		$iduser = $this->session->userdata('id_funcionario');
 		$idempresa = $this->session->userdata('idempresa');
 		$idcli = $this->session->userdata('idcliente');
@@ -305,6 +307,7 @@ class Rh extends CI_Controller {
 	public function integracoes(){
 
 		$this->Log->talogado(); 
+		$this->session->set_userdata('perfil_atual', '5');
 		$dados = array('menupriativo' => 'integracoes' );
 		$iduser = $this->session->userdata('id_funcionario');
 		$idempresa = $this->session->userdata('idempresa');
@@ -326,6 +329,13 @@ class Rh extends CI_Controller {
 		$this->db->where('fer_status', 1);
 		$dados['ferias'] = $this->db->get('programacao_ferias')->result();
 
+		$this->db->select("id_admissao, nome_admissao, data_admissao, ic_integrado, fun_nome, descricao");
+		$this->db->join("funcionario", "fun_idfuncionario = fk_colaborador_emissor");
+		$this->db->join("tabelacargos", "idcargo = fk_cargo_admissao");
+		$this->db->where("fk_admidempresa", $idempresa);
+		$this->db->where("admissao_status", 2);
+		$dados['admissoes'] = $this->db->get("admissao")->result();
+
 		$this->db->select('tema_cor, tema_fundo');
 		$this->db->where('fun_idfuncionario',$iduser);
 		$dados['tema'] = $this->db->get('funcionario')->result();
@@ -337,7 +347,6 @@ class Rh extends CI_Controller {
 		$this->load->view('/geral/corpo_integrados',$dados);
 		$this->load->view('/geral/footer');
 	}
-
 
 	public function admissao(){
 		$this->Log->talogado();
@@ -407,9 +416,13 @@ class Rh extends CI_Controller {
 		$this->db->where('cid_idestado', $dados['admissao']->fk_enderecoestado);
 		$dados['cidadesendereco'] = $this->db->get('cidade')->result();
 
+		$dados['horbase'] = $this->db->get("horarios")->result();
+
 		$this->db->where('bair_idcidade', $dados['admissao']->fk_enderecocidade);
 		$dados['bairrosendereco'] = $this->db->get('bairro')->result();
 
+		$this->db->where('fk_idadmissaodoc', $id);
+		$dados['docs'] = $this->db->get('admissao_doc')->result();
 
 		$dados['estadocivis'] = $this->db->get('estadocivil')->result();
 		$dados['etnia'] = $this->db->get('etnia')->result();

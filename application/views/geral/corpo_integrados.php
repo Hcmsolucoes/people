@@ -81,6 +81,38 @@
     </table>
 
 
+    <h3 class="fleft" style="margin: 60px 0px 0px 0px;">
+    <span class="fa fa-plane"></span>&nbsp;&nbsp;Lista de Admissões
+  </h3>
+  <table id="tabelaadmissoes" class="table table-striped table-hover">
+    <thead>
+      <tr>
+        <th>Colaborador</th>
+        <th>Data da Admissão</th>
+        <th>Cargo</th>
+        <th>Status</th>                  
+      </tr>
+    </thead>
+    <tbody>
+      <?php foreach ($admissoes as $key => $value) { 
+        $integrado = "Não integrado";
+        $cor = "#cf0606";
+        if($value->ic_integrado==1){
+          $integrado ="Integrado";
+          $cor = "#09b705";
+        }
+        ?>
+        <tr class="admi" data-titulo="Admissão: <?php echo $value->nome_admissao; ?>" data-id="<?php echo $value->id_admissao; ?>">
+          <td><?php echo $value->nome_admissao; ?></td>
+          <td><?php echo $this->Log->alteradata1($value->data_admissao); ?></td>
+          <td><?php echo $value->descricao; ?></td>
+          <td class="bold" style="color: <?php echo $cor; ?>;"><?php echo $integrado; ?></td>
+        </tr>
+
+        <?php }  ?>
+      </tbody>
+    </table>
+
 
   </div><!--col-md-12-->
 
@@ -99,89 +131,83 @@
    });
 
     $('.iradio').on("ifChecked", function(){
-              /*
-              var id = $(this).data("id");
-              $("#box"+id).slideDown("slow");
-              $("#box"+id).data("st", $(this).data("st"));
-              */
-              var id = $(this).data("id");
-              $.ajax({             
-                type: "POST",
-                url: '<?php echo base_url('rh/efetivar') ?>',
-                secureuri:false,
-                cache: false,
-                data:{
-                  id : id
-                },              
-                success: function(msg) 
-                {
-                  
-                  if (msg==1) {
-                    $("#"+id).slideUp("slow");
-                  }                  
-                } 
-              });
-              
-            });
 
-            $(".ver").click(function(){
-    var id = $(this).data("id");
-    var tipo = $(this).data("tipo");
-    var titulo = $(this).data("titulo");
-    $('#titulomodal').text(titulo);
-    $( "#dadosedit" ).html("<img id='load' src='<?php echo base_url('img/loaders/default.gif') ?>' >");
-    $("#myModal").modal('show');
-    $.ajax({            
-      type: "POST",
-      url: '<?php echo base_url('gestor/minhaSolicitacao') ?>',
-      secureuri:false,
-      cache: false,
-      data:{
-        id: id,
-        tipo: tipo
-      },              
-      success: function(msg) 
-      {
+      var id = $(this).data("id");
+      $.ajax({             
+        type: "POST",
+        url: '<?php echo base_url('rh/efetivar') ?>',
+        secureuri:false,
+        cache: false,
+        data:{
+          id : id
+        },              
+        success: function(msg) 
+        {
 
-        $( "#dadosedit" ).html(msg);
+          if (msg==1) {
+            $("#"+id).slideUp("slow");
+          }                  
+        } 
+      });
 
-      } 
     });
-  });
 
-            $(".cancelarobs").click(function(){
-              var id = $(this).data("id");
-              $("#box"+id).slideUp("slow");
-              $("[name='iradio["+id+"]']").iCheck('uncheck');
-            });
+    $(".ver").click(function(){
+      var id = $(this).data("id");
+      var tipo = $(this).data("tipo");
+      var titulo = $(this).data("titulo");
+      $('#titulomodal').text(titulo);
+      $( "#dadosedit" ).html("<img id='load' src='<?php echo base_url('img/loaders/default.gif') ?>' >");
+      $("#myModal").modal('show');
+      $.ajax({            
+        type: "POST",
+        url: '<?php echo base_url('gestor/minhaSolicitacao') ?>',
+        secureuri:false,
+        cache: false,
+        data:{
+          id: id,
+          tipo: tipo
+        },              
+        success: function(msg) 
+        {
 
-            $(".ferias").click(function(){
-              var id = $(this).data("id");
-              var titulo = $(this).data("titulo");
-              $("#titulomodal").text(titulo);
-              $( "#dadosedit" ).html("");
-              $("#myModalTamanho").removeClass("modal-lg");
-              $('#myModal').modal('show');
+          $( "#dadosedit" ).html(msg);
 
-              $.ajax({             
-                type: "POST",
-                url: '<?php echo base_url('home/modalConFerias') ?>',
-                dataType : 'html',
-                secureuri:false,
-                cache: false,
-                data:{
-                  id: id,
-                  pagina: "integracao"
-                },              
-                success: function(msg) 
-                {    
-                  
-                  $( "#dadosedit" ).html(msg);
+        } 
+      });
+    });
 
-                } 
-              });
-            });
-            
+    $(".cancelarobs").click(function(){
+      var id = $(this).data("id");
+      $("#box"+id).slideUp("slow");
+      $("[name='iradio["+id+"]']").iCheck('uncheck');
+    });
 
+    $(".ferias").click(function(){
+      var id = $(this).data("id");
+      var titulo = $(this).data("titulo");
+      $("#titulomodal").text(titulo);
+      $( "#dadosedit" ).html("");
+      $("#myModalTamanho").removeClass("modal-lg");
+      $('#myModal').modal('show');
 
-          </script>
+      $.ajax({             
+        type: "POST",
+        url: '<?php echo base_url('home/modalConFerias') ?>',
+        dataType : 'html',
+        secureuri:false,
+        cache: false,
+        data:{
+          id: id,
+          pagina: "integracao"
+        },              
+        success: function(msg) 
+        {    
+
+          $( "#dadosedit" ).html(msg);
+
+        } 
+      });
+    });
+
+  </script>

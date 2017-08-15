@@ -93,6 +93,12 @@ $iduser = $this->session->userdata('id_funcionario');
     </a>  
 </li>
 
+<!-- menu estrutura -->
+<li class="<?php echo ($menupriativo=="estrutura")? "active":"" ?>">
+    <a href="<?php echo base_url('perfil/estrutura') ?>">
+        <span class="fa fa-sitemap"></span><span class="xn-text">Estrutura Organizacional</span>
+    </a>  
+</li>
 <!-- menu perfil público -->
 <li class="<?php echo ($menupriativo=="publico")? "active":"" ?>">
     <a href="<?php echo base_url('perfil/pessoal_publico/'.$iduser); ?>">

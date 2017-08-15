@@ -10,7 +10,7 @@
 		width: 310px;
 	}
 	.pequeno{
-		width: 112px;
+		width: 100px;
 	}
 	.xgrande{
 		width: 500px;
@@ -73,6 +73,7 @@
 
 
 </div>
+<script type="text/javascript" src="<?php echo base_url("js/plugins/dropzone/dropzone.min.js"); ?>"></script>
 
 <script type="text/javascript">
 	$(".ver").click(function(){
@@ -94,6 +95,31 @@
 			{
 
 				$( "#dadosedit" ).html(msg);
+				Dropzone.autoDiscover = false;
+				var myDropzone = new Dropzone("#documento", {
+					url: '<?php echo base_url("home/salvarDocAdmissao"); ?>',
+					maxFilesize: 5,
+					dictFileTooBig: "Arquivo muito grande ({{filesize}}MB). Tamanho máximo: {{maxFilesize}}MB.",
+
+					init: function() {
+						this.on("success", function(r, x){
+
+							getdocs($("#id_admissao").val());
+						});
+
+						this.on("sending", function(file, xhr, formData){
+
+							formData.append('idadmissao', $("#id_admissao").val());
+
+						});
+
+						this.on("error", function(arg, erro, xmlhttp){
+
+							console.log(erro);
+						});
+					}
+
+				});
 
 			} 
 		});
@@ -103,4 +129,20 @@
   		$( "#dadosedit" ).html("");
 	});
 
+	function getdocs(id){
+		$.ajax({      
+			type: "POST",
+			url: '<?php echo base_url('home/getDocs') ?>',
+			secureuri:false,
+			cache: false,
+			data:{
+				id: id
+			},
+			success: function(j){
+				$("#docsalvos").html(j);	
+			} 
+		});
+	}
+
+	
 </script>

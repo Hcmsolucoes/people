@@ -108,7 +108,7 @@ $iduser = $this->session->userdata('id_funcionario');
 
                   $in = ($value->fk_remetente_mensagem==$iduser)? "in" : "" ;
                   list($data, $hora) = explode(" ", $value->datahora_mensagem);
-                  $data = $this->Log->alteradata1( $data );
+                  $data = date('d/m/Y', strtotime($value->datahora_mensagem));
                   $primsg = $value->id_mensagem;
                   
                   ?>
@@ -122,7 +122,7 @@ $iduser = $this->session->userdata('id_funcionario');
                       <div class="heading">
                         <a href="#">Para: <?php echo $value->fun_nome; ?></a>
                         
-                        <span class="date"><?php echo $data." ".substr($hora, 0, 5); ?></span>
+                        <span class="date"><?php echo $data." ".substr($value->datahora_mensagem, 12, 5); ?></span>
 
                         <div class="clearfix"></div>
 
@@ -158,7 +158,7 @@ $iduser = $this->session->userdata('id_funcionario');
 
                     $in = ($value->fk_remetente_mensagem==$iduser)? "in" : "" ;
                     list($data, $hora) = explode(" ", $value->datahora_mensagem);
-                    $data = $this->Log->alteradata1( $data );
+                    $data = date('d/m/Y', strtotime($value->datahora_mensagem));
                     $primsg = $value->id_mensagem;
                     
                     ?>
@@ -172,7 +172,7 @@ $iduser = $this->session->userdata('id_funcionario');
                         <div class="heading">
                           <a href="#"><?php echo $value->fun_nome; ?></a>
 
-                          <span class="date"><?php echo $data." ".substr($hora, 0, 5); ?></span>
+                          <span class="date"><?php echo $data." ".substr($value->datahora_mensagem, 12, 5); ?></span>
 
                           <div class="clearfix"></div>
 

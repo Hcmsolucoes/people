@@ -42,10 +42,20 @@
     </a>                  
 </li> 
 
-<li class="<?php echo ($menupriativo=="minhaequipe")? "active":"" ?>">
+<li class="xn-openable <?php echo ($menupriativo=="minhaequipe")? "active":"" ?>">
 	<a href="<?php echo base_url('gestor/equipe'); ?>">
 	<span class="fa fa-group"></span>
 	<span class="xn-text">Minha Equipe</span></a>
+	<ul>
+<li><a href="<?php echo base_url('gestor/equipe'); ?>">
+           <span class="fa fa-group"></span>
+	<span class="xn-text">Gestão da Equipe</span></a>
+		</li>
+        <li><a href="<?php echo base_url('gestor/hierarquia') ?>">
+            <span class="fa fa-sitemap"></span>
+            <span class="xn-text">Hierarquia</span></a>
+		</li>
+	</ul>
 </li>
 
 <li class="xn-openable <?php echo ($menupriativo=="treinamentos")? "active":"" ?>">

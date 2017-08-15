@@ -661,6 +661,7 @@ class Home extends CI_Controller {
 		$dados['filial'] = $this->db->get('filial')->result();
 
 		$this->db->where('idempresa', $idempresa);
+		$this->db->order_by("descricao", "asc");
 		$dados['departamentos'] = $this->db->get('tabeladepartamento')->result();
 
 		$this->db->order_by("est_nomeestado", "asc");
@@ -683,6 +684,8 @@ class Home extends CI_Controller {
 		$this->db->where("fk_admidempresa", $idempresa);
 		$this->db->where("fk_colaborador_emissor", $iduser);
 		$dados['rascunho'] = $this->db->get("admissao")->result();
+
+		$dados['horbase'] = $this->db->get("horarios")->result();
 	 
         $this->db->where('fun_idfuncionario',$iduser);
         $dados['funcionario'] = $this->db->get('funcionario')->result();
@@ -954,7 +957,7 @@ class Home extends CI_Controller {
     		$this->db->where("cid_idestado", $id);
     		$this->db->order_by("cid_nomecidade", "asc");
     		foreach ($this->db->get('cidade')->result() as $key => $value) {
-    			$array .= '<option value="'.$value->cid_idcidade.'">'.$value->cid_nomecidade.'</option>';
+    			$array .= '<option value="'.$value->cid_idcidade.'">'.utf8_encode($value->cid_nomecidade).'</option>';
     		}
     	}elseif($this->input->post("campo")=="cidade") {
     		$array="<option value=''>Bairro</option>";
@@ -962,7 +965,7 @@ class Home extends CI_Controller {
     		$this->db->where("idcliente", $idcli);
     		$this->db->order_by("bair_nomebairro", "asc");
     		foreach ($this->db->get('bairro')->result() as $key => $value) {
-    			$array .= '<option value="'.$value->bair_idbairro.'">'.$value->bair_nomebairro.'</option>';
+    			$array .= '<option value="'.$value->bair_idbairro.'">'.utf8_encode($value->bair_nomebairro).'</option>';
     		}
     	}
 
@@ -981,6 +984,9 @@ class Home extends CI_Controller {
 
 		if (!empty($admissao->data_admissao)) {
 			$admissao->data_admissao=$this->Log->alteradata1($admissao->data_admissao);
+		}
+		if (!empty($admissao->salario_admissao)) {
+			$admissao->salario_admissao= number_format($admissao->data_admissao,2, ".", ",");
 		}
 		if (!empty($admissao->dtnascimento_admissao)) {
 			$admissao->dtnascimento_admissao=$this->Log->alteradata1($admissao->dtnascimento_admissao);
@@ -1015,4 +1021,107 @@ class Home extends CI_Controller {
 		$this->load->view('/geral/edit/getdependentes', $dados);
     }
 
+    public function salvarDocAdmissao(){
+        
+
+        if (!empty($_FILES['file'])) {
+         try {
+
+            $instancia =$this->session->userdata('instancia');                
+            $pasta = FCPATH.'/docs/'. $instancia;
+
+            if (!file_exists($pasta)) {
+                if( ! mkdir($pasta, 0777, true) ){
+                    throw new Exception("Nao foi possivel criar a pasta");
+                }
+            }
+
+            if (!$_FILES['file']['error']) {
+                $name = $this->util->geraString(7);
+                $ext = explode('.', $_FILES['file']['name']);
+                $filename = $_FILES['file']['name'];//$name . '.' . end($ext);
+                    //$destination = $pasta."/".$filename;
+                	$destination = $pasta."/".$filename;
+                    $location = $_FILES["file"]["tmp_name"];
+                    move_uploaded_file($location, $destination);
+                    //echo base_url("docs/".$instancia."/".$filename);
+                }else{
+                	switch ($_FILES['file']['error']) {
+                		case '1': $err = "Arquivo muito grande"; break;
+                		case '6': $err = "Pasta temporária ausênte"; break;
+                		case '7': $err = "Falha em escrever o arquivo em disco"; break;
+                		default: $err = "Erro ao enviar"; break;
+                	}
+                    header($_SERVER['SERVER_PROTOCOL'] . ' 500 ' . $err);
+                    echo $err;
+                    return;
+                }     
+
+            } catch (Exception $e) {
+                echo $e->getMessage();
+                return;
+            }
+
+            $idempresa = $this->session->userdata('idempresa');
+            $dados["fk_idadmissaodoc"] = $this->input->post("idadmissao");
+            $dados["arquivo_admissao"] =$filename;
+            $dados["fk_idempresadoc"] = $idempresa;
+            $this->db->insert("admissao_doc", $dados);
+            echo $this->db->insert_id();           
+            return;
+        }
+
+    }
+
+    public function getDocs(){
+    	$id = $this->input->post("id");
+    	//$this->db->join("tipodependente", "tipdep = fk_idparentesco", "left");
+		$this->db->where('fk_idadmissaodoc', $id);
+		$dados['docs'] = $this->db->get('admissao_doc')->result();
+
+		header ('Content-type: text/html; charset=ISO-8859-1');
+		$this->load->view('/geral/edit/getdocs', $dados);
+    }
+
+    public function excluirdoc(){
+    	$id = $this->input->post("id");
+		$this->db->where("id_admissaodoc", $id);
+		$this->db->delete("admissao_doc");
+
+		echo 1;
+    }
+
+    public function lerdoc(){
+
+        $pasta = FCPATH.'/docs/'. $this->session->userdata('instancia');
+        $arq = $this->input->get("arq");
+        $ext = explode(".", $arq);
+        //var_dump($ext);
+        switch( end($ext) ){
+         case "pdf": $tipo="application/pdf"; break;
+         case "exe": $tipo="application/octet-stream"; break;
+         case "zip": $tipo="application/zip"; break;
+		 case "docx":
+         case "doc": $tipo="application/msword"; break;
+         case "xlsx":
+         case "xls": $tipo="application/vnd.ms-excel"; break;
+         case "pptx":
+         case "ppt": $tipo="application/vnd.ms-powerpoint"; break;
+         case "gif": $tipo="image/gif"; break;
+         case "png": $tipo="image/png"; break;
+         case "jpg": $tipo="image/jpg"; break;
+         case "mp3": $tipo="audio/mpeg"; break;
+         case "php": // deixar vazio por seurança
+         case "htm": // deixar vazio por seurança
+         case "html": // deixar vazio por seurança
+      }
+        $url = $pasta."/".$arq;
+    	//$myfile = fopen($url, "r") or die("Unable to open file!");
+        header('Content-Disposition: inline; filename="'.$arq.'"');
+        header('Content-Type: '.$tipo);
+        header('Content-Length: ' . filesize($url));
+        readfile($url);
+    	//echo fread($myfile, filesize($url));
+    	//fclose($myfile);
+    }
 }

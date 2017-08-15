@@ -195,7 +195,7 @@ $mes_ano = $mes." de ".date("Y");
           </div>          
         </div>
         <div class="panel-body padding-0">
-          <div class="" id="widgetboletim" style="height: 257px;" >            
+          <div class="" id="widgetboletim" style="height: 273px;" >            
           </div>
         </div>
       </div>
@@ -267,12 +267,12 @@ $mes_ano = $mes." de ".date("Y");
 	
 	
       <div class="col-md-3">
-        <div class="widget widget-default widget-item-icon" onclick="location.href='pages-address-book.html';">
+        <div class="widget widget-default widget-item-icon">
                 <div class="widget-item-left">
                    <span class="fa fa-clock-o"></span>
                 </div>
            <div class="widget-data">
-				<div class="widget-int num-count">22h:30m</div>
+				<div class="widget-int num-count">45h:00m</div>
                 <div class="widget-title">Banco Horas</div>
                 <div class="widget-subtitle">Saldo Atual</div>
            </div>
@@ -288,18 +288,13 @@ $mes_ano = $mes." de ".date("Y");
             <div class="owl-carousel" id="owl-example">
                 <div>                                    
                     <div class="widget-title">Vale Transporte</div>                                                                        
-                    <div class="widget-subtitle">Data Crédito: 05/11/2016</div>
-                    <div class="widget-int">R$ 140,00</div>
+                    <div class="widget-subtitle">Data Crédito: 06/08/2017 </div>
+                    <div class="widget-int">R$ 150,00</div>
                 </div>
                 <div>                                    
                     <div class="widget-title">Vale Refeição</div>
-                    <div class="widget-subtitle">Data Crédito: 05/11/2016</div>
-                    <div class="widget-int">R$ 320,80</div>
-                </div>
-                <div>                                    
-                    <div class="widget-title">Vale Alimentação</div>
-                    <div class="widget-subtitle">Data Crédito: 05/11/2016</div>
-                    <div class="widget-int">R$ 170,00</div>
+                    <div class="widget-subtitle">Data Crédito: 06/08/2017</div>
+                    <div class="widget-int">R$ 213,00</div>
                 </div>
             </div>                            
             <div class="widget-controls">                                
@@ -353,7 +348,7 @@ $mes_ano = $mes." de ".date("Y");
 	   
 	  <div class="col-md-2">                        
         <a href="#" class="tile tile-default">
-         03
+         00
          <p>EPI's Distribuído</p>                            
          <div class="informer informer-success dir-tr"><span class="fa fa-caret-down"></span></div>
         </a>                        
@@ -362,7 +357,7 @@ $mes_ano = $mes." de ".date("Y");
 
       <div class="col-md-2">                        
        <a href="#" class="tile tile-default">
-		01
+		00
         <p>Incidentes</p>
         <div class="informer informer-primary">Últimos 12 meses</div>
         <div class="informer informer-success dir-tr"><span class="fa fa-caret-up"></span></div>
@@ -384,10 +379,10 @@ $mes_ano = $mes." de ".date("Y");
       <span class="fa fa-user"></span>
         </div>
           <div class="widget-data">
-             <div class="widget-title">Membro Cipa</div>
-             <div class="widget-title">Suplente</div>
+             <div class="widget-title">Não Membro Cipa</div>
+           <!--  <div class="widget-title">Suplente</div>
              <div class="widget-subtitle">Eleição: 01/01/2017</div>
-			 <div class="widget-subtitle">Estabilidade: 01/01/2019</div>
+			 <div class="widget-subtitle">Estabilidade: 01/01/2019</div>-->
           </div>
         <div class="widget-controls">                                
 			<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
@@ -401,10 +396,10 @@ $mes_ano = $mes." de ".date("Y");
       <span class="glyphicon glyphicon-fire"></span>
         </div>
           <div class="widget-data">
-             <div class="widget-title">Brigada</div>
+             <div class="widget-title">Não é Brigadista</div>
              <div class="widget-title">Combatente</div>
-             <div class="widget-subtitle">Engagamento: 01/01/2017</div>
-			 <div class="widget-subtitle">EPI: Bota/Luva</div>
+             <div class="widget-subtitle">Engajamento: </div>
+
           </div>
         <div class="widget-controls">                                
 			<a href="#" class="widget-control-right widget-remove" data-toggle="tooltip" data-placement="top" title="Remove Widget"><span class="fa fa-times"></span></a>
@@ -654,9 +649,9 @@ $(document).ready(function(){
     Morris.Donut({
         element: 'dashboard-donut-1',
         data: [
-            {label: "Documentos", value: 07},
-            {label: "Dados Perfil", value: 09},
-            {label: "Cursos", value: 02}
+            {label: "Documentos", value: 00},
+            {label: "Dados Perfil", value: 1},
+            {label: "aprovações", value: 02}
         ],
         colors: ['#33414E', '#1caf9a', '#FEA223'],
         resize: true

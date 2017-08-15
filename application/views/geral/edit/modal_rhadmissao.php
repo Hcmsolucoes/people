@@ -4,11 +4,12 @@
 		<ul class="nav nav-tabs" role="tablist">
 			<li class="active"><a href="#pessoais" role="tab" data-toggle="tab">Dados Pessoais</a></li>
 			<li><a href="#dependentes" role="tab" data-toggle="tab">Dependentes</a></li>
+			<li><a href="#docs" role="tab" data-toggle="tab">Documentos</a></li>
 		</ul>
-<form id="formadmissao" class="form" method="post" action="<?php //echo base_url('home/salvar_admissao'); ?>">
 		<div class="tab-content panel" style="padding: 15px 0px 0px 7px; min-height: 300px;">
 			<div class="tab-pane active" id="pessoais">
-				
+				<form id="formadmissao" class="form" method="post" action="<?php //echo base_url('home/salvar_admissao'); ?>">
+
 					<div class="fleft md10" style="">
 
 						<select name="adm_idfilial" required="true" id="cbofilial" class="md10" >
@@ -122,9 +123,9 @@
 							
 						</div>
 
-						<div class="fleft-3 fleftmobile md10 borda" style="">
-							<h4>Horário Segunda a Sexta</h4>
-							<div class="clearfix"></div>
+						<div class="fleft-3 fleftmobile md10 borda" style="height: 155px;">
+							<h4>Horário</h4>
+							<!--<div class="clearfix"></div>
 							<div class="fleft-3 md10">
 								<label>Entrada</label>
 								<div class="clearfix"></div>
@@ -147,11 +148,32 @@
 								<label>Saída</label>
 								<div class="clearfix"></div>
 								<input type="text" name="horasaida" class="hora fleft-10 fleftmobile " placeholder="" required="true" value="<?php echo $admissao->horasaida; ?>">
-							</div>
+							</div>-->
+
+							<select name="fk_horbase" required="true" id="selecthorabase" class="selectpicker " data-live-search="true" data-div="" data-toggle="tooltip" data-placement="top" title="Horário Base">
+							<?php $selected = ""; 
+							foreach ($horbase as $key => $value) { 
+								$selected = ($value->idhorario==$admissao->fk_horbase)? "selected":"";
+								?>
+							<option value="<?php echo $value->idhorario; ?>" <?php echo $selected; ?>><?php echo $value->descricaohorario; ?></option>
+							<?php } ?>
+							</select>
+
+						<div class="fleft" style="margin-top: 10px;">
+						<select name="fk_horsab" required="true" id="selecthorsab" class="selectpicker " data-live-search="true" data-div="" data-toggle="tooltip" data-placement="top" title="Horário Sábado" style="margin-top: 10px;">
+							<?php $selected = ""; 
+							foreach ($horbase as $key => $value) { 
+								$selected = ($value->idhorario==$admissao->fk_horsab)? "selected":"";
+								?>
+							<option value="<?php echo $value->idhorario; ?>" <?php echo $selected; ?>><?php echo $value->descricaohorario; ?></option>
+							<?php } ?>
+						</select>
+						</div>
+
 						</div>
 
 
-						<div class="fleft-2 fleftmobile md10 borda" style="">
+						<!--<div class="fleft-2 fleftmobile md10 borda" style="">
 							<h4>Horário Sábado</h4>
 							<div class="clearfix"></div>
 							<div class="fleft">
@@ -164,29 +186,27 @@
 								<div class="clearfix"></div>
 								<input type="text" name="sabadosaida" class="hora fleft-6 fleftmobile " placeholder="" value="<?php echo $admissao->sabadosaida; ?>">
 							</div>
-						</div>
+						</div>-->
 
 						<div class="fleft-2 fleftmobile acenter borda md10" style="height: 155px;">
 							<div class="bold">
 								<span>Carga Horária Semanal</span><br>
 								<span id="txthrsemanal"></span>
-								<input type="hidden" name="hrsemanal" value="<?php echo $admissao->hrsemanal; ?>">
+								<input type="text" name="hrsemanal" value="<?php echo $admissao->hrsemanal; ?>" class="hora pequeno">
 							</div>
-							<div class="bold" style="margin-top: 19px">
+							<!--<div class="bold" style="margin-top: 19px">
 								<span>Carga Horária Mensal</span><br>
 								<span id="txthrmensal"></span>
 								<input type="hidden" name="hrmensal">
-							</div>
+							</div>-->
 							<div class="bold" style="margin-top: 19px">
 								<span>DSR</span><br>
 								<span id="txthrdsr"></span>
-								<input type="hidden" name="hrdsr">
+								<input type="text" name="hrdsr" value="<?php echo $admissao->hrsemanal; ?>" class="hora pequeno">
 							</div>
 						</div>
-					</div><!--linha3-->
 
-					<div class="fleft" style="margin-top: 10px;">
-					<div class="fleft-10 fleftmobile md10 borda" >
+						<div class="fleft-2 fleftmobile md10 borda" >
 							<div class="fleft fleftmobile md10">
 
 							<select name="adm_tipocontrato" class="fleft fleftmobile md10" required="true" style="margin-bottom: 20px;">
@@ -221,14 +241,15 @@
 							</div>
 						</div>
 						</div>
-					</div>
+					</div><!--linha3-->
+
 
 					<!--linha 3-->
 					<div class="fleft" style="margin-top: 10px;">
 					<h4>Documentos</h4>
 						<input type="number" name="nr_ctps" required="true" class="fleft fleftmobile md10" placeholder="CTPS N&ordm;" value="<?php echo trim($admissao->nr_ctps); ?>">
 
-						<input type="text" name="serie_ctps" required="true" class="fleft fleftmobile md10" placeholder="Série N&ordm;" value="<?php echo $admissao->serie_ctps; ?>">
+						<input type="text" name="serie_ctps" required="true" class="pequeno fleft fleftmobile md10" placeholder="Série N&ordm;" value="<?php echo $admissao->serie_ctps; ?>">
 
 						<select name="estado_ctps" required="true" class="fleft fleftmobile md10" >
 						<option value="">Estado</option>
@@ -244,7 +265,7 @@
 
 						<div class="fleft fleftmobile md10">
 							<div class='input-group date' >
-								<input type="text" required="true" name="dt_emissaoctps" class="pequeno data fleft" placeholder="Emissão CTPS" value="<?php echo $this->Log->alteradata1($admissao->dt_emissaoctps); ?>">
+								<input type="text" required="true" name="dt_emissaoctps" class="pequeno data fleft" placeholder="Emissão CTPS" value="<?php echo $this->Log->alteradata1($admissao->dt_emissaoctps); ?>" data-date-end-date="0d">
 								<span class="input-group-addon fleft">
 									<span class="fa fa-calendar" id='' style="margin-left: -5px;"></span>
 								</span>
@@ -255,7 +276,7 @@
 
 						<div class="fleft fleftmobile md10">
 							<div class='input-group date' >
-								<input type="text" name="dt_emissaopis" required="true" class="data fleft" placeholder="Data de Emissão PIS" value="<?php echo $this->Log->alteradata1($admissao->dt_emissaopis); ?>">
+								<input type="text" name="dt_emissaopis" required="true" class="data fleft pequeno" placeholder="Data de Emissão PIS" value="<?php echo $this->Log->alteradata1($admissao->dt_emissaopis); ?>" data-date-end-date="0d">
 								<span class="input-group-addon fleft">
 									<span class="fa fa-calendar" id='' style="margin-left: -5px;"></span>
 								</span>
@@ -277,13 +298,13 @@
 
 						<div class="fleft fleftmobile md10">
 							<div class='input-group date' >
-								<input type="text" name="rg_emissao" required="true" class="data fleft" placeholder="Data Emissão RG" value="<?php echo $this->Log->alteradata1($admissao->rg_emissao); ?>">
+								<input type="text" name="rg_emissao" required="true" class="data fleft" placeholder="Data Emissão RG" value="<?php echo $this->Log->alteradata1($admissao->rg_emissao); ?>" data-date-end-date="0d">
 								<span class="input-group-addon fleft">
 									<span class="fa fa-calendar" id='' style="margin-left: -5px;"></span>
 								</span>
 							</div>
 						</div>
-						<select name="rg_estado" required="true" class="fleft fleftmobile md10" >
+						<select name="rg_estado" required="true" class="pequeno fleft fleftmobile md10" >
 						<option value="">Estado</option>
 							<?php 
 							$selected = "";
@@ -298,7 +319,7 @@
 
 					<!--CNH-->
 					<div class="fleft" style="margin-top: 10px;">
-						<input type="text" name="cnh" required="true" class="fleft fleftmobile md10" placeholder="Carteira de Habilitação" value="<?php echo $admissao->cnh; ?>">
+						<input type="text" name="cnh" required="true" class="pequeno fleft fleftmobile md10" placeholder="Carteira de Habilitação" value="<?php echo $admissao->cnh; ?>">
 
 						<div class='input-group date fleft md10' >
 								<input type="text" name="vencimentocnh" class="pequeno data fleft" placeholder="Vencim. CNH" value="<?php echo $this->Log->alteradata1($admissao->vencimentocnh); ?>">
@@ -318,9 +339,9 @@
 						</select>
 						<input type="number" name="titulo" required="true" class="fleft fleftmobile md10" placeholder="Titulo de Eleitor:" value="<?php echo $admissao->titulo; ?>">
 
-						<input type="number" name="zona" required="true" class="fleft fleftmobile md10" placeholder="Zona" value="<?php echo trim($admissao->zona); ?>">
+						<input type="number" name="zona" required="true" class="pequeno fleft fleftmobile md10" placeholder="Zona" value="<?php echo trim($admissao->zona); ?>">
 
-						<input type="number" name="secao" required="true" class="fleft fleftmobile md10" placeholder="Seção" value="<?php echo trim($admissao->secao); ?>">
+						<input type="number" name="secao" required="true" class="pequeno fleft fleftmobile md10" placeholder="Seção" value="<?php echo trim($admissao->secao); ?>">
 
 					</div>
 
@@ -342,7 +363,7 @@
 
 						<input type="number" name="endereconumero" class="pequeno fleft fleftmobile md10" placeholder="N&ordm;" value="<?php echo $admissao->endereconumero; ?>">
 
-						<input type="text" name="enderecocomplemento" class="fleft fleftmobile md10" placeholder="Complemento" value="<?php echo $admissao->enderecocomplemento; ?>">
+						<input type="text" name="enderecocomplemento" class="pequeno fleft fleftmobile md10" placeholder="Complemento" value="<?php echo $admissao->enderecocomplemento; ?>">
 
 					</div>
 
@@ -382,7 +403,7 @@
 								<?php } ?>
 						</select>
 						
-						<input type="number" name="cep_admissao" required="true" class=" fleft fleftmobile md10" placeholder="CEP" value="<?php echo $admissao->cep_admissao; ?>">
+						<input type="number" name="cep_admissao" required="true" class="pequeno fleft fleftmobile md10" placeholder="CEP" value="<?php echo $admissao->cep_admissao; ?>">
 						
 						<input type="text" name="telefone_admissao" class="fleft fleftmobile md10 tel" placeholder="Telefone" value="<?php echo $admissao->telefone_admissao; ?>">
 
@@ -769,15 +790,63 @@
                     	</table>
 
 			</div><!-- tab dependentes-->
+			</form>
+			<div class="tab-pane " id="docs">
+				<form id="documento" action="<?php echo base_url("home/salvarDocAdmissao"); ?>" class="dropzone">
+					<div class="fallback">
+						<input name="file" type="file" multiple />
+					</div>
+				</form>
+				<div class="clearfix"></div>
+				<div id="docsalvos">
+					<table id="tbdocs" class="table table-striped table-hover" style="margin-top: 20px;">
+						<thead>
+							<tr>
+								<th>Arquivo</th>
+								<th>Ações</th>            
+							</tr>
+						</thead>
+						<tbody>
+							<?php foreach ($docs as $key => $value) { ?>
+
+								<tr class="" id="trdoc<?php echo $value->id_admissaodoc; ?>" style="cursor: pointer;">
+
+									<td class="" "><?php echo $value->arquivo_admissao ?></td>
+									<td >
+										<span data-id="<?php echo $value->id_admissaodoc; ?>" data-arq="<?php echo $value->arquivo_admissao ?>"" class="fa fa-eye verdoc" style="cursor: pointer;margin-right: 7px;"></span>
+
+										<span data-id="<?php echo $value->id_admissaodoc; ?>" class="fa fa-times excdoc" style="cursor: pointer;"></span>
+									</td>
+
+								</tr>
+								<?php } ?>
+							</tbody>
+						</table>
+					</div>
+
+			</div>
 		
 		</div><!--tab content-->
 		
 	</div><!--tabs-->
-<input type="hidden" name="" id="admid" value="<?php echo $admissao->id_admissao; ?>">
+<input type="hidden" name="" id="id_admissao" value="<?php echo $admissao->id_admissao; ?>">
+
 
 	<script type="text/javascript">
+
+		$(".selectpicker").selectpicker();
+
+		$(".selectpicker").on("change", function(){
+			if($(this).val() == "" || null === $(this).val()){
+				if(!$(this).attr("multiple"))
+					$(this).val("").find("option").removeAttr("selected").prop("selected",false);
+			}else{
+				$(this).find("option[value="+$(this).val()+"]").attr("selected",true);
+			}
+		});
+
 		$("#pessoais input, #pessoais select").blur(function(){
-			var id = $("#admid").val();
+			var id = $("#id_admissao").val();
 			var iddep = $("#id_dp").val();
 			var campo = $(this).attr("name");
 			var valor = $(this).val();
@@ -800,7 +869,7 @@
 				success: function(msg) 
 				{
 					if (msg.acao=="insert") {
-						$("#admid").val(msg.id);
+						$("#id_admissao").val(msg.id);
 					}else if (msg.acao == "erro") {
 						elemento.css({
 							"background-color":"#ffcccc",
@@ -830,6 +899,28 @@
 			});
 		});
 
+		$(document).on("click",".verdoc", function(){
+			var arq = $(this).data("arq");
+			window.open('<?php echo base_url("home/lerdoc"); ?>?arq='+arq, '_blank');
+
+		});
+
+		$(document).on("click",".excdoc", function(){
+			var id = $(this).data("id");
+			$.ajax({         
+				type: "POST",
+				url: '<?php echo base_url('home/excluirdoc') ?>',
+				secureuri:false,
+				cache: false,
+				data:{
+					id : id
+				},              
+				success: function(j){
+					$("#trdoc"+id).remove();
+				} 
+			});
+		});
+
 		$('.data').datepicker({
 
 			format: 'dd/mm/yyyy'
@@ -839,7 +930,7 @@
 		$('.cel').mask("(99)99999-9999");
 		$('.cep').mask("99999999");
 		$('.hora').mask("99:99");
-		$('.hora').keyup(function(){
+		/*$('.hora').keyup(function(){
 			var hora = $(this).val().substr(0, 2);
 			if (hora>24) {
 				$(this).val("");
@@ -849,7 +940,7 @@
 				var h = $(this).val().substr(0, 3);
 				$(this).val(h + "59");
 			}
-		});
+		});*/
 
 		$("[name='tipopagamento']").change(function(){
 			if ($(this).val()!=4) {
@@ -860,14 +951,45 @@
 		});
 
 		$("[name='fk_cargo_admissao']").change(function(){
+		
+		$(this).focus();
+		if ($(this).val() != ""){
+			$('[data-id="selectcargo"]').css({
+				"background-color":"#f0fff1", 
+				"border-color": "#13da28"
+			});
+		}else{
+			$('[data-id="selectcargo"]').css({
+				"background-color":"#ffcccc",
+				"border-color": "red"
+			});
+		}
+	});
+		$("[name='fk_horbase']").change(function(){
+			
 			$(this).focus();
 			if ($(this).val() != ""){
-				$('[data-id="selectcargo"]').css({
+				$('[data-id="selecthorabase"]').css({
 					"background-color":"#f0fff1", 
 					"border-color": "#13da28"
 				});
 			}else{
-				$('[data-id="selectcargo"]').css({
+				$('[data-id="selecthorabase"]').css({
+					"background-color":"#ffcccc",
+					"border-color": "red"
+				});
+			}
+		});
+		$("[name='fk_horsab']").change(function(){
+			
+			$(this).focus();
+			if ($(this).val() != ""){
+				$('[data-id="selecthorsab"]').css({
+					"background-color":"#f0fff1", 
+					"border-color": "#13da28"
+				});
+			}else{
+				$('[data-id="selecthorsab"]').css({
 					"background-color":"#ffcccc",
 					"border-color": "red"
 				});
@@ -949,7 +1071,7 @@
 			,submitHandler:function(form) {
 
 				$("#loadadm").show();
-				var id = $("#admid").val();
+				var id = $("#id_admissao").val();
 
 				$.ajax({           
 					type: "POST",
@@ -1071,7 +1193,7 @@
 
 		$("#formdep").validate({
 			submitHandler:function(form) {
-				var id = $("#admid").val();
+				var id = $("#id_admissao").val();
 
 				$.ajax({           
 					type: "POST",
