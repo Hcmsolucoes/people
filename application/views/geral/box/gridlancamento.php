@@ -30,7 +30,7 @@
 			?>
 				<tr>
 					<td><?php echo $value->descricao; ?></td>
-					<td><?php echo $horas; ?></td>
+					<td><?php echo rtrim($horas, ":"); ?></td>
 					<td><?php echo $valor; ?></td>
 					<td><i id="<?php echo $value->id_lancamento; ?>" style="cursor: pointer;" class="glyphicon glyphicon-remove delanc"></i></td>
 				</tr>

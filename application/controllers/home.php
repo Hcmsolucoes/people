@@ -172,6 +172,18 @@ class Home extends CI_Controller {
 
 	}
 
+	public function combofuncionarios(){
+
+		$array="<option value=''>Colaborador</option>";
+		$this->db->where("fun_idempresa", $this->input->post('idempresa'));
+		$this->db->where('fun_status',"A");
+		$this->db->order_by("fun_nome", "asc");
+		foreach ($this->db->get('funcionario')->result() as $key => $value) {
+			$array .= '<option value="'.$value->fun_idfuncionario.'">'.utf8_encode($value->fun_nome).'</option>';
+		}
+		echo $array;
+	}
+
 	public function programacao_ferias(){
 		$this->Log->talogado(); 
             $dados = array( 'menupriativo' => 'gestao');             
@@ -551,6 +563,11 @@ class Home extends CI_Controller {
         $dados['funcionario'] = $this->db->get('funcionario')->result();
         $dados['quantgeral'] = $this->db->get('feedbacks')->num_rows();
 
+        $this->db->select('em_idempresa, em_nome');
+        $this->db->join("empresa", "em_idempresa = fk_idempresa");
+		$this->db->where('fk_idfuncionario',$iduser);
+		$dados['empresas'] = $this->db->get('lancamento_responsaveis')->result();
+
         $this->db->where("idempresa", $idempresa);
         $dados['parametros'] = $this->db->get("parametros")->row();
 
@@ -562,11 +579,6 @@ class Home extends CI_Controller {
         $this->db->join("eventos", "idevento = fk_evento");
         $this->db->where("fk_ev_empresa", $idempresa);
         $dados['eventos'] = $this->db->get("lancamento_eventos")->result();
-
-        $this->db->where('situacao_competencia', 0);
-        $this->db->limit(1);
-        $this->db->order_by("mes_competencia", "desc");
-        $dados['competencia'] = $this->db->get("lancamento_competencia")->row();
 
         $this->db->select('tema_cor, tema_fundo');
         $this->db->where('fun_idfuncionario',$iduser);
@@ -581,12 +593,12 @@ class Home extends CI_Controller {
     }
 
     public function salvarLancamento(){
-    	$idempresa = $this->session->userdata('idempresa');
+    	//$idempresa = $this->session->userdata('idempresa');
         $iduser = $this->session->userdata('id_funcionario'); 
 
         $dados["fk_colaborador"] = $this->input->post("selectcolab") ; 
         $dados["fk_colaborador_emissor"] = $iduser ; 
-        $dados["fk_lancamento_empresa"] = $idempresa;
+        $dados["fk_lancamento_empresa"] = $this->input->post("fk_lancamento_empresa");
         $dados["fkcompetencia"] = $this->input->post("competencia");
         $ev = array();
         if (!empty($this->input->post("hora"))) {
@@ -594,7 +606,7 @@ class Home extends CI_Controller {
 
         		$idevento = $this->input->post("eventos")[$key];
         		if (!empty($value)) {        		    
-        			$ev[$idevento][] = $value;
+        			$ev[$idevento][] = $value.":00";
         		}       		
         	}
         }
@@ -619,8 +631,19 @@ class Home extends CI_Controller {
     		if (isset($value[1])) {
     			$dados["valor"] =$value[1];//posição 1 é valor
     		}
-    		$dados["fk_codigo_evento"] = $key;
-    		$this->db->insert("lancamento", $dados);
+
+    		$this->db->where("fk_colaborador", $dados["fk_colaborador"]);
+    		$this->db->where("fk_codigo_evento", $key);
+    		$this->db->where("fk_lancamento_empresa", $dados["fk_lancamento_empresa"]);
+    		$this->db->where("fkcompetencia", $dados["fkcompetencia"]);
+    		$r = $this->db->get("lancamento")->row();
+    		if (is_object($r)) {
+    			$this->db->where("id_lancamento", $r->id_lancamento);
+    		 	$this->db->update("lancamento", $dados);
+    		 }else{
+    		 	$dados["fk_codigo_evento"] = $key;
+    		 	$this->db->insert("lancamento", $dados);
+    		 }
     		unset($dados["horas"]);
     		unset($dados["valor"]);
     	}
@@ -637,6 +660,25 @@ class Home extends CI_Controller {
         	header ('Content-type: text/html; charset=ISO-8859-1');
         	$this->load->view('/geral/box/gridlancamento', $lanc);
         }
+    }
+
+    public function periodosempresa(){
+
+    	$idempresa = $this->input->post('idempresa');
+    	$this->db->where('situacao_competencia', 0);
+        $this->db->where('fkempresa_competencia', $idempresa);
+        $this->db->order_by("mes_competencia", "desc");
+
+        $option="<option value='0'>Competência</option>";
+        if ($idempresa>0) {
+        	foreach ($this->db->get("lancamento_competencia")->result() as $key => $value) {
+        		$data = substr($this->Log->alteradata1($value->mes_competencia), 3, 7);
+        		$option .= "<option value='".$value->id_competencia."'>".$data."</option>";
+        	}
+        }
+        
+        echo $option;
+
     }
 
     public function excluirLancamento(){
@@ -656,6 +698,11 @@ class Home extends CI_Controller {
 	 
         $this->db->where('idempresa', $idempresa);
 		$dados['cargos'] = $this->db->get('tabelacargos')->result();
+
+		$this->db->select('em_idempresa, em_nome');
+		$this->db->join("empresa", "em_idempresa = fk_idempresa_admissao");
+		$this->db->where('fk_idcolab_admissao',$iduser);
+		$dados['empresas'] = $this->db->get('responsaveladmissao')->result();
 
 		$this->db->where('fil_idempresa', $idempresa);
 		$dados['filial'] = $this->db->get('filial')->result();
@@ -710,7 +757,7 @@ class Home extends CI_Controller {
 
     public function salvar_admissao(){
     	//$this->Log->talogado();
-    	$idempresa = $this->session->userdata('idempresa');
+    	//$idempresa = $this->session->userdata('idempresa');
         $iduser = $this->session->userdata('id_funcionario');
         
 
@@ -749,7 +796,7 @@ class Home extends CI_Controller {
 
         if ($id==0) {
         	$dados["fk_colaborador_emissor"] = $iduser ;
-        	$dados["fk_admidempresa"] = $idempresa ;
+        	//$dados["fk_admidempresa"] = $idempresa ;
         	$this->db->insert("admissao", $dados);
         	$r['acao'] = "insert";
         	$r['id'] = $this->db->insert_id();

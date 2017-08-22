@@ -401,6 +401,10 @@ class Rh extends CI_Controller {
         $this->db->where('idempresa', $idempresa);
 		$dados['cargos'] = $this->db->get('tabelacargos')->result();
 
+		$this->db->select('em_idempresa, em_nome');
+		$this->db->where('em_idcliente',$idcli);
+		$dados['empresas'] = $this->db->get('empresa')->result();
+
 		$this->db->where('fil_idempresa', $idempresa);
 		$dados['filial'] = $this->db->get('filial')->result();
 

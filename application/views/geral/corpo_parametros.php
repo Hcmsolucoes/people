@@ -5,7 +5,7 @@
     <select class="fright" id="selectempresas">
         <option>Selecione a empresa</option>
     <?php foreach ($empresas as $key => $value) { ?>
-        <option value="<?php echo $value->em_idempresa ?>"><?php echo $value->em_nome; ?></option>
+        <option value="<?php echo $value->em_idempresa ?>"><?php echo $value->em_idempresa." - ".$value->em_nome; ?></option>
     <?php } ?>
     </select>
 </div>

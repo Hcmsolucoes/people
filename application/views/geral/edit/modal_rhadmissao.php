@@ -12,6 +12,13 @@
 
 					<div class="fleft md10" style="">
 
+					<select name="fk_admidempresa" required="true" id="cboempresa" class="md10" data-toggle="tooltip" data-placement="top" title="Empresa">
+							<option value="">Empresa</option>
+							<?php foreach ($empresas as $key => $value) { ?>
+							<option value="<?php echo $value->em_idempresa; ?>"><?php echo $value->em_nome; ?></option>
+							<?php } ?>
+						</select>
+
 						<select name="adm_idfilial" required="true" id="cbofilial" class="md10" >
 							<option value="">Filial</option>
 							<?php 

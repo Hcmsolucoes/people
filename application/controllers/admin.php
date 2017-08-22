@@ -108,6 +108,8 @@ class Admin extends CI_Controller {
 
             $this->db->select('em_idempresa, em_nome');
             $this->db->where('em_idcliente',$idcliente);
+            $this->db->where('empresa_status', "A");
+            $this->db->order_by("em_nome", "asc");
             $dados['empresas'] = $this->db->get('empresa')->result();
             
             $this->db->select('tema_cor, tema_fundo');
@@ -135,12 +137,12 @@ class Admin extends CI_Controller {
 
             $this->db->select("lancamento_responsaveis.*, fun_nome, fun_foto, fun_sexo");
             $this->db->join('funcionario',"fun_idfuncionario = fk_idfuncionario");
-            $this->db->where('fun_idempresa', $idempresa);
+            $this->db->where('fk_idempresa', $idempresa);
             $dados['resplanc'] = $this->db->get('lancamento_responsaveis')->result();
 
             $this->db->select("responsaveladmissao.*, fun_nome, fun_foto, fun_sexo");
             $this->db->join('funcionario',"fun_idfuncionario = fk_idcolab_admissao");
-            $this->db->where('fun_idempresa', $idempresa);
+            //$this->db->where('fun_idempresa', $idempresa);
             $dados['respadm'] = $this->db->get('responsaveladmissao')->result();
 
             $dados['tipo_solicitacoes'] = $this->db->get('solicitacao_tipo')->result();
@@ -148,9 +150,9 @@ class Admin extends CI_Controller {
             $this->db->where("idempresa", $idempresa);
             $dados['parametros'] = $this->db->get('parametros')->row();
 
-            $this->db->order_by("descricao", "asc");
+            $this->db->order_by("CodigoEvento", "asc");
             $this->db->where("idempresa", $idempresa);
-            $this->db->limit(20);
+            //$this->db->limit(20);
             $dados['eventos'] = $this->db->get('eventos')->result();
 
             $this->db->join("eventos", "idevento = fk_evento");
@@ -314,7 +316,7 @@ class Admin extends CI_Controller {
             $dados['campo'] = $campo;
 
             $this->db->like("fun_nome", $busca);
-            $this->db->where("fun_idempresa", $idempresa);
+            //$this->db->where("fun_idempresa", $idempresa);
 
             if (empty($this->input->post('todos'))) {
                   $this->db->where("fun_perfil in (5, 6, 7)");

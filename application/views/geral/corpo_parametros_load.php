@@ -615,7 +615,7 @@ switch ($parametros->Param_feed) {
         </div>
         <div class="fleft-2">
             <div class="autocomplete" >
-              <input type="text" id="busca_colab" data-campo="colab" data-classe="itemcolab" data-div="lista" class="autocompletar form-control" placeholder="" style="background: transparent;border: none;width: 35px;"/>
+              <input type="text" id="busca_colab" data-campo="colab" data-classe="itemcolab" data-div="lista" class="autocompletar form-control" placeholder="" style="background: transparent;border: none;width: 90px;"/>
               <div id="lista"></div>
           </div>
           <div id="selecionados"></div>
@@ -648,7 +648,7 @@ switch ($parametros->Param_feed) {
         </div>
         <div class="fleft-2">
             <div class="autocomplete" >
-              <input type="text" id="busca_colabrh" data-campo="colab" data-classe="itemrh" data-div="listarh" class="autocompletar form-control" placeholder="" style="background: transparent;border: none;width: 35px;"/>
+              <input type="text" id="busca_colabrh" data-campo="colab" data-classe="itemrh" data-div="listarh" class="autocompletar form-control" placeholder="" style="background: transparent;border: none;width: 90px;"/>
               <div id="listarh"></div>
           </div>
           <div id="selecionadosrh"></div>
@@ -690,7 +690,7 @@ switch ($parametros->Param_feed) {
         </div>
         <div class="fleft-2">
             <div class="autocomplete" >
-              <input type="text" id="busca_colabadmissao" data-campo="colab" data-classe="itemadmissao" data-div="listadmissao" class="autocompletar form-control" placeholder="" style="background: transparent;border: none;width: 35px;"/>
+              <input type="text" id="busca_colabadmissao" data-campo="colab" data-classe="itemadmissao" data-div="listadmissao" class="autocompletar form-control" placeholder="" style="background: transparent;border: none;width: 90px;"/>
               <div id="listadmissao"></div>
           </div>
           <div id="selecionadosadmissao"></div>
@@ -714,7 +714,7 @@ switch ($parametros->Param_feed) {
         ?>                          
             <div id="adm<?php echo $value->id_responsavel_admissao; ?>" class="list-group-item fleft-10">                                    
                 <img src="<?php echo $foto; ?>" class="pull-left" >
-                <span class="contacts-title"><?php echo $value->fun_nome; ?></span>
+                <span class="contacts-title"><?php echo $value->fk_idempresa_admissao." - ".$value->fun_nome; ?></span>
                 <div class="list-group-controls">
                     <button data-id="<?php echo $value->id_responsavel_admissao; ?>" class="btn btn-primary btn-rounded btnexcadm"><span class="fa fa-times"></span></button>
                 </div>                                    
@@ -750,12 +750,12 @@ switch ($parametros->Param_feed) {
         </div>
 
         <div class="panel panel-default" style="padding: 20px 0px 0px 0px;margin-bottom: 1px">
-            <div class="col-md-2" style="padding: 7px 0px 7px 7px;">
+            <div class="fleft-2" style="padding: 7px 0px 7px 7px;">
                 <span class="bold">Responsável pelos lançamentos: </span>
             </div>
             <div class="fleft-2">
                 <div class="autocomplete" >
-                <input type="text" id="busca_colablanc" data-campo="colab" data-classe="itemlanc" data-div="listalanc" class="form-control" placeholder="" style="background: transparent;border: none;width: 35px;"/>
+                <input type="text" id="busca_colablanc" data-campo="colab" data-classe="itemlanc" data-div="listalanc" class="form-control" placeholder="" style="background: transparent;border: none;width: 90px;"/>
                   <div id="listalanc"></div>
               </div>
               <div id="selecionadoslanc"></div>
@@ -779,7 +779,7 @@ switch ($parametros->Param_feed) {
                         ?>                          
                         <div id="lanc<?php echo $value->id_resp_lancamento; ?>" class="list-group-item fleft-10">                                    
                             <img src="<?php echo $foto; ?>" class="pull-left" >
-                            <span class="contacts-title"><?php echo $value->fun_nome; ?></span>
+                            <span class="contacts-title"><?php echo $value->fk_idempresa." - ".$value->fun_nome; ?></span>
                             <div class="list-group-controls">
                                 <button data-id="<?php echo $value->id_resp_lancamento; ?>" class="btn btn-primary btn-rounded btnexclanc"><span class="fa fa-times"></span></button>
                             </div>                                    
@@ -798,7 +798,7 @@ switch ($parametros->Param_feed) {
                 <select name="selectevento" required="true" id="selectevento" class="selectpicker" data-live-search="true" data-div="resultado">
                     <option value="">Evento</option>
                 <?php foreach ($eventos as $key => $value) { ?>
-                    <option value="<?php echo $value->idevento; ?>"><?php echo $value->descricao; ?></option>
+                    <option value="<?php echo $value->idevento; ?>"><?php echo $value->CodigoEvento." - ".$value->descricao; ?></option>
                 <?php } ?>
                 </select>
 
